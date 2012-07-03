@@ -1,0 +1,3 @@
+My first attempt at a Perl CMS using Mojolicious Bootstrap Pagedown.
+
+It uses client-side markdown rendering and websockets for saving page data.
