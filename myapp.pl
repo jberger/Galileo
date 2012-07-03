@@ -9,6 +9,10 @@ my %pages = (
   },
 );
 
+my %users = (
+  joel => 'pass',
+);
+
 get '/' => sub {
   my $self = shift;
   $self->render('hello');
@@ -24,6 +28,29 @@ get '/pages/:name' => sub {
   } else {
     $self->render_not_found;
   }
+};
+
+get '/login' => sub {
+  my $self = shift;
+  $self->session( expires => 1 );
+  $self->render( 'login' );
+};
+
+post '/check' => sub {
+  my $self = shift;
+  my $name = $self->param('username');
+  my $pass = $self->param('password');
+  if ($users{$name} eq $pass) {
+    $self->session->{username} = $name;
+  }
+  $self->redirect_to('/');
+};
+
+under sub {
+  my $self = shift;
+  my $username = $self->session->{username};
+  return 1 if exists $users{$username};
+  $self->redirect_to('/');
 };
 
 get '/edit/:name' => sub {
@@ -50,9 +77,19 @@ websocket '/store' => sub {
   });
 };
 
+app->secret( 'MySecret' );
 app->start;
 
 __DATA__
+
+@@ login.html.ep
+% layout 'standard';
+%= form_for check => (method => 'POST') => begin
+  %= text_field 'username'
+  %= text_field 'password'
+  %= submit_button
+% end
+
 
 @@ edit.html.ep
 % layout 'standard';
