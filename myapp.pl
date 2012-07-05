@@ -166,7 +166,7 @@ function saveButton() {
 % content_for banner => begin
 Hello World
 % end
-This is me
+This is the site
 
 @@ layouts/standard.html.ep
 <!DOCTYPE html>
@@ -185,8 +185,9 @@ This is me
       <div class="well" style="padding: 8px 0;">
         <ul class="nav nav-list">
           <li class="nav-header">Navigation</li>
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="#">Help</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/pages/me">About Me</a></li>
+          <li><a href="/login">Log In</a></li>
         </ul>
       </div>
     </div>
