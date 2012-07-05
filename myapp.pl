@@ -1,4 +1,5 @@
 use Mojolicious::Lite;
+use Mojo::ByteStream;
 use Mojo::JSON;
 my $json = Mojo::JSON->new();
 
@@ -30,19 +31,40 @@ get '/pages/:name' => sub {
   }
 };
 
-get '/login' => sub {
+helper login => sub {
   my $self = shift;
-  $self->session( expires => 1 );
-  $self->render( 'login' );
+  my $user = $self->session->{username};
+  my $html = $user ? <<USER : <<'ANON';
+<div class="well" style="padding: 8px 0;">
+  <ul class="nav nav-list">
+    <li class="nav-header">User</li>
+    <li>Hello $user</li>
+    <li><a href="/logout">Log Out</a></li>
+  </ul>
+</div>
+USER
+<form class="well" method="post" action="/login">
+  <input type="text" class="input-small" placeholder="Username" name="username">
+  <input type="password" class="input-small" placeholder="Password" name="password">
+  <input type="submit" class="btn" value="Sign In">
+</form>
+ANON
+  return Mojo::ByteStream->new( $html );
 };
 
-post '/check' => sub {
+post '/login' => sub {
   my $self = shift;
   my $name = $self->param('username');
   my $pass = $self->param('password');
   if ($users{$name} eq $pass) {
     $self->session->{username} = $name;
   }
+  $self->redirect_to('/');
+};
+
+any '/logout' => sub {
+  my $self = shift;
+  $self->session( expires => 1 );
   $self->redirect_to('/');
 };
 
@@ -81,15 +103,6 @@ app->secret( 'MySecret' );
 app->start;
 
 __DATA__
-
-@@ login.html.ep
-% layout 'standard';
-%= form_for check => (method => 'POST') => begin
-  %= text_field 'username'
-  %= text_field 'password'
-  %= submit_button
-% end
-
 
 @@ edit.html.ep
 % layout 'standard';
@@ -136,9 +149,6 @@ function saveButton() {
     Save
   </button>
 </div>
-
-
-
 
 %= javascript begin
 (function () {
@@ -187,9 +197,9 @@ This is the site
           <li class="nav-header">Navigation</li>
           <li><a href="/">Home</a></li>
           <li><a href="/pages/me">About Me</a></li>
-          <li><a href="/login">Log In</a></li>
         </ul>
       </div>
+      %= login
     </div>
     <div class="span10">
       <%= content %>
