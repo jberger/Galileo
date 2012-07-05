@@ -3,16 +3,17 @@ use Mojo::ByteStream;
 use Mojo::JSON;
 my $json = Mojo::JSON->new();
 
-my %pages = (
-  me => { 
-    html => '<p>Some really cool stuff about me</p>',
-    md   => 'Some really cool stuff about me',
+my $db = {
+  pages => {
+    me => { 
+      html => '<p>Some really cool stuff about me</p>',
+      md   => 'Some really cool stuff about me',
+    },
   },
-);
-
-my %users = (
-  joel => 'pass',
-);
+  users => {
+    joel => 'pass',
+  },
+};
 
 get '/' => sub {
   my $self = shift;
@@ -23,8 +24,8 @@ get '/pages/:name' => sub {
   my $self = shift;
   my $name = $self->param('name');
   $self->title( "Page about $name" );
-  if (exists $pages{$name}) {
-    $self->stash( page_contents => $pages{$name}{html} );
+  if (exists $db->{pages}{$name}) {
+    $self->stash( page_contents => $db->{pages}{$name}{html} );
     $self->render( 'pages' );
   } else {
     $self->render_not_found;
@@ -55,7 +56,7 @@ post '/login' => sub {
   my $self = shift;
   my $name = $self->param('username');
   my $pass = $self->param('password');
-  if ($users{$name} eq $pass) {
+  if ($db->{users}{$name} eq $pass) {
     $self->session->{username} = $name;
   }
   $self->redirect_to('/');
@@ -70,7 +71,7 @@ any '/logout' => sub {
 under sub {
   my $self = shift;
   my $username = $self->session->{username};
-  return 1 if exists $users{$username};
+  return 1 if exists $db->{users}{$username};
   $self->redirect_to('/');
 };
 
@@ -79,8 +80,8 @@ get '/edit/:name' => sub {
   my $name = $self->param('name');
   $self->title( "Editing Page: $name" );
 
-  if (exists $pages{$name}) {
-    $self->stash( input => $pages{$name}{md} );
+  if (exists $db->{pages}{$name}) {
+    $self->stash( input => $db->{pages}{$name}{md} );
   } else {
     $self->stash( input => "Hello World" );
   }
@@ -93,7 +94,7 @@ websocket '/store' => sub {
   $self->on(message => sub {
     my ($self, $message) = @_;
     my $data = $json->decode($message);
-    $pages{$data->{name}} = $data;
+    $db->{pages}{$data->{name}} = $data;
     $self->send('Changes saved');
   });
 };
