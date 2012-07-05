@@ -37,8 +37,7 @@ helper login => sub {
   my $html = $user ? <<USER : <<'ANON';
 <div class="well" style="padding: 8px 0;">
   <ul class="nav nav-list">
-    <li class="nav-header">User</li>
-    <li>Hello $user</li>
+    <li class="nav-header">Hello $user</li>
     <li><a href="/logout">Log Out</a></li>
   </ul>
 </div>
