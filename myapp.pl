@@ -3,17 +3,21 @@ use Mojo::ByteStream;
 use Mojo::JSON;
 my $json = Mojo::JSON->new();
 
-my $db = {
-  pages => {
-    me => { 
-      html => '<p>Some really cool stuff about me</p>',
-      md   => 'Some really cool stuff about me',
-    },
-  },
-  users => {
-    joel => 'pass',
+use DBM::Deep;
+my $db = DBM::Deep->new( 'myapp.db' );
+
+#### some initial data ####
+$db->{pages} ||= {
+  me => { 
+    html => '<p>Some really cool stuff about me</p>',
+    md   => 'Some really cool stuff about me',
   },
 };
+  
+$db->{users} ||= {
+  joel => 'pass',
+};
+###########################
 
 get '/' => sub {
   my $self = shift;
