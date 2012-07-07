@@ -95,15 +95,17 @@ get '/admin/menu' => sub {
   @active   = map { sprintf '<li id="pages-%s">%s</li>', $_, $_ } @active;
   @inactive = map { sprintf '<li id="pages-%s">%s</li>', $_, $_ } @inactive;
   
-  my $list_html;
-  $list_html .= '<ul id="list-active-pages" class="connectedSortable">'
+  my $active = '<ul id="list-active-pages" class="nav nav-list connectedSortable well">'
+    . '<li id="header-active" class="nav-header">Active Pages</li>'
     . join( "\n", @active   ) . '</ul>' . "\n";
-  $list_html .= '<ul id="list-inactive-pages" class="connectedSortable">'
+  my $inactive = '<ul id="list-inactive-pages" class="nav nav-list connectedSortable well">'
+    . '<li id="header-inactive" class="nav-header">Inactive Pages</li>'
     . join( "\n", @inactive ) . '</ul>' . "\n";
-    
-  $list_html = Mojo::ByteStream->new( $list_html );
-    
-  $self->render( menu => list_html => $list_html );
+
+  $self->render( menu => 
+    active   => Mojo::ByteStream->new( $active   ), 
+    inactive => Mojo::ByteStream->new( $inactive ),
+  );
 };
 
 get '/edit/:name' => sub {
@@ -130,22 +132,10 @@ websocket '/store' => sub {
   });
 };
 
-get '/admin/dump' => sub {
-  my $self = shift;
-  my $data = $db->export;
-  require DDP;
-  $data = DDP::p($data);
-  $self->render( dump => data => $data );
-};
-
 app->secret( 'MySecret' );
 app->start;
 
 __DATA__
-
-@@ dump.html.ep
-% layout 'standard';
-<%= $data %>
 
 @@ menu.html.ep
 % layout 'standard';
@@ -155,13 +145,21 @@ __DATA__
 
 %= javascript begin
 	$(function() {
-		$( "#sortable1, #sortable2" ).sortable({
-			connectWith: ".connectedSortable"
+		$( "#list-active-pages, #list-inactive-pages" ).sortable({
+			connectWith: ".connectedSortable",
+      cancel: ".nav-header"
 		}).disableSelection();
 	});
 %= end
 
-<%= $list_html %>
+<div class="row">
+  <div class="span5">
+    <%= $active %> 
+  </div>
+  <div class="span5">
+    <%= $inactive %>
+  </div>
+</div>
 
 @@ edit.html.ep
 % layout 'standard';
