@@ -146,16 +146,11 @@ data = {
   html : "",
 };
 
-function newAlert (type, message) {
-    $("#alert-area").append($("<div class='alert alert-" + type + " fade in'>" + message + "</div>"));
-    $("#alert-area").delay(2000).fadeOut("slow", function () { $(this).remove(); });
-}
-
 ws = new WebSocket("<%= url_for('store')->to_abs %>");
 ws.onmessage = function (evt) {
   var message = evt.data;
   console.log( message );
-  newAlert('success', message );
+  humane.log( message );
 };
 
 function saveButton() {
@@ -240,4 +235,9 @@ This is the site
 %= javascript '/assets/jquery-1.7.2.min.js'
 %= javascript '/assets/bootstrap/js/bootstrap.js'
 %= stylesheet '/assets/bootstrap/css/bootstrap.css'
+%= javascript '/assets/humane/humane.min.js'
+%= stylesheet '/assets/humane/libnotify.css'
+%= javascript begin
+  humane.baseCls = 'humane-libnotify'
+%= end
 
