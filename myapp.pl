@@ -123,7 +123,15 @@ websocket '/store' => sub {
   $self->on(message => sub {
     my ($self, $message) = @_;
     my $data = $json->decode($message);
-    $db->{pages}{$data->{name}} = $data;
+    if ($data->{store} eq 'pages') {
+      $db->{pages}{$data->{name}} = $data;
+    } elsif ($data->{store} eq 'main_menu') {
+      my @list = 
+        map { my $page = $_; $page =~ s/^pages-//; $page}
+        grep { ! /^header-/ }
+        @{ $data->{list} };
+      $db->{main_menu} = \@list;  
+    }
     $self->send('Changes saved');
   });
 };
@@ -140,6 +148,22 @@ __DATA__
 % end
 
 %= javascript begin
+ws = new WebSocket("<%= url_for('store')->to_abs %>");
+ws.onmessage = function (evt) {
+  var message = evt.data;
+  console.log( message );
+  humane.log( message );
+};
+function saveButton() {
+  var data = {
+    store : "main_menu",
+    list : $("#list-active-pages").sortable('toArray')
+  };
+  var serialized = JSON.stringify(data);
+  console.log( "Sending ==> " + serialized );
+  ws.send( serialized );
+}
+
 	$(function() {
 		$( "#list-active-pages, #list-inactive-pages" ).sortable({
 			connectWith: ".connectedSortable",
@@ -162,6 +186,9 @@ __DATA__
     </ul>
   </div>
 </div>
+<button class="btn" id="save-list" onclick="saveButton()">
+  Save
+</button>
 
 @@ edit.html.ep
 % layout 'standard';
@@ -174,6 +201,7 @@ __DATA__
 
 %= javascript begin
 data = {
+  store : "pages",
   name : "<%= $name  %>",
   md : "",
   html : "",
