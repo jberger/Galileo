@@ -77,28 +77,33 @@ any '/logout' => sub {
 under sub {
   my $self = shift;
   my $username = $self->session->{username};
-  return 1 if exists $db->{users}{$username};
-  $self->redirect_to('/');
+  unless (defined $username and exists $db->{users}{$username}) {
+    $self->redirect_to('/');
+    return 0;
+  }
+  return 1;
 };
 
-get '/admin/menu' => {
+get '/admin/menu' => sub {
   my $self = shift;
   my @active = @{ $db->{main_menu} };
   my @inactive = do {
     my %active = map { $_ => 1 } @active;
-    sort map { ! exists $active{$_} } keys %{ $db->{pages} };
+    sort grep { length and not exists $active{$_} } keys %{ $db->{pages} };
   };
   
-  @active   = map { sprintf '<li id="pages-%s>%s</li>', $_, $_ } @active;
-  @inactive = map { sprintf '<li id="pages-%s>%s</li>', $_, $_ } @inactive;
+  @active   = map { sprintf '<li id="pages-%s">%s</li>', $_, $_ } @active;
+  @inactive = map { sprintf '<li id="pages-%s">%s</li>', $_, $_ } @inactive;
   
-  my $html;
-  $html .= '<ul id="list-active-pages" class="connectedSortable">'
+  my $list_html;
+  $list_html .= '<ul id="list-active-pages" class="connectedSortable">'
     . join( "\n", @active   ) . '</ul>' . "\n";
-  $html .= '<ul id="list-active-pages" class="connectedSortable">'
+  $list_html .= '<ul id="list-inactive-pages" class="connectedSortable">'
     . join( "\n", @inactive ) . '</ul>' . "\n";
     
-  
+  $list_html = Mojo::ByteStream->new( $list_html );
+    
+  $self->render( menu => list_html => $list_html );
 };
 
 get '/edit/:name' => sub {
@@ -125,10 +130,38 @@ websocket '/store' => sub {
   });
 };
 
+get '/admin/dump' => sub {
+  my $self = shift;
+  my $data = $db->export;
+  require DDP;
+  $data = DDP::p($data);
+  $self->render( dump => data => $data );
+};
+
 app->secret( 'MySecret' );
 app->start;
 
 __DATA__
+
+@@ dump.html.ep
+% layout 'standard';
+<%= $data %>
+
+@@ menu.html.ep
+% layout 'standard';
+% content_for header => begin
+%= javascript '/assets/jquery-ui-1.8.21.custom.min.js'
+% end
+
+%= javascript begin
+	$(function() {
+		$( "#sortable1, #sortable2" ).sortable({
+			connectWith: ".connectedSortable"
+		}).disableSelection();
+	});
+%= end
+
+<%= $list_html %>
 
 @@ edit.html.ep
 % layout 'standard';
