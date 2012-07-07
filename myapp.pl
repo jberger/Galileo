@@ -95,12 +95,8 @@ get '/admin/menu' => sub {
   @active   = map { sprintf '<li id="pages-%s">%s</li>', $_, $_ } @active;
   @inactive = map { sprintf '<li id="pages-%s">%s</li>', $_, $_ } @inactive;
   
-  my $active = '<ul id="list-active-pages" class="nav nav-list connectedSortable well">'
-    . '<li id="header-active" class="nav-header">Active Pages</li>'
-    . join( "\n", @active   ) . '</ul>' . "\n";
-  my $inactive = '<ul id="list-inactive-pages" class="nav nav-list connectedSortable well">'
-    . '<li id="header-inactive" class="nav-header">Inactive Pages</li>'
-    . join( "\n", @inactive ) . '</ul>' . "\n";
+  my $active   = join( "\n", @active   ) . "\n";
+  my $inactive = join( "\n", @inactive ) . "\n";
 
   $self->render( menu => 
     active   => Mojo::ByteStream->new( $active   ), 
@@ -154,10 +150,16 @@ __DATA__
 
 <div class="row">
   <div class="span5">
-    <%= $active %> 
+    <ul id="list-active-pages" class="nav nav-list connectedSortable well">
+      <li id="header-active" class="nav-header">Active Pages</li>
+      <%= $active %>
+    </ul>
   </div>
   <div class="span5">
-    <%= $inactive %>
+    <ul id="list-inactive-pages" class="nav nav-list connectedSortable well">
+      <li id="header-inactive" class="nav-header">Inactive Pages</li>
+      <%= $inactive %>
+    </ul>
   </div>
 </div>
 
