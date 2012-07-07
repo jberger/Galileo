@@ -17,6 +17,8 @@ $db->{pages} ||= {
 $db->{users} ||= {
   joel => 'pass',
 };
+
+$db->{main_menu} ||= [ qw/ me / ];
 ###########################
 
 get '/' => sub {
@@ -77,6 +79,26 @@ under sub {
   my $username = $self->session->{username};
   return 1 if exists $db->{users}{$username};
   $self->redirect_to('/');
+};
+
+get '/admin/menu' => {
+  my $self = shift;
+  my @active = @{ $db->{main_menu} };
+  my @inactive = do {
+    my %active = map { $_ => 1 } @active;
+    sort map { ! exists $active{$_} } keys %{ $db->{pages} };
+  };
+  
+  @active   = map { sprintf '<li id="pages-%s>%s</li>', $_, $_ } @active;
+  @inactive = map { sprintf '<li id="pages-%s>%s</li>', $_, $_ } @inactive;
+  
+  my $html;
+  $html .= '<ul id="list-active-pages" class="connectedSortable">'
+    . join( "\n", @active   ) . '</ul>' . "\n";
+  $html .= '<ul id="list-active-pages" class="connectedSortable">'
+    . join( "\n", @inactive ) . '</ul>' . "\n";
+    
+  
 };
 
 get '/edit/:name' => sub {
