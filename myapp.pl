@@ -128,6 +128,7 @@ get '/admin/menu' => sub {
   my $active   = join( "\n", @active   ) . "\n";
   my $inactive = join( "\n", @inactive ) . "\n";
 
+  $self->title( 'Setup Main Navigation Menu' );
   $self->content_for( banner => 'Setup Main Navigation Menu' );
   $self->render( menu => 
     active   => Mojo::ByteStream->new( $active   ), 
