@@ -138,10 +138,14 @@ get '/edit/:name' => sub {
   my $self = shift;
   my $name = $self->param('name');
   $self->title( "Editing Page: $name" );
+  $self->content_for( banner => "Editing Page: $name" );
 
   if (exists $db->{pages}{$name}) {
+    my $title = $db->{pages}{$name}{title};
+    $self->stash( title_value => $title );
     $self->stash( input => $db->{pages}{$name}{md} );
   } else {
+    $self->stash( title_value => '' );
     $self->stash( input => "Hello World" );
   }
 
@@ -236,9 +240,10 @@ function saveButton() {
 %= javascript begin
 data = {
   store : "pages",
-  name : "<%= $name  %>",
-  md : "",
-  html : "",
+  name  : "<%= $name  %>",
+  md    : "",
+  html  : "",
+  title : ""
 };
 
 ws = new WebSocket("<%= url_for('store')->to_abs %>");
@@ -249,6 +254,7 @@ ws.onmessage = function (evt) {
 };
 
 function saveButton() {
+  data.title = $("#page-title").val();
   var serialized = JSON.stringify(data);
   console.log( "Sending ==> " + serialized );
   ws.send( serialized );
@@ -256,14 +262,23 @@ function saveButton() {
 
 %= end
 
+
 <div class="wmd-panel">
+  <form class="well form-inline">
+    <input 
+      type="text" 
+      id="page-title" 
+      placeholder="Page Title" 
+      value="<%= $title_value %>"
+    >
+    <button class="btn" id="save-md" onclick="saveButton()">
+      Save Page
+    </button>
+  </form>
   <div id="wmd-button-bar"></div>
   <textarea class="wmd-input" id="wmd-input"><%= $input %></textarea>
   <div id="wmd-preview" class="wmd-preview well"></div>
   <div id="alert-area"></div>
-  <button class="btn" id="save-md" onclick="saveButton()">
-    Save
-  </button>
 </div>
 
 %= javascript begin
