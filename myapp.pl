@@ -165,6 +165,10 @@ websocket '/store' => sub {
     my ($self, $message) = @_;
     my $data = $json->decode($message);
     if ($data->{store} eq 'pages') {
+      unless($data->{title}) {
+        $self->send('Not saved! A title is required!');
+        return;
+      }
       $db->{pages}{$data->{name}} = $data;
       $self->set_menu($db->{main_menu}{order});
     } elsif ($data->{store} eq 'main_menu') {
