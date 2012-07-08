@@ -9,6 +9,8 @@ my $db = DBM::Deep->new( 'myapp.db' );
 #### some initial data ####
 $db->{pages} ||= {
   me => { 
+    name => 'me',
+    title => 'About Me',
     html => '<p>Some really cool stuff about me</p>',
     md   => 'Some really cool stuff about me',
   },
@@ -18,7 +20,10 @@ $db->{users} ||= {
   joel => 'pass',
 };
 
-$db->{main_menu} ||= [ qw/ me / ];
+$db->{main_menu} ||= {
+  order => [ qw/ me / ],
+  html  => '<li><a href="/pages/me">About Me</a></li>',
+};
 ###########################
 
 get '/' => sub {
@@ -58,6 +63,26 @@ ANON
   return Mojo::ByteStream->new( $html );
 };
 
+helper 'set_menu' => sub {
+  my ($self, $list) = @_;
+  
+  my @pages = 
+    map { my $page = $_; $page =~ s/^pages-//; $page}
+    grep { ! /^header-/ }
+    @$list;
+  $db->{main_menu}{order} = \@pages;
+  
+  $db->{main_menu}{html} = join "\n",
+    map { sprintf '<li><a href="/pages/%s">%s</a></li>', $_, $db->{pages}{$_}{title} }
+    @pages;
+
+};
+
+helper 'get_menu' => sub {
+  my $self = shift;
+  return $db->{main_menu}{html};
+};
+
 post '/login' => sub {
   my $self = shift;
   my $name = $self->param('username');
@@ -86,7 +111,7 @@ under sub {
 
 get '/admin/menu' => sub {
   my $self = shift;
-  my @active = @{ $db->{main_menu} };
+  my @active = @{ $db->{main_menu}{order} };
   my @inactive = do {
     my %active = map { $_ => 1 } @active;
     sort grep { length and not exists $active{$_} } keys %{ $db->{pages} };
@@ -127,14 +152,17 @@ websocket '/store' => sub {
     if ($data->{store} eq 'pages') {
       $db->{pages}{$data->{name}} = $data;
     } elsif ($data->{store} eq 'main_menu') {
-      my @list = 
-        map { my $page = $_; $page =~ s/^pages-//; $page}
-        grep { ! /^header-/ }
-        @{ $data->{list} };
-      $db->{main_menu} = \@list;  
+       $self->set_menu($data->{list});
     }
     $self->send('Changes saved');
   });
+};
+
+get '/admin/dump' => sub {
+  my $self = shift;
+  require Data::Dumper;
+  print Data::Dumper::Dumper($db);
+  $self->redirect_to('/');
 };
 
 app->secret( 'MySecret' );
@@ -279,7 +307,7 @@ This is the site
         <ul class="nav nav-list">
           <li class="nav-header">Navigation</li>
           <li><a href="/">Home</a></li>
-          <li><a href="/pages/me">About Me</a></li>
+          <%== get_menu %>
         </ul>
       </div>
       %= login
