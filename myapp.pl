@@ -120,6 +120,7 @@ get '/edit/:name' => sub {
 
 websocket '/store' => sub {
   my $self = shift;
+  Mojo::IOLoop->stream($self->tx->connection)->timeout(300);
   $self->on(message => sub {
     my ($self, $message) = @_;
     my $data = $json->decode($message);
@@ -167,7 +168,7 @@ function saveButton() {
 	$(function() {
 		$( "#list-active-pages, #list-inactive-pages" ).sortable({
 			connectWith: ".connectedSortable",
-      cancel: ".nav-header"
+      items: "li:not(.nav-header)"
 		}).disableSelection();
 	});
 %= end
