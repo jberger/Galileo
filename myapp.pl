@@ -48,7 +48,7 @@ get '/pages/:name' => sub {
   }
 };
 
-helper login => sub {
+helper user_menu => sub {
   my $self = shift;
   my $user = $self->session->{username};
   my $html = $user ? <<USER : <<'ANON';
@@ -342,7 +342,7 @@ This is the site
           <%== get_menu %>
         </ul>
       </div>
-      %= login
+      <%= user_menu %>
     </div>
     <div class="span10">
       <%= content %>
