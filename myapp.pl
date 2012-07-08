@@ -40,7 +40,11 @@ get '/pages/:name' => sub {
     $self->content_for( banner => $title );
     $self->render( pages => page_contents => $db->{pages}{$name}{html} );
   } else {
-    $self->render_not_found;
+    if ($self->session->{username}) {
+      $self->redirect_to("/edit/$name");
+    } else {
+      $self->render_not_found;
+    }
   }
 };
 
