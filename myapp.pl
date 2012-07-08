@@ -162,6 +162,7 @@ websocket '/store' => sub {
     my $data = $json->decode($message);
     if ($data->{store} eq 'pages') {
       $db->{pages}{$data->{name}} = $data;
+      $self->set_menu($db->{main_menu}{order});
     } elsif ($data->{store} eq 'main_menu') {
        $self->set_menu($data->{list});
     }
@@ -266,7 +267,7 @@ function saveButton() {
 
 
 <div class="wmd-panel">
-  <form class="well form-inline">
+  <div class="well form-inline">
     <input 
       type="text" 
       id="page-title" 
@@ -276,7 +277,7 @@ function saveButton() {
     <button class="btn" id="save-md" onclick="saveButton()">
       Save Page
     </button>
-  </form>
+  </div>
   <div id="wmd-button-bar"></div>
   <textarea class="wmd-input" id="wmd-input"><%= $input %></textarea>
   <div id="wmd-preview" class="wmd-preview well"></div>
