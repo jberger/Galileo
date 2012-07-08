@@ -34,10 +34,11 @@ get '/' => sub {
 get '/pages/:name' => sub {
   my $self = shift;
   my $name = $self->param('name');
-  $self->title( "Page about $name" );
   if (exists $db->{pages}{$name}) {
-    $self->stash( page_contents => $db->{pages}{$name}{html} );
-    $self->render( 'pages' );
+    my $title = $db->{pages}{$name}{title};
+    $self->title( $title );
+    $self->content_for( banner => $title );
+    $self->render( pages => page_contents => $db->{pages}{$name}{html} );
   } else {
     $self->render_not_found;
   }
@@ -117,8 +118,12 @@ get '/admin/menu' => sub {
     sort grep { length and not exists $active{$_} } keys %{ $db->{pages} };
   };
   
-  @active   = map { sprintf '<li id="pages-%s">%s</li>', $_, $_ } @active;
-  @inactive = map { sprintf '<li id="pages-%s">%s</li>', $_, $_ } @inactive;
+  @active   = map { 
+    sprintf '<li id="pages-%s">%s</li>', $_, $db->{pages}{$_}{title} 
+  } @active;
+  @inactive = map { 
+    sprintf '<li id="pages-%s">%s</li>', $_, $db->{pages}{$_}{title} 
+  } @inactive;
   
   my $active   = join( "\n", @active   ) . "\n";
   my $inactive = join( "\n", @inactive ) . "\n";
