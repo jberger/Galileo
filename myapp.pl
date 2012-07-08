@@ -51,21 +51,32 @@ get '/pages/:name' => sub {
 helper user_menu => sub {
   my $self = shift;
   my $user = $self->session->{username};
-  my $html = $user ? <<USER : <<'ANON';
+  my $html;
+  if ($user) {
+    my $url = $self->tx->req->url;
+    my $edit_this_page = 
+      $url =~ s{/pages/}{/edit/} 
+      ? qq{<li><a href="$url">Edit This Page</a></li>} 
+      : '';
+    $html = <<USER;
 <div class="well" style="padding: 8px 0;">
   <ul class="nav nav-list">
     <li class="nav-header">Hello $user</li>
-    <li><a href="/admin/menu">Setup Nav Menu</a>
+    $edit_this_page
+    <li><a href="/admin/menu">Setup Nav Menu</a></li>
     <li><a href="/logout">Log Out</a></li>
   </ul>
 </div>
 USER
+  } else {
+    $html = <<'ANON';
 <form class="well" method="post" action="/login">
   <input type="text" class="input-small" placeholder="Username" name="username">
   <input type="password" class="input-small" placeholder="Password" name="password">
   <input type="submit" class="btn" value="Sign In">
 </form>
 ANON
+  }
   return Mojo::ByteStream->new( $html );
 };
 
