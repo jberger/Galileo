@@ -55,6 +55,7 @@ helper login => sub {
 <div class="well" style="padding: 8px 0;">
   <ul class="nav nav-list">
     <li class="nav-header">Hello $user</li>
+    <li><a href="/admin/menu">Setup Nav Menu</a>
     <li><a href="/logout">Log Out</a></li>
   </ul>
 </div>
