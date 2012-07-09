@@ -8,6 +8,12 @@ my $db = DBM::Deep->new( 'myapp.db' );
 
 #### some initial data ####
 $db->{pages} ||= {
+  home => { 
+    name => 'home',
+    title => 'Welcome',
+    html => '<p>Welcome to the site!</p>',
+    md   => 'Welcome to the site!',
+  },
   me => { 
     name => 'me',
     title => 'About Me',
@@ -28,7 +34,7 @@ $db->{main_menu} ||= {
 
 get '/' => sub {
   my $self = shift;
-  $self->render('hello');
+  $self->redirect_to('/pages/home');
 };
 
 get '/pages/:name' => sub {
@@ -131,7 +137,7 @@ get '/admin/menu' => sub {
   my @active = @{ $db->{main_menu}{order} };
   my @inactive = do {
     my %active = map { $_ => 1 } @active;
-    sort grep { length and not exists $active{$_} } keys %{ $db->{pages} };
+    sort grep { length and not exists $active{$_} and not $_ eq 'home' } keys %{ $db->{pages} };
   };
   
   @active   = map { 
@@ -285,7 +291,6 @@ function saveButton() {
 
 %= end
 
-
 <div class="wmd-panel">
   <div class="well form-inline">
     <input 
@@ -323,14 +328,6 @@ function saveButton() {
 @@ pages.html.ep
 % layout 'standard';
 %== $page_contents
-
-@@ hello.html.ep
-% title 'Hello World';
-% layout 'standard';
-% content_for banner => begin
-Hello World
-% end
-This is the site
 
 @@ layouts/standard.html.ep
 <!DOCTYPE html>
