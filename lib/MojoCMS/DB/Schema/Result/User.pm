@@ -3,7 +3,7 @@ use base qw/DBIx::Class::Core/;
 
 __PACKAGE__->table('users');
 __PACKAGE__->add_columns(
-  userid => {
+  id => {
     data_type => 'integer',
     is_auto_increment => 1,
   },
@@ -19,7 +19,7 @@ __PACKAGE__->add_columns(
   },
 );
 __PACKAGE__->set_primary_key('userid');
-__PACKAGE__->has_many( pages => 'MojoCMS::DB::Schema::Result::Page', 'userid');
+__PACKAGE__->has_many( pages => 'MojoCMS::DB::Schema::Result::Page', 'author_id');
 
 1;
 

@@ -6,6 +6,10 @@ my $json = Mojo::JSON->new();
 use DBM::Deep;
 my $db = DBM::Deep->new( 'myapp.db' );
 
+use lib 'lib';
+use MojoCMS::DB::Schema;
+my $schema = MojoCMS::DB::Schema->connect('dbi:SQLite:dbname=mysqlite.db');
+
 #### some initial data ####
 $db->{pages} ||= {
   me => { 

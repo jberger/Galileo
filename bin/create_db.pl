@@ -14,3 +14,19 @@ my $admin = $schema->resultset('User')->create({
   pass => 'pass',
 });
 
+$schema->resultset('Page')->create({
+    name      => 'home',
+    title     => 'Home Page',
+    html      => '<p>Welcome to the site!</p>',
+    md        => 'Welcome to the site!',
+    author_id => $admin->id,
+});
+
+$schema->resultset('Page')->create({
+    name      => 'about',
+    title     => 'About Me',
+    html      => '<p>Some really cool stuff about me</p>',
+    md        => 'Some really cool stuff about me',
+    author_id => $admin->id,
+});
+
