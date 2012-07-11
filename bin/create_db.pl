@@ -5,6 +5,9 @@ use warnings;
 
 use lib 'lib';
 
+use Mojo::JSON;
+my $json = Mojo::JSON->new;
+
 use MojoCMS::DB::Schema;
 my $schema = MojoCMS::DB::Schema->connect('dbi:SQLite:dbname=mysqlite.db');
 $schema->deploy;
@@ -34,7 +37,7 @@ my $about = $schema->resultset('Page')->create({
 
 $schema->resultset('Menu')->create({
   name => 'main',
-  list => sprintf( '["%s"]', $about->id ), 
+  list => $json->encode( [ $about->id ] ), 
   html => sprintf( '<li><a href="/pages/%s">%s</a></li>', $about->name, $about->title ),
 });
 
