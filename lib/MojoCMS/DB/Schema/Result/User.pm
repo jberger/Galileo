@@ -18,7 +18,7 @@ __PACKAGE__->add_columns(
     default_value => 0,
   },
 );
-__PACKAGE__->set_primary_key('userid');
+__PACKAGE__->set_primary_key('id');
 __PACKAGE__->has_many( pages => 'MojoCMS::DB::Schema::Result::Page', 'author_id');
 
 1;

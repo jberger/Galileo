@@ -13,7 +13,7 @@ __PACKAGE__->add_columns(
   html => { data_type => 'text' },
   md => { data_type => 'text' },
 );
-__PACKAGE__->set_primary_key('pageid');
+__PACKAGE__->set_primary_key('id');
 __PACKAGE__->belongs_to( user => 'MojoCMS::DB::Schema::Result::User', 'id' );
 
 1;
