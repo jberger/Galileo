@@ -5,6 +5,10 @@ use warnings;
 
 use lib 'lib';
 
+my $config_file = 'myapp.conf';
+my $config = do $config_file 
+  or die "Cannot load config file ($config_file)";
+
 use Mojo::JSON;
 my $json = Mojo::JSON->new;
 

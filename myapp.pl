@@ -1,11 +1,18 @@
 use Mojolicious::Lite;
 use Mojo::ByteStream;
+
+my $config_file = 'myapp.conf';
+my $config = do $config_file 
+  or die "Cannot load config file ($config_file)";
+
+app->secret( $config->{secret} );
+
 use Mojo::JSON;
 my $json = Mojo::JSON->new();
 
 use lib 'lib';
 use MojoCMS::DB::Schema;
-my $schema = MojoCMS::DB::Schema->connect('dbi:SQLite:dbname=mysqlite.db');
+my $schema = MojoCMS::DB::Schema->connect($config->{connect});
 
 get '/' => sub {
   my $self = shift;
@@ -202,7 +209,6 @@ websocket '/store' => sub {
   });
 };
 
-app->secret( 'MySecret' );
 app->start;
 
 __DATA__
