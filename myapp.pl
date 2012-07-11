@@ -25,14 +25,10 @@ $db->{pages} ||= {
     md   => 'Some really cool stuff about me',
   },
 };
-  
-$db->{users} ||= {
-  joel => 'pass',
-};
 
 $db->{main_menu} ||= {
   order => [ qw/ me / ],
-  html  => '<li><a href="/pages/me">About Me</a></li>',
+  html  => '<li><a href="/pages/about">About Me</a></li>',
 };
 ###########################
 
@@ -44,11 +40,12 @@ get '/' => sub {
 get '/pages/:name' => sub {
   my $self = shift;
   my $name = $self->param('name');
-  if (exists $db->{pages}{$name}) {
-    my $title = $db->{pages}{$name}{title};
+  my $page = $schema->resultset('Page')->find({ name => $name });
+  if ($page) {
+    my $title = $page->title;
     $self->title( $title );
     $self->content_for( banner => $title );
-    $self->render( pages => page_contents => $db->{pages}{$name}{html} );
+    $self->render( pages => page_contents => $page->html );
   } else {
     if ($self->session->{username}) {
       $self->redirect_to("/edit/$name");
@@ -114,7 +111,10 @@ post '/login' => sub {
   my $self = shift;
   my $name = $self->param('username');
   my $pass = $self->param('password');
-  if ($db->{users}{$name} eq $pass) {
+
+  my $user = $schema->resultset('User')->find({name => $name});
+  if ($user and $user->pass eq $pass) {
+    #TODO make this log the id for performance reasons
     $self->session->{username} = $name;
   }
   $self->redirect_to('/');
@@ -128,11 +128,16 @@ any '/logout' => sub {
 
 under sub {
   my $self = shift;
-  my $username = $self->session->{username};
-  unless (defined $username and exists $db->{users}{$username}) {
+  my $fail = sub {
     $self->redirect_to('/');
     return 0;
-  }
+  };
+
+  return $fail->() unless my $name = $self->session->{username};
+
+  my $user = $schema->resultset('User')->find({name => $name});
+  return $fail->() unless $user and $user->is_author;
+
   return 1;
 };
 
@@ -168,10 +173,11 @@ get '/edit/:name' => sub {
   $self->title( "Editing Page: $name" );
   $self->content_for( banner => "Editing Page: $name" );
 
-  if (exists $db->{pages}{$name}) {
-    my $title = $db->{pages}{$name}{title};
+  my $page = $schema->resultset('Page')->find({name => $name});
+  if ($page) {
+    my $title = $page->title;
     $self->stash( title_value => $title );
-    $self->stash( input => $db->{pages}{$name}{md} );
+    $self->stash( input => $page->md );
   } else {
     $self->stash( title_value => '' );
     $self->stash( input => "Hello World" );
@@ -186,14 +192,18 @@ websocket '/store' => sub {
   $self->on(message => sub {
     my ($self, $message) = @_;
     my $data = $json->decode($message);
-    if ($data->{store} eq 'pages') {
+    my $store = delete $data->{store};
+
+    if ($store eq 'pages') {
       unless($data->{title}) {
         $self->send('Not saved! A title is required!');
         return;
       }
-      $db->{pages}{$data->{name}} = $data;
+      my $page = $schema->resultset('Page')->update_or_create(
+        $data, {key => 'page_name'},
+      );
       $self->set_menu($db->{main_menu}{order});
-    } elsif ($data->{store} eq 'main_menu') {
+    } elsif ($store eq 'main_menu') {
        $self->set_menu($data->{list});
     }
     $self->send('Changes saved');

@@ -14,6 +14,7 @@ __PACKAGE__->add_columns(
   md => { data_type => 'text' },
 );
 __PACKAGE__->set_primary_key('id');
+__PACKAGE__->add_unique_constraint( page_name => ['name'] );
 __PACKAGE__->belongs_to( user => 'MojoCMS::DB::Schema::Result::User', 'id' );
 
 1;

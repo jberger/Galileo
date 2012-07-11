@@ -12,6 +12,8 @@ $schema->deploy;
 my $admin = $schema->resultset('User')->create({
   name => 'joel',
   pass => 'pass',
+  is_author => 1,
+  is_admin  => 1,
 });
 
 $schema->resultset('Page')->create({
