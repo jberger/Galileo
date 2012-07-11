@@ -25,7 +25,7 @@ get '/' => sub {
 get '/pages/:name' => sub {
   my $self = shift;
   my $name = $self->param('name');
-  my $page = $schema->resultset('Page')->find({ name => $name });
+  my $page = $schema->resultset('Page')->single({ name => $name });
   if ($page) {
     my $title = $page->title;
     $self->title( $title );
@@ -101,7 +101,7 @@ post '/login' => sub {
   my $name = $self->param('username');
   my $pass = $self->param('password');
 
-  my $user = $schema->resultset('User')->find({name => $name});
+  my $user = $schema->resultset('User')->single({name => $name});
   if ($user and $user->pass eq $pass) {
     #TODO make this log the id for performance reasons
     $self->session->{username} = $name;
@@ -124,7 +124,7 @@ under sub {
 
   return $fail->() unless my $name = $self->session->{username};
 
-  my $user = $schema->resultset('User')->find({name => $name});
+  my $user = $schema->resultset('User')->single({name => $name});
   return $fail->() unless $user and $user->is_author;
 
   return 1;
@@ -139,9 +139,10 @@ get '/admin/menu' => sub {
   for my $page ( @pages ) {
     next unless $page;
     my $name = $page->name;
+    my $id   = $page->id;
     next if $name eq 'home';
-    exists $active{$name} ? $active : $inactive 
-      .= sprintf qq{<li id="pages-%s">%s</li>\n}, $page->id, $page->title;
+    exists $active{$id} ? $active : $inactive 
+      .= sprintf qq{<li id="pages-%s">%s</li>\n}, $id, $page->title;
   }
 
   $self->title( 'Setup Main Navigation Menu' );
@@ -158,7 +159,7 @@ get '/edit/:name' => sub {
   $self->title( "Editing Page: $name" );
   $self->content_for( banner => "Editing Page: $name" );
 
-  my $page = $schema->resultset('Page')->find({name => $name});
+  my $page = $schema->resultset('Page')->single({name => $name});
   if ($page) {
     my $title = $page->title;
     $self->stash( title_value => $title );
@@ -184,6 +185,8 @@ websocket '/store' => sub {
         $self->send('Not saved! A title is required!');
         return;
       }
+      my $author = $schema->resultset('User')->single({name=>$self->session->{username}});
+      $data->{author_id} = $author->id;
       $schema->resultset('Page')->update_or_create(
         $data, {key => 'page_name'},
       );
