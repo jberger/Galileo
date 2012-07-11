@@ -3,19 +3,9 @@ use Mojo::ByteStream;
 use Mojo::JSON;
 my $json = Mojo::JSON->new();
 
-use DBM::Deep;
-my $db = DBM::Deep->new( 'myapp.db' );
-
 use lib 'lib';
 use MojoCMS::DB::Schema;
 my $schema = MojoCMS::DB::Schema->connect('dbi:SQLite:dbname=mysqlite.db');
-
-#### some initial data ####
-$db->{main_menu} ||= {
-  order => [ qw/ about / ],
-  html  => '<li><a href="/pages/about">About Me</a></li>',
-};
-###########################
 
 get '/' => sub {
   my $self = shift;
@@ -73,13 +63,14 @@ ANON
 };
 
 helper 'set_menu' => sub {
-  my ($self, $list) = @_;
+  my $self = shift;
+  my $name = ref $_[0] ? 'main' : shift();
+  my $list = @_ ? shift() : $json->decode($schema->resultset('Menu')->single({name => $name})->list);
   
   my @pages = 
     map { my $page = $_; $page =~ s/^pages-//; $page}
     grep { ! /^header-/ }
     @$list;
-  $db->{main_menu}{order} = \@pages;
   
   my $rs = $schema->resultset('Page');
   my $html;
@@ -88,12 +79,20 @@ helper 'set_menu' => sub {
     $html .= sprintf '<li><a href="/pages/%s">%s</a></li>', $page->name, $page->title;
   }
 
-  $db->{main_menu}{html} = $html;
+  $schema->resultset('Menu')->update(
+    {
+      html => $html || '',
+      list => $json->encode(\@pages),
+    },
+    { key => $name }
+  );
 };
 
 helper 'get_menu' => sub {
   my $self = shift;
-  return $db->{main_menu}{html};
+  my $name = shift || 'main';
+  my $menu = $schema->resultset('Menu')->single({name => $name});
+  return $menu->html;
 };
 
 post '/login' => sub {
@@ -132,7 +131,12 @@ under sub {
 
 get '/admin/menu' => sub {
   my $self = shift;
-  my %active = map { $_ => 1 } @{ $db->{main_menu}{order} };
+  my $name = 'main';
+  my %active = 
+    map { $_ => 1 } 
+    @{ $json->decode(
+      $schema->resultset('Menu')->single({name => $name})->list
+    )};
   
   my ($active, $inactive);
   my @pages = $schema->resultset('Page')->all;
@@ -190,19 +194,12 @@ websocket '/store' => sub {
       $schema->resultset('Page')->update_or_create(
         $data, {key => 'page_name'},
       );
-      $self->set_menu($db->{main_menu}{order});
+      $self->set_menu();
     } elsif ($store eq 'main_menu') {
        $self->set_menu($data->{list});
     }
     $self->send('Changes saved');
   });
-};
-
-get '/admin/dump' => sub {
-  my $self = shift;
-  require Data::Dumper;
-  print Data::Dumper::Dumper($db);
-  $self->redirect_to('/');
 };
 
 app->secret( 'MySecret' );
