@@ -11,23 +11,8 @@ use MojoCMS::DB::Schema;
 my $schema = MojoCMS::DB::Schema->connect('dbi:SQLite:dbname=mysqlite.db');
 
 #### some initial data ####
-$db->{pages} ||= {
-  home => { 
-    name => 'home',
-    title => 'Welcome',
-    html => '<p>Welcome to the site!</p>',
-    md   => 'Welcome to the site!',
-  },
-  me => { 
-    name => 'me',
-    title => 'About Me',
-    html => '<p>Some really cool stuff about me</p>',
-    md   => 'Some really cool stuff about me',
-  },
-};
-
 $db->{main_menu} ||= {
-  order => [ qw/ me / ],
+  order => [ qw/ about / ],
   html  => '<li><a href="/pages/about">About Me</a></li>',
 };
 ###########################
@@ -96,10 +81,14 @@ helper 'set_menu' => sub {
     @$list;
   $db->{main_menu}{order} = \@pages;
   
-  $db->{main_menu}{html} = join "\n",
-    map { sprintf '<li><a href="/pages/%s">%s</a></li>', $_, $db->{pages}{$_}{title} }
-    @pages;
+  my $rs = $schema->resultset('Page');
+  my $html;
+  for my $id (@pages) {
+    my $page = $rs->single({id => $id});
+    $html .= sprintf '<li><a href="/pages/%s">%s</a></li>', $page->name, $page->title;
+  }
 
+  $db->{main_menu}{html} = $html;
 };
 
 helper 'get_menu' => sub {
@@ -143,21 +132,17 @@ under sub {
 
 get '/admin/menu' => sub {
   my $self = shift;
-  my @active = @{ $db->{main_menu}{order} };
-  my @inactive = do {
-    my %active = map { $_ => 1 } @active;
-    sort grep { length and not exists $active{$_} and not $_ eq 'home' } keys %{ $db->{pages} };
-  };
+  my %active = map { $_ => 1 } @{ $db->{main_menu}{order} };
   
-  @active   = map { 
-    sprintf '<li id="pages-%s">%s</li>', $_, $db->{pages}{$_}{title} 
-  } @active;
-  @inactive = map { 
-    sprintf '<li id="pages-%s">%s</li>', $_, $db->{pages}{$_}{title} 
-  } @inactive;
-  
-  my $active   = join( "\n", @active   ) . "\n";
-  my $inactive = join( "\n", @inactive ) . "\n";
+  my ($active, $inactive);
+  my @pages = $schema->resultset('Page')->all;
+  for my $page ( @pages ) {
+    next unless $page;
+    my $name = $page->name;
+    next if $name eq 'home';
+    exists $active{$name} ? $active : $inactive 
+      .= sprintf qq{<li id="pages-%s">%s</li>\n}, $page->id, $page->title;
+  }
 
   $self->title( 'Setup Main Navigation Menu' );
   $self->content_for( banner => 'Setup Main Navigation Menu' );
@@ -199,7 +184,7 @@ websocket '/store' => sub {
         $self->send('Not saved! A title is required!');
         return;
       }
-      my $page = $schema->resultset('Page')->update_or_create(
+      $schema->resultset('Page')->update_or_create(
         $data, {key => 'page_name'},
       );
       $self->set_menu($db->{main_menu}{order});
