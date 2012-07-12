@@ -17,7 +17,7 @@ my $schema = MojoCMS::DB::Schema->connect('dbi:SQLite:dbname=mysqlite.db');
 $schema->deploy;
 
 my $admin = $schema->resultset('User')->create({
-  name => 'joel',
+  name => 'user',
   pass => 'pass',
   is_author => 1,
   is_admin  => 1,
