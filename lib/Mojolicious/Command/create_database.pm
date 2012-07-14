@@ -1,8 +1,8 @@
-package Mojolicious::Command::setup_database;
+package Mojolicious::Command::create_database;
 use Mojo::Base 'Mojolicious::Command';
 
-has description => "Setup the database for you MojoCMS application.\n";
-has usage       => "usage: $0 setup_database [username]\n";
+has description => "Create the database for your MojoCMS application.\n";
+has usage       => "usage: $0 create_database [username]\n";
 
 use Mojo::JSON;
 my $json = Mojo::JSON->new();
