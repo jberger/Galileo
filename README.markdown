@@ -11,7 +11,7 @@ To start you will need to install a few Perl modules.
 
 After that, in order to create the database, simply run
 
-    $ ./bin/create_db.pl
+    $ myapp.pl create_database
 
 which will create the sqlite database file in the root of the distribution.
 
@@ -21,7 +21,7 @@ From there start the server by running
 
 you should now be able to visit the site at [localhost:3000](http://localhost:3000).
 
-The default user is `user` and its password is `pass`. Note that for now passwords are stored in the clear (fix coming)!
+The default user is `admin` and its password is `pass`. Note that for now passwords are stored in the clear (fix coming)!
 
 This is by no means a complete project, any comments/pull requests are welcome.
 

@@ -1,18 +1,32 @@
 use Mojolicious::Lite;
 use Mojo::ByteStream;
 
-my $config_file = 'myapp.conf';
-my $config = do $config_file 
-  or die "Cannot load config file ($config_file)";
+plugin Config => { default => {
+  db_schema  => 'MojoCMS::DB::Schema',
+  db_connect => 'dbi:SQLite:dbname=mojocms_sqlite.db',
+  secret     => 'MySecret',
+}};
 
-app->secret( $config->{secret} );
+app->secret( app->config->{secret} );
 
 use Mojo::JSON;
 my $json = Mojo::JSON->new();
 
 use lib 'lib';
-use MojoCMS::DB::Schema;
-my $schema = MojoCMS::DB::Schema->connect($config->{connect});
+
+helper 'db_connect' => sub {
+  my $self = shift;
+  my $schema_class = $self->app->config->{db_schema} or die "Unknown DB Schema Class";
+  eval "require $schema_class" or die "Could not load Schema Class ($schema_class)";
+
+  my $db_connect = $self->app->config->{db_connect} or die "No DBI connection string provided";
+  my $schema = $schema_class->connect( $db_connect ) 
+    or die "Could not connect to $schema_class using $db_connect";
+
+  return $schema;
+};
+
+my $schema = app->db_connect;
 
 get '/' => sub {
   my $self = shift;
