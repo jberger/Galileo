@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  %= include 'header_common'
+  <%= content_for 'header' %>
+</head>
+<body>
+<div class="container">
+  <div class="page-header">
+    <h1><%= content_for 'banner' %></h1>
+  </div>
+  <div class="row">
+    <div class="span2">
+      <div class="well" style="padding: 8px 0;">
+        <ul class="nav nav-list">
+          <li class="nav-header">Navigation</li>
+          <li><a href="/">Home</a></li>
+          <%== get_menu %>
+        </ul>
+      </div>
+      <%= user_menu %>
+    </div>
+    <div class="span10">
+      <%= content %>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+

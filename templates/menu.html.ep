@@ -1,0 +1,48 @@
+% layout 'standard';
+% content_for header => begin
+%= javascript '/assets/jquery-ui-1.8.21.custom.min.js'
+% end
+
+%= javascript begin
+ws = new WebSocket("<%= url_for('store')->to_abs %>");
+ws.onmessage = function (evt) {
+  var message = evt.data;
+  console.log( message );
+  humane.log( message );
+};
+function saveButton() {
+  var data = {
+    store : "main_menu",
+    list : $("#list-active-pages").sortable('toArray')
+  };
+  var serialized = JSON.stringify(data);
+  console.log( "Sending ==> " + serialized );
+  ws.send( serialized );
+}
+
+	$(function() {
+		$( "#list-active-pages, #list-inactive-pages" ).sortable({
+			connectWith: ".connectedSortable",
+      items: "li:not(.nav-header)"
+		}).disableSelection();
+	});
+%= end
+
+<div class="row">
+  <div class="span5">
+    <ul id="list-active-pages" class="nav nav-list connectedSortable well">
+      <li id="header-active" class="nav-header">Active Pages</li>
+      <%= $active %>
+    </ul>
+  </div>
+  <div class="span5">
+    <ul id="list-inactive-pages" class="nav nav-list connectedSortable well">
+      <li id="header-inactive" class="nav-header">Inactive Pages</li>
+      <%= $inactive %>
+    </ul>
+  </div>
+</div>
+<button class="btn" id="save-list" onclick="saveButton()">
+  Save
+</button>
+

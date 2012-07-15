@@ -1,0 +1,10 @@
+<title><%= title %></title>
+%= javascript '/assets/jquery-1.7.2.min.js'
+%= javascript '/assets/bootstrap/js/bootstrap.js'
+%= stylesheet '/assets/bootstrap/css/bootstrap.css'
+%= javascript '/assets/humane/humane.min.js'
+%= stylesheet '/assets/humane/libnotify.css'
+%= javascript begin
+  humane.baseCls = 'humane-libnotify'
+%= end
+
