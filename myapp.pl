@@ -213,7 +213,7 @@ websocket '/store' => sub {
       my $author = $schema->resultset('User')->single({name=>$self->session->{username}});
       $data->{author_id} = $author->id;
       $schema->resultset('Page')->update_or_create(
-        $data, {key => 'page_name'},
+        $data, {key => 'pages_name'},
       );
       $self->set_menu();
     } elsif ($store eq 'main_menu') {

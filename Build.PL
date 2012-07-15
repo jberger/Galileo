@@ -14,6 +14,7 @@ my $builder = Module::Build->new(
     'Mojolicious' => 0,
     'DBD::SQLite' => 0,
     'DBIx::Class' => 0,
+    'DBIx::Class::Candy' => 0,
     'SQL::Translator' => 0,
     'Term::Prompt' => 0,
   },

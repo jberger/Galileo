@@ -1,18 +1,24 @@
 package MojoCMS::DB::Schema::Result::Menu;
-use base qw/DBIx::Class::Core/;
 
-__PACKAGE__->table('menus');
-__PACKAGE__->add_columns( 
-  id => {
-    data_type => 'integer',
-    is_auto_increment => 1,
-  },
-  name => { data_type => 'text' },
-  html => { data_type => 'text' },
-  list => { data_type => 'text' },
-);
-__PACKAGE__->set_primary_key('id');
-__PACKAGE__->add_unique_constraint( menu_name => ['name'] );
+use DBIx::Class::Candy
+  -autotable => v1;
+
+primary_column id => {
+  data_type => 'integer',
+  is_auto_increment => 1,
+};
+
+unique_column name => { 
+  data_type => 'text'
+};
+
+column html => {
+  data_type => 'text'
+};
+
+column list => { 
+  data_type => 'text'
+};
 
 1;
 
