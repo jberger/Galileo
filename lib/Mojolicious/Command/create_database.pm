@@ -30,7 +30,7 @@ sub run {
 
   my $admin = $schema->resultset('User')->create({
     name => $user,
-    pass => $pass1,
+    password => $pass1,
     is_author => 1,
     is_admin  => 1,
   });

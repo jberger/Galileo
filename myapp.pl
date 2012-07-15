@@ -123,7 +123,7 @@ post '/login' => sub {
   my $pass = $self->param('password');
 
   my $user = $schema->resultset('User')->single({name => $name});
-  if ($user and $user->pass eq $pass) {
+  if ($user and $user->check_password($pass)) {
     #TODO make this log the id for performance reasons
     $self->session->{username} = $name;
   }

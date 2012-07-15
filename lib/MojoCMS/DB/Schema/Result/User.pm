@@ -1,7 +1,8 @@
 package MojoCMS::DB::Schema::Result::User;
 
 use DBIx::Class::Candy
-  -autotable => v1;
+  -autotable => v1,
+  -components => [ qw/ EncodedColumn / ];
 
 primary_column id => {
   data_type => 'integer',
@@ -12,8 +13,11 @@ column name => {
   data_type => 'text'
 };
 
-column pass => { 
-  data_type => 'text'
+column password => {
+    data_type => 'text',
+    encode_column => 1,
+    encode_class  => 'Crypt::Eksblowfish::Bcrypt',
+    encode_check_method => 'check_password',
 };
 
 column is_author => { 
