@@ -85,7 +85,8 @@ ANON
 
 helper 'set_menu' => sub {
   my $self = shift;
-  my $name = ref $_[0] ? 'main' : shift();
+
+  my $name = (@_ == 0 or ref $_[0]) ? 'main' : shift();
   my $list = @_ ? shift() : $json->decode($schema->resultset('Menu')->single({name => $name})->list);
   
   my @pages = 
