@@ -5,7 +5,7 @@ It uses client-side markdown rendering and websockets for saving page data witho
 To start you will need to install a few Perl modules.
 
 * Mojolicious
-* SQLite
+* DBD::SQLite
 * DBIx::Class
 * SQL::Translator
 
