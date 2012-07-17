@@ -20,8 +20,7 @@ sub startup {
 
   $app->secret( $app->config->{secret} );
 
-  $app->helper( 'db_connect' => sub {
-    my $self = shift;
+  my $schema = do {
     my $schema_class = $app->config->{db_schema} or die "Unknown DB Schema Class";
     eval "require $schema_class" or die "Could not load Schema Class ($schema_class)";
 
@@ -29,10 +28,10 @@ sub startup {
     my $schema = $schema_class->connect( $db_connect ) 
       or die "Could not connect to $schema_class using $db_connect";
 
-    return $schema;
-  });
+    $schema;
+  };
 
-  my $schema = $app->db_connect;
+  $app->helper( schema => sub { return $schema } );
 
   $app->helper( user_menu => sub {
     my $self = shift;
