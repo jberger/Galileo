@@ -9,11 +9,14 @@ my $json = Mojo::JSON->new();
 sub startup {
   my $app = shift;
 
-  $app->plugin( Config => { default => {
-    db_schema  => 'MojoCMS::DB::Schema',
-    db_connect => 'dbi:SQLite:dbname=mojocms_sqlite.db',
-    secret     => 'MySecret',
-  }});
+  $app->plugin( Config => { 
+    file => 'mojocms.conf',
+    default => {
+      db_schema  => 'MojoCMS::DB::Schema',
+      db_connect => 'dbi:SQLite:dbname=mojocms_sqlite.db',
+      secret     => 'MySecret',
+    },
+  });
 
   $app->secret( $app->config->{secret} );
 
