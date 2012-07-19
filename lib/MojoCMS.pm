@@ -97,9 +97,11 @@ ANON
     return $menu->html;
   });
 
+  $app->helper( 'home_page' => sub{ '/pages/home' } );
+
   my $r = $app->routes;
 
-  $r->any( '/' => sub { shift->redirect_to('/pages/home') });
+  $r->any( '/' => sub { my $self = shift; $self->redirect_to( $self->home_page ) });
 
   $r->any( '/pages/:name' => sub {
     my $self = shift;
@@ -129,7 +131,7 @@ ANON
       #TODO make this log the id for performance reasons
       $self->session->{username} = $name;
     }
-    $self->redirect_to('/');
+    $self->redirect_to( $self->home_page );
   });
 
   $r->any( '/logout' => sub {
@@ -142,7 +144,7 @@ ANON
     my $self = shift;
     my $fail = sub {
       $self->flash( onload_message => "Not Authorized" );
-      $self->redirect_to('/');
+      $self->redirect_to( $self->home_page );
       return 0;
     };
 

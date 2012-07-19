@@ -6,8 +6,10 @@
 %= stylesheet '/assets/humane/libnotify.css'
 %= javascript begin
   humane.baseCls = 'humane-libnotify';
-  % if (my $message = $self->param('onload_message')) {
-    humane.log( "<%= $message %>" );
+  % if (my $message = flash 'onload_message' ) {
+    $(document).ready(function () { 
+      humane.log( "<%= $message %>" );
+    });
   % }
 %= end
 
