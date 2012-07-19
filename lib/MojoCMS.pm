@@ -138,9 +138,10 @@ ANON
     $self->redirect_to('/');
   });
 
-  $r->under( sub {
+  my $if_author = $r->under( sub {
     my $self = shift;
     my $fail = sub {
+      $self->flash( onload_message => "Not Authorized" );
       $self->redirect_to('/');
       return 0;
     };
@@ -153,7 +154,7 @@ ANON
     return 1;
   });
 
-  $r->any( '/admin/menu' => sub {
+  $if_author->any( '/admin/menu' => sub {
     my $self = shift;
     my $name = 'main';
     my %active = 
@@ -181,7 +182,7 @@ ANON
     );
   });
 
-  $r->any( '/edit/:name' => sub {
+  $if_author->any( '/edit/:name' => sub {
     my $self = shift;
     my $name = $self->param('name');
     $self->title( "Editing Page: $name" );
@@ -200,7 +201,7 @@ ANON
     $self->render( 'edit' );
   });
 
-  $r->websocket( '/store' => sub {
+  $if_author->websocket( '/store' => sub {
     my $self = shift;
     Mojo::IOLoop->stream($self->tx->connection)->timeout(300);
     $self->on(message => sub {
