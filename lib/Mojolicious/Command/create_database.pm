@@ -25,7 +25,7 @@ sub run {
     die "Passwords do not match";
   }
 
-  my $schema = $self->app->db_connect;
+  my $schema = $self->app->schema;
   $schema->deploy;
 
   my $admin = $schema->resultset('User')->create({

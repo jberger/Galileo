@@ -9,16 +9,18 @@ my $json = Mojo::JSON->new();
 sub startup {
   my $app = shift;
 
-  $app->plugin( Config => { default => {
-    db_schema  => 'MojoCMS::DB::Schema',
-    db_connect => 'dbi:SQLite:dbname=mojocms_sqlite.db',
-    secret     => 'MySecret',
-  }});
+  $app->plugin( Config => { 
+    file => 'mojocms.conf',
+    default => {
+      db_schema  => 'MojoCMS::DB::Schema',
+      db_connect => 'dbi:SQLite:dbname=mojocms_sqlite.db',
+      secret     => 'MySecret',
+    },
+  });
 
   $app->secret( $app->config->{secret} );
 
-  $app->helper( 'db_connect' => sub {
-    my $self = shift;
+  my $schema = do {
     my $schema_class = $app->config->{db_schema} or die "Unknown DB Schema Class";
     eval "require $schema_class" or die "Could not load Schema Class ($schema_class)";
 
@@ -26,10 +28,10 @@ sub startup {
     my $schema = $schema_class->connect( $db_connect ) 
       or die "Could not connect to $schema_class using $db_connect";
 
-    return $schema;
-  });
+    $schema;
+  };
 
-  my $schema = $app->db_connect;
+  $app->helper( schema => sub { return $schema } );
 
   $app->helper( user_menu => sub {
     my $self = shift;
