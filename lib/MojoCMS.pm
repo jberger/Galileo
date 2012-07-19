@@ -36,9 +36,10 @@ sub startup {
   $app->helper( user_menu => sub {
     my $self = shift;
     my $user = $self->session->{username};
+
+    my $url = $self->tx->req->url;
     my $html;
     if ($user) {
-      my $url = $self->tx->req->url;
       my $edit_this_page = 
         $url =~ s{/pages/}{/edit/} 
         ? qq{<li><a href="$url">Edit This Page</a></li>} 
@@ -54,8 +55,9 @@ sub startup {
 </div>
 USER
     } else {
-      $html = <<'ANON';
+      $html = <<ANON;
 <form class="well" method="post" action="/login">
+  <input type="hidden" name="from" value="$url">
   <input type="text" class="input-small" placeholder="Username" name="username">
   <input type="password" class="input-small" placeholder="Password" name="password">
   <input type="submit" class="btn" value="Sign In">
@@ -127,19 +129,21 @@ ANON
     my $self = shift;
     my $name = $self->param('username');
     my $pass = $self->param('password');
+    my $from = $self->param('from');
 
     my $user = $schema->resultset('User')->single({name => $name});
     if ($user and $user->check_password($pass)) {
       #TODO make this log the id for performance reasons
       $self->session->{username} = $name;
     }
-    $self->redirect_to( $self->home_page );
+    $self->flash( onload_message => "Welcome Back!" );
+    $self->redirect_to( $from );
   });
 
   $r->any( '/logout' => sub {
     my $self = shift;
     $self->session( expires => 1 );
-    $self->redirect_to('/');
+    $self->redirect_to( $self->home_page );
   });
 
   my $if_author = $r->under( sub {
