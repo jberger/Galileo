@@ -3,8 +3,6 @@ package MojoCMS;
 use Mojo::Base 'Mojolicious';
 
 use Mojo::ByteStream;
-use Mojo::JSON;
-my $json = Mojo::JSON->new();
 
 sub startup {
   my $app = shift;
@@ -67,33 +65,6 @@ ANON
     return Mojo::ByteStream->new( $html );
   });
 
-  $app->helper( 'set_menu' => sub {
-    my $self = shift;
-
-    my $name = (@_ == 0 or ref $_[0]) ? 'main' : shift();
-    my $list = @_ ? shift() : $json->decode($schema->resultset('Menu')->single({name => $name})->list);
-  
-    my @pages = 
-      map { my $page = $_; $page =~ s/^pages-//; $page}
-      grep { ! /^header-/ }
-      @$list;
-  
-    my $rs = $schema->resultset('Page');
-    my $html;
-    for my $id (@pages) {
-      my $page = $rs->single({id => $id});
-      $html .= sprintf '<li><a href="/pages/%s">%s</a></li>', $page->name, $page->title;
-    }
-
-    $schema->resultset('Menu')->update(
-      {
-        html => $html || '',
-        list => $json->encode(\@pages),
-      },
-      { key => $name }
-    );
-  });
-
   $app->helper( 'get_menu' => sub {
     my $self = shift;
     my $name = shift || 'main';
@@ -106,45 +77,9 @@ ANON
   my $r = $app->routes;
 
   $r->any( '/' => sub { my $self = shift; $self->redirect_to( $self->home_page ) });
-
-  $r->any( '/pages/:name' => sub {
-    my $self = shift;
-    my $name = $self->param('name');
-    my $page = $schema->resultset('Page')->single({ name => $name });
-    if ($page) {
-      my $title = $page->title;
-      $self->title( $title );
-      $self->content_for( banner => $title );
-      $self->render( pages => page_contents => $page->html );
-    } else {
-      if ($self->session->{username}) {
-        $self->redirect_to("/edit/$name");
-      } else {
-        $self->render_not_found;
-      }
-    }
-  });
-
-  $r->post( '/login' => sub {
-    my $self = shift;
-    my $name = $self->param('username');
-    my $pass = $self->param('password');
-    my $from = $self->param('from');
-
-    my $user = $schema->resultset('User')->single({name => $name});
-    if ($user and $user->check_password($pass)) {
-      #TODO make this log the id for performance reasons
-      $self->session->{username} = $name;
-    }
-    $self->flash( onload_message => "Welcome Back!" );
-    $self->redirect_to( $from );
-  });
-
-  $r->any( '/logout' => sub {
-    my $self = shift;
-    $self->session( expires => 1 );
-    $self->redirect_to( $self->home_page );
-  });
+  $r->any( '/pages/:name' )->to('page#show_page');
+  $r->post( '/login' )->to('user#login');
+  $r->any( '/logout' )->to('user#logout');
 
   my $if_author = $r->under( sub {
     my $self = shift;
@@ -162,78 +97,9 @@ ANON
     return 1;
   });
 
-  $if_author->any( '/admin/menu' => sub {
-    my $self = shift;
-    my $name = 'main';
-    my %active = 
-      map { $_ => 1 } 
-      @{ $json->decode(
-        $schema->resultset('Menu')->single({name => $name})->list
-      )};
-  
-    my ($active, $inactive);
-    my @pages = $schema->resultset('Page')->all;
-    for my $page ( @pages ) {
-      next unless $page;
-      my $name = $page->name;
-      my $id   = $page->id;
-      next if $name eq 'home';
-      exists $active{$id} ? $active : $inactive 
-        .= sprintf qq{<li id="pages-%s">%s</li>\n}, $id, $page->title;
-    }
-
-    $self->title( 'Setup Main Navigation Menu' );
-    $self->content_for( banner => 'Setup Main Navigation Menu' );
-    $self->render( menu => 
-      active   => Mojo::ByteStream->new( $active   ), 
-      inactive => Mojo::ByteStream->new( $inactive ),
-    );
-  });
-
-  $if_author->any( '/edit/:name' => sub {
-    my $self = shift;
-    my $name = $self->param('name');
-    $self->title( "Editing Page: $name" );
-    $self->content_for( banner => "Editing Page: $name" );
-
-    my $page = $schema->resultset('Page')->single({name => $name});
-    if ($page) {
-      my $title = $page->title;
-      $self->stash( title_value => $title );
-      $self->stash( input => $page->md );
-    } else {
-      $self->stash( title_value => '' );
-      $self->stash( input => "Hello World" );
-    }
-
-    $self->render( 'edit' );
-  });
-
-  $if_author->websocket( '/store' => sub {
-    my $self = shift;
-    Mojo::IOLoop->stream($self->tx->connection)->timeout(300);
-    $self->on(message => sub {
-      my ($self, $message) = @_;
-      my $data = $json->decode($message);
-      my $store = delete $data->{store};
-
-      if ($store eq 'pages') {
-        unless($data->{title}) {
-          $self->send('Not saved! A title is required!');
-          return;
-        }
-        my $author = $schema->resultset('User')->single({name=>$self->session->{username}});
-        $data->{author_id} = $author->id;
-        $schema->resultset('Page')->update_or_create(
-          $data, {key => 'pages_name'},
-        );
-        $self->set_menu();
-      } elsif ($store eq 'main_menu') {
-        $self->set_menu($data->{list});
-      }
-      $self->send('Changes saved');
-    });
-  });
+  $if_author->any( '/admin/menu' )->to('editor#edit_menu');
+  $if_author->any( '/edit/:name' )->to('editor#edit_page');
+  $if_author->websocket( '/store' )->to('editor#ws_update');
 }
 
 1;
