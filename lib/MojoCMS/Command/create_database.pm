@@ -1,4 +1,4 @@
-package Mojolicious::Command::create_database;
+package MojoCMS::Command::create_database;
 use Mojo::Base 'Mojolicious::Command';
 
 use Term::Prompt qw/prompt/;

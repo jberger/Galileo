@@ -34,6 +34,9 @@ sub startup {
   $app->static->paths->[0] = $app->home->rel_dir('public');
   $app->renderer->paths->[0] = $app->home->rel_dir('templates');
 
+  # use commands from MojoCMS::Command namespace
+  push @{$app->commands->namespaces}, 'MojoCMS::Command';
+
   $app->secret( $app->config->{secret} );
 
   my $schema = $app->db;
