@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  %= include 'header_common'
+  <%= include 'header_common' %>
   <%= content_for 'header' %>
 </head>
 <body>
@@ -18,7 +18,7 @@
           <%== get_menu %>
         </ul>
       </div>
-      <%= user_menu %>
+      <%= include 'user_menu' %>
     </div>
     <div class="span10">
       <%= content %>
