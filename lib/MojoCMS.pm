@@ -30,6 +30,14 @@ sub startup {
 
   $app->helper( 'home_page' => sub{ '/pages/home' } );
 
+  $app->helper( 'auth_fail' => sub {
+    my $self = shift;
+    my $message = shift || "Not Authorized";
+    $self->flash( onload_message => $message );
+    $self->redirect_to( $self->home_page );
+    return 0;
+  });
+
   my $r = $app->routes;
 
   $r->any( '/' => sub { my $self = shift; $self->redirect_to( $self->home_page ) });
@@ -39,16 +47,11 @@ sub startup {
 
   my $if_author = $r->under( sub {
     my $self = shift;
-    my $fail = sub {
-      $self->flash( onload_message => "Not Authorized" );
-      $self->redirect_to( $self->home_page );
-      return 0;
-    };
 
-    return $fail->() unless my $name = $self->session->{username};
+    return $self->auth_fail unless my $name = $self->session->{username};
 
     my $user = $schema->resultset('User')->single({name => $name});
-    return $fail->() unless $user and $user->is_author;
+    return $self->auth_fail unless $user and $user->is_author;
 
     return 1;
   });
