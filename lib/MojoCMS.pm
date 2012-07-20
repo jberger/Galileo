@@ -39,13 +39,12 @@ sub startup {
 
   $app->secret( $app->config->{secret} );
 
-  my $schema = $app->db;
-  $app->helper( schema => sub { return $schema } );
+  $app->helper( schema => sub { shift->app->db } );
 
   $app->helper( 'get_menu' => sub {
     my $self = shift;
     my $name = shift || 'main';
-    my $menu = $schema->resultset('Menu')->single({name => $name});
+    my $menu = $self->schema->resultset('Menu')->single({name => $name});
     return $menu->html;
   });
 
@@ -71,7 +70,7 @@ sub startup {
 
     return $self->auth_fail unless my $name = $self->session->{username};
 
-    my $user = $schema->resultset('User')->single({name => $name});
+    my $user = $self->schema->resultset('User')->single({name => $name});
     return $self->auth_fail unless $user and $user->is_author;
 
     return 1;
