@@ -2,6 +2,18 @@ package MojoCMS;
 
 use Mojo::Base 'Mojolicious';
 
+has db => sub {
+  my $self = shift;
+  my $schema_class = $self->config->{db_schema} or die "Unknown DB Schema Class";
+  eval "require $schema_class" or die "Could not load Schema Class ($schema_class)";
+
+  my $db_connect = $self->config->{db_connect} or die "No DBI connection string provided";
+  my $schema = $schema_class->connect( $db_connect ) 
+    or die "Could not connect to $schema_class using $db_connect";
+
+  return $schema;
+};
+
 sub startup {
   my $app = shift;
 
@@ -16,7 +28,7 @@ sub startup {
 
   $app->secret( $app->config->{secret} );
 
-  my $schema = $app->db_connect;
+  my $schema = $app->db;
   $app->helper( schema => sub { return $schema } );
 
   $app->helper( 'get_menu' => sub {
@@ -57,18 +69,6 @@ sub startup {
   $if_author->any( '/admin/menu' )->to('editor#edit_menu');
   $if_author->any( '/edit/:name' )->to('editor#edit_page');
   $if_author->websocket( '/store' )->to('editor#ws_update');
-}
-
-sub db_connect {
-  my $self = shift;
-  my $schema_class = $self->config->{db_schema} or die "Unknown DB Schema Class";
-  eval "require $schema_class" or die "Could not load Schema Class ($schema_class)";
-
-  my $db_connect = $self->config->{db_connect} or die "No DBI connection string provided";
-  my $schema = $schema_class->connect( $db_connect ) 
-    or die "Could not connect to $schema_class using $db_connect";
-
-  return $schema;
 }
 
 1;
