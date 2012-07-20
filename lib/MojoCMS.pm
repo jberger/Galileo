@@ -2,8 +2,6 @@ package MojoCMS;
 
 use Mojo::Base 'Mojolicious';
 
-use Mojo::ByteStream;
-
 sub startup {
   my $app = shift;
 
