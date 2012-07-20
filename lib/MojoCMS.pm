@@ -2,6 +2,9 @@ package MojoCMS;
 
 use Mojo::Base 'Mojolicious';
 
+use File::Basename 'dirname';
+use File::Spec::Functions 'catdir';
+
 has db => sub {
   my $self = shift;
   my $schema_class = $self->config->{db_schema} or die "Unknown DB Schema Class";
@@ -25,6 +28,11 @@ sub startup {
       secret     => 'MySecret',
     },
   });
+
+  # use content from directories under lib/MojoCMS/
+  $app->home->parse(catdir(dirname(__FILE__), 'MojoCMS'));
+  $app->static->paths->[0] = $app->home->rel_dir('public');
+  $app->renderer->paths->[0] = $app->home->rel_dir('templates');
 
   $app->secret( $app->config->{secret} );
 
