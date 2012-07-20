@@ -12,9 +12,11 @@ sub login {
   my $user = $schema->resultset('User')->single({name => $name});
   if ($user and $user->check_password($pass)) {
     #TODO make this log the id for performance reasons
+    $self->flash( onload_message => "Welcome Back!" );
     $self->session->{username} = $name;
+  } else {
+    $self->flash( onload_message => "Sorry try again" );
   }
-  $self->flash( onload_message => "Welcome Back!" );
   $self->redirect_to( $from );
 }
 
