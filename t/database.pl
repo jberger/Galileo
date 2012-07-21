@@ -10,8 +10,8 @@ my $schema = MojoCMS::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
 $schema->deploy;
 
 my $admin = $schema->resultset('User')->create({
-  name => admin,
-  password => pass,
+  name => 'admin',
+  password => 'pass',
   is_author => 1,
   is_admin  => 1,
 });
