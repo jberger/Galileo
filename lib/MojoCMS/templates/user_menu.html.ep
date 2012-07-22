@@ -2,7 +2,7 @@
 % my $url = $self->tx->req->url;
 % if ($user) {
 <div class="well" style="padding: 8px 0;">
-  <ul class="nav nav-list" id="logged-in">
+  <ul class="nav nav-list" id="user-menu">
     <li class="nav-header">Hello <%== $user %></li>
     % if ( $url =~ s{/pages/}{/edit/} ) {
       <li><a href="<%= $url %>">Edit This Page</a></li>

@@ -46,7 +46,6 @@ function saveButton() {
   <div id="wmd-button-bar"></div>
   <textarea class="wmd-input" id="wmd-input"><%= $input %></textarea>
   <div id="wmd-preview" class="wmd-preview well"></div>
-  <div id="alert-area"></div>
 </div>
 
 %= javascript begin
