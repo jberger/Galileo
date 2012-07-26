@@ -58,6 +58,25 @@ sub startup {
     return 0;
   });
 
+  $app->helper( 'is_author' => sub {
+    my $self = shift;
+    my ($name) = @_;
+
+    my $user = $self->schema->resultset('User')->single({name => $name});
+    return undef unless $user;
+
+    return $user->is_author;
+  });
+  $app->helper( 'is_admin' => sub {
+    my $self = shift;
+    my ($name) = @_;
+
+    my $user = $self->schema->resultset('User')->single({name => $name});
+    return undef unless $user;
+
+    return $user->is_admin;
+  });
+
   my $r = $app->routes;
 
   $r->any( '/' => sub { my $self = shift; $self->redirect_to( $self->home_page ) });
@@ -79,6 +98,19 @@ sub startup {
   $if_author->any( '/admin/menu' )->to('editor#edit_menu');
   $if_author->any( '/edit/:name' )->to('editor#edit_page');
   $if_author->websocket( '/store' )->to('editor#ws_update');
+
+  my $if_admin = $r->under( sub {
+    my $self = shift;
+
+    return $self->auth_fail unless my $name = $self->session->{username};
+
+    my $user = $self->schema->resultset('User')->single({name => $name});
+    return $self->auth_fail unless $user and $user->is_admin;
+
+    return 1;
+  });
+
+  $if_admin->any( '/admin/users' )->to('admin#users');
 }
 
 1;

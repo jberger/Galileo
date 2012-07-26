@@ -1,0 +1,3 @@
+% layout 'standard';
+% content_for banner => 'Administration: Users';
+Administering the users.

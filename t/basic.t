@@ -29,6 +29,16 @@ $t->get_ok('/edit/home')
   ->status_is(200)
   ->content_like( qr/Not Authorized/ );
 
+# attempt to menu admin page
+$t->get_ok('/admin/menu')
+  ->status_is(200)
+  ->content_like( qr/Not Authorized/ );
+
+# attempt to user admin page
+$t->get_ok('/admin/users')
+  ->status_is(200)
+  ->content_like( qr/Not Authorized/ );
+
 ## Logged in ##
 
 # do login
@@ -61,4 +71,8 @@ $t->get_ok('/pages/home')
   ->status_is(200)
   ->text_is( h1 => 'New Home' )
   ->text_like( p => qr/I changed this text/ );
+
+$t->get_ok('/admin/users')
+  ->status_is(200)
+  ->text_is( h1 => 'Administration: Users' );
 
