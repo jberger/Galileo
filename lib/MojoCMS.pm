@@ -70,39 +70,35 @@ sub startup {
     return $user->is_admin;
   });
 
-  my %memorize;
+  my %mem;
   $app->helper(
     flex_memorize => sub {
       shift;
-      return \%memorize unless @_;
+      return \%mem unless @_;
 
-      my $cb = pop;
-      return '' unless ref $cb eq 'CODE';
-      my $name = shift;
-      my $args;
-      if (ref $name eq 'HASH') { ($args, $name) = ($name, undef) }
-      else                     { $args = shift || {} }
+      return '' unless ref(my $cb = pop) eq 'CODE';
+      my ($name, $args)
+        = ref $_[0] eq 'HASH' ? (undef, shift) : (shift, shift || {});
 
       # Default name
       $name ||= join '', map { $_ || '' } (caller(1))[0 .. 3];
 
-      # Expire
+      # Expire old results
       my $expires;
-      if (exists $memorize{$name}) {
-        $expires = $memorize{$name}{expires};
-        delete $memorize{$name}
-          if $expires > 0
-          && $memorize{$name}{expires} < time;
+      if (exists $mem{$name}) {
+        $expires = $mem{$name}{expires};
+        delete $mem{$name}
+          if $expires > 0 && $mem{$name}{expires} < time;
       } else {
         $expires = $args->{expires} || 0;
       }
 
-      # Memorized
-      return $memorize{$name}{content} if exists $memorize{$name};
+      # Memorized result
+      return $mem{$name}{content} if exists $mem{$name};
 
-      # Memorize
-      $memorize{$name}{expires} = $expires;
-      $memorize{$name}{content} = $cb->();
+      # Memorize new result
+      $mem{$name}{expires} = $expires;
+      return $mem{$name}{content} = $cb->();
     }
   );
 
