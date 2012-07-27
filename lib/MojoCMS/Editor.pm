@@ -94,21 +94,19 @@ sub store_menu {
     map { my $page = $_; $page =~ s/^pages-//; $page}
     grep { ! /^header-/ }
     @$list;
-  
-  my $rs = $schema->resultset('Page');
-  my $html;
-  for my $id (@pages) {
-    my $page = $rs->single({id => $id});
-    $html .= sprintf '<li><a href="/pages/%s">%s</a></li>', $page->name, $page->title;
-  }
 
   $schema->resultset('Menu')->update(
     {
-      html => $html || '',
       list => $json->encode(\@pages),
     },
     { key => $name }
   );
+
+  my $memorize = $self->flex_memorize;
+  $memorize->{nav}{expires} = 1;
+
+  use Data::Dumper;
+  warn Dumper $memorize;
 }
 
 1;

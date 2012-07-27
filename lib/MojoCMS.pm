@@ -41,13 +41,6 @@ sub startup {
 
   $app->helper( schema => sub { shift->app->db } );
 
-  $app->helper( 'get_menu' => sub {
-    my $self = shift;
-    my $name = shift || 'main';
-    my $menu = $self->schema->resultset('Menu')->single({name => $name});
-    return $menu->html;
-  });
-
   $app->helper( 'home_page' => sub{ '/pages/home' } );
 
   $app->helper( 'auth_fail' => sub {
@@ -94,11 +87,15 @@ sub startup {
       $name ||= join '', map { $_ || '' } (caller(1))[0 .. 3];
 
       # Expire
-      my $expires = $args->{expires} || 0;
-      delete $memorize{$name}
-        if exists $memorize{$name}
-        && $expires > 0
-        && $memorize{$name}{expires} < time;
+      my $expires;
+      if (exists $memorize{$name}) {
+        $expires = $memorize{$name}{expires};
+        delete $memorize{$name}
+          if $expires > 0
+          && $memorize{$name}{expires} < time;
+      } else {
+        $expires = $args->{expires} || 0;
+      }
 
       # Memorized
       return $memorize{$name}{content} if exists $memorize{$name};

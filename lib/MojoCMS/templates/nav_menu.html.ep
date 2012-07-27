@@ -1,0 +1,15 @@
+%= flex_memorize nav => begin 
+  % my $menu = schema->resultset('Menu')->single({name => 'main'});
+  % my @pages = @{ Mojo::JSON->new->decode($menu->list) };
+  % my $rs = schema->resultset('Page');
+  <div class="well" style="padding: 8px 0;">
+    <ul class="nav nav-list">
+      <li class="nav-header">Navigation</li>
+      <li><a href="/">Home</a></li>
+      % for my $id (@pages) {
+        % my $page = $rs->single({id => $id});
+        <li><a href="/pages/<%= $page->name %>"><%= $page->title %></a></li>
+      % }
+    </ul>
+  </div>
+%= end
