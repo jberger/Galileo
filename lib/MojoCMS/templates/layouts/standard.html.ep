@@ -11,13 +11,7 @@
   </div>
   <div class="row">
     <div class="span2">
-      <div class="well" style="padding: 8px 0;">
-        <ul class="nav nav-list">
-          <li class="nav-header">Navigation</li>
-          <li><a href="/">Home</a></li>
-          <%== get_menu %>
-        </ul>
-      </div>
+      <%= include 'nav_menu' %>
       <%= include 'user_menu' %>
     </div>
     <div class="span10">
