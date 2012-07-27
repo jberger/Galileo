@@ -12,10 +12,6 @@ unique_column name => {
   data_type => 'text'
 };
 
-column html => {
-  data_type => 'text'
-};
-
 column list => { 
   data_type => 'text'
 };

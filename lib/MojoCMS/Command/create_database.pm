@@ -54,7 +54,6 @@ sub run {
   $schema->resultset('Menu')->create({
     name => 'main',
     list => $json->encode( [ $about->id ] ), 
-    html => sprintf( '<li><a href="/pages/%s">%s</a></li>', $about->name, $about->title ),
   });
 }
 
