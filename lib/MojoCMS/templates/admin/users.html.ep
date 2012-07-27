@@ -1,3 +1,20 @@
 % layout 'standard';
+% title 'Administration: Users';
 % content_for banner => 'Administration: Users';
-Administering the users.
+% my $users = schema->resultset('User')->search(undef, {order_by => { -asc => 'id' }});
+%= tag table => class => "table table-striped table-bordered table-condensed" => begin
+  %= tag tr => begin
+    %= tag th => "id"
+    %= tag th => "Name"
+    %= tag th => "Author"
+    %= tag th => "Admin"
+  %= end
+  % while (my $user = $users->next) {
+    %= tag tr => begin
+      %= tag td => $user->id
+      %= tag td => $user->name
+      %= tag td => $user->is_author
+      %= tag td => $user->is_admin
+    %= end
+  % }
+%= end
