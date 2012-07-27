@@ -9,7 +9,7 @@ primary_column id => {
   is_auto_increment => 1,
 };
 
-column name => { 
+unique_column name => { 
   data_type => 'text'
 };
 
