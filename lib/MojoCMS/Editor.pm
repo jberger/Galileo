@@ -24,7 +24,7 @@ sub ws_update {
       $schema->resultset('Page')->update_or_create(
         $data, {key => 'pages_name'},
       );
-      $self->store_menu();
+      $self->expire('main');
     } elsif ($store eq 'main_menu') {
       $self->store_menu($data->{list});
     }
@@ -88,7 +88,7 @@ sub store_menu {
   my $schema = $self->schema;
 
   my $name = (@_ == 0 or ref $_[0]) ? 'main' : shift();
-  my $list = @_ ? shift() : $json->decode($schema->resultset('Menu')->single({name => $name})->list);
+  my $list = shift;
   
   my @pages = 
     map { my $page = $_; $page =~ s/^pages-//; $page}
@@ -102,11 +102,12 @@ sub store_menu {
     { key => $name }
   );
 
-  my $memorize = $self->flex_memorize;
-  $memorize->{nav}{expires} = 1;
+  $self->expire($name);
+}
 
-  use Data::Dumper;
-  warn Dumper $memorize;
+sub expire {
+  my ($self, $name) = @_;
+  $self->flex_memorize->{$name}{expires} = 1;
 }
 
 1;
