@@ -4,7 +4,7 @@ use DBIx::Class::Candy
   -autotable => v1,
   -components => [ qw/ EncodedColumn / ];
 
-primary_column id => {
+primary_column user_id => {
   data_type => 'integer',
   is_auto_increment => 1,
 };

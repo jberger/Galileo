@@ -3,7 +3,7 @@ package MojoCMS::DB::Schema::Result::Page;
 use DBIx::Class::Candy
   -autotable => v1;
 
-primary_column id => {
+primary_column page_id => {
   data_type => 'integer',
   is_auto_increment => 1,
 };
@@ -28,7 +28,7 @@ column md => {
   data_type => 'text'
 };
 
-belongs_to user => 'MojoCMS::DB::Schema::Result::User', 'id';
+belongs_to user => 'MojoCMS::DB::Schema::Result::User', 'author_id';
 
 1;
 

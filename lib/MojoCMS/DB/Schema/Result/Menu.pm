@@ -3,7 +3,7 @@ package MojoCMS::DB::Schema::Result::Menu;
 use DBIx::Class::Candy
   -autotable => v1;
 
-primary_column id => {
+primary_column menu_id => {
   data_type => 'integer',
   is_auto_increment => 1,
 };

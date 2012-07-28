@@ -1,10 +1,10 @@
 % layout 'standard';
 % title 'Administration: Pages';
 % content_for banner => 'Administration: Pages';
-% my $pages = schema->resultset('Page')->search(undef, {order_by => { -asc => 'id' }});
+% my $pages = schema->resultset('Page')->search(undef, {order_by => { -asc => 'page_id' }});
 %= tag table => class => "table table-striped table-bordered table-condensed" => begin
   %= tag tr => begin
-    %= tag th => "id"
+    %= tag th => "page_id"
     %= tag th => "Name"
     %= tag th => "Title"
     %= tag th => "Author"
@@ -14,7 +14,7 @@
   % while (my $page = $pages->next) {
     % my $name = $page->name;
     %= tag tr => begin
-      %= tag td => $page->id
+      %= tag td => $page->page_id
       %= tag td => $name
       %= tag td => $page->title
       %= tag td => $page->author_id

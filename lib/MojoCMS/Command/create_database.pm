@@ -40,7 +40,7 @@ sub run {
     title     => 'Home Page',
     html      => '<p>Welcome to the site!</p>',
     md        => 'Welcome to the site!',
-    author_id => $admin->id,
+    author_id => $admin->user_id,
   });
 
   my $about = $schema->resultset('Page')->create({
@@ -48,12 +48,12 @@ sub run {
     title     => 'About Me',
     html      => '<p>Some really cool stuff about me</p>',
     md        => 'Some really cool stuff about me',
-    author_id => $admin->id,
+    author_id => $admin->user_id,
   });
 
   $schema->resultset('Menu')->create({
     name => 'main',
-    list => $json->encode( [ $about->id ] ), 
+    list => $json->encode( [ $about->page_id ] ), 
   });
 }
 

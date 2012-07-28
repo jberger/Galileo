@@ -69,7 +69,7 @@ sub edit_menu {
   for my $page ( @pages ) {
     next unless $page;
     my $name = $page->name;
-    my $id   = $page->id;
+    my $id   = $page->page_id;
     next if $name eq 'home';
     exists $active{$id} ? $active : $inactive 
       .= sprintf qq{<li id="pages-%s">%s</li>\n}, $id, $page->title;

@@ -7,7 +7,7 @@
       <li class="nav-header">Navigation</li>
       <li><a href="/">Home</a></li>
       % for my $id (@pages) {
-        % my $page = $rs->single({id => $id});
+        % my $page = $rs->single({page_id => $id});
         <li><a href="/pages/<%= $page->name %>"><%= $page->title %></a></li>
       % }
     </ul>
