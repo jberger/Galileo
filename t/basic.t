@@ -72,8 +72,14 @@ $t->get_ok('/pages/home')
   ->text_is( h1 => 'New Home' )
   ->text_like( p => qr/I changed this text/ );
 
+# test the admin pages
 $t->get_ok('/admin/users')
   ->status_is(200)
   ->text_is( h1 => 'Administration: Users' )
   ->text_is( 'tr > td:nth-of-type(2)' => 'admin' );
+
+$t->get_ok('/admin/pages')
+  ->status_is(200)
+  ->text_is( h1 => 'Administration: Pages' )
+  ->text_is( 'tr > td:nth-of-type(2)' => 'home' );
 

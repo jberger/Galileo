@@ -1,0 +1,7 @@
+% layout 'standard';
+% my $page_title  = $page->title;
+% title $page_title;
+% content_for banner => $page_title;
+
+<%== $page->html %>
+

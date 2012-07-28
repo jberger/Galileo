@@ -136,6 +136,7 @@ sub startup {
   });
 
   $if_admin->any( '/admin/users' )->to('admin#users');
+  $if_admin->any( '/admin/pages' )->to('admin#pages');
 }
 
 1;

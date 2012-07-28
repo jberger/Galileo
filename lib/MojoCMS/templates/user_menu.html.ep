@@ -12,6 +12,7 @@
     % if ( is_admin $user ) {
       <li class="nav-header">Administration</li>
       <li><a href="/admin/users">Users</a></li>
+      <li><a href="/admin/pages">Pages</a></li>
     % }
   </ul>
 </div>

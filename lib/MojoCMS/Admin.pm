@@ -6,5 +6,10 @@ sub users {
   $self->render('users');
 }
 
+sub pages {
+  my $self = shift;
+  $self->render('pages');
+}
+
 1;
 
