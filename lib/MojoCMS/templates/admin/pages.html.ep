@@ -6,8 +6,9 @@
   %= tag tr => begin
     %= tag th => "id"
     %= tag th => "Name"
-    %= tag th => "Title";
+    %= tag th => "Title"
     %= tag th => "Author"
+    %= tag th => "Show"
     %= tag th => "Edit"
   %= end
   % while (my $page = $pages->next) {
@@ -18,7 +19,10 @@
       %= tag td => $page->title
       %= tag td => $page->author_id
       %= tag td => begin
-        %= tag a => href => "/admin/page/$name" => "Edit"
+        %= tag a => href => "/pages/$name" => "Show"
+      %= end
+      %= tag td => begin
+        %= tag a => href => "/edit/$name" => "Edit"
       %= end
     %= end
   % }
