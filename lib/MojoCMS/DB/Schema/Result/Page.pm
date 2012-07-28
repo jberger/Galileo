@@ -28,7 +28,7 @@ column md => {
   data_type => 'text'
 };
 
-belongs_to user => 'MojoCMS::DB::Schema::Result::User', 'author_id';
+belongs_to author => 'MojoCMS::DB::Schema::Result::User', 'author_id';
 
 1;
 

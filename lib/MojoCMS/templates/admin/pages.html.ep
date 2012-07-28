@@ -1,7 +1,7 @@
 % layout 'standard';
 % title 'Administration: Pages';
 % content_for banner => 'Administration: Pages';
-% my $pages = schema->resultset('Page')->search(undef, {order_by => { -asc => 'page_id' }});
+% my $pages = schema->resultset('Page')->search(undef, {order_by => { -asc => 'page_id' }, prefetch => 'author'});
 %= tag table => class => "table table-striped table-bordered table-condensed" => begin
   %= tag tr => begin
     %= tag th => "page_id"
@@ -17,7 +17,10 @@
       %= tag td => $page->page_id
       %= tag td => $name
       %= tag td => $page->title
-      %= tag td => $page->author_id
+      % my $author = $page->author->name;
+      %= tag td => begin
+        %= tag a => href => "/user/$author" => "$author"
+      %= end
       %= tag td => begin
         %= tag a => href => "/pages/$name" => "Show"
       %= end
