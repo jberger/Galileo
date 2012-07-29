@@ -67,7 +67,7 @@ sub edit_menu {
     my $id   = $page->page_id;
     next if $name eq 'home';
     exists $active{$id} ? $active : $inactive 
-      .= sprintf qq{<li id="pages-%s">%s</li>\n}, $id, $page->title;
+      .= sprintf qq{<li id="pages-%s"><span class="label label-info">%s</span></li>\n}, $id, $page->title;
   }
 
   $self->title( 'Setup Main Navigation Menu' );

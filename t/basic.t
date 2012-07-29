@@ -123,7 +123,7 @@ subtest 'Edit Main Navigation Menu' => sub {
   $t->get_ok('/admin/menu')
     ->status_is(200)
     ->text_is( 'ul#main > li:nth-of-type(3) > a' => $title )
-    ->text_is( '#list-active-pages > #pages-2' => $title );
+    ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
   # remove about page from list
   my $json = Mojo::JSON->new->encode({
@@ -139,7 +139,7 @@ subtest 'Edit Main Navigation Menu' => sub {
   $t->get_ok('/admin/menu')
     ->status_is(200)
     ->element_exists_not( 'ul#main > li:nth-of-type(3) > a' )
-    ->text_is( '#list-inactive-pages > #pages-2' => $title );
+    ->text_is( '#list-inactive-pages > #pages-2 > span' => $title );
 
   # put about page back
   $json = Mojo::JSON->new->encode({
@@ -155,7 +155,7 @@ subtest 'Edit Main Navigation Menu' => sub {
   $t->get_ok('/admin/menu')
     ->status_is(200)
     ->text_is( 'ul#main > li:nth-of-type(3) > a' => $title )
-    ->text_is( '#list-active-pages > #pages-2' => $title );
+    ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
 };
 
