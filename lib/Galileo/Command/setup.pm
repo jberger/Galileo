@@ -49,12 +49,22 @@ sub inject_sample_data {
     html      => <<'HTML',
 <h2>Welcome to your Galileo CMS site!</h2>
 
-<p>Galileo CMS is a very minimal, but very modern CMS. Learn more about it on the <a href="/page/about">about</a> page.</p>
+<blockquote>
+  <p><a href="https://en.wikipedia.org/wiki/Galileo_Galilei">Galileo Galilei</a> was "was an Italian physicist, mathematician, astronomer, and philosopher who played a major role in the Scientific Revolution." </p>
+</blockquote>
+
+<p>When he first turned the telescope to face Jupiter, he used modern technology to improve the world around him.</p>
+
+<p>Like the great scientist it is named for, Galileo CMS is not afraid to be very modern. Learn more about it on the <a href="/page/about">about</a> page.</p>
 HTML
     md        => <<'MARKDOWN',
 ##Welcome to your Galileo CMS site!
 
-Galileo CMS is a very minimal, but very modern CMS. Learn more about it on the [about](/page/about) page.
+> [Galileo Galilei](https://en.wikipedia.org/wiki/Galileo_Galilei) was "was an Italian physicist, mathematician, astronomer, and philosopher who played a major role in the Scientific Revolution." 
+
+When he first turned the telescope to face Jupiter, he used modern technology to improve the world around him.
+
+Like the great scientist it is named for, Galileo CMS is not afraid to be very modern. Learn more about it on the [about](/page/about) page.
 MARKDOWN
     author_id => $admin->user_id,
   });

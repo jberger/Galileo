@@ -25,7 +25,7 @@ subtest 'Anonymous User' => sub {
     ->status_is(200)
     ->text_is( h1 => 'Galileo CMS' )
     ->text_is( h2 => 'Welcome to your Galileo CMS site!' )
-    ->text_like( p => qr/modern CMS/ )
+    ->content_like( qr/very modern/ )
     ->element_exists( 'form' );
 
   # attempt to get non-existant page
