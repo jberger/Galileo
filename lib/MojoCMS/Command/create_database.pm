@@ -25,12 +25,20 @@ sub run {
     die "Passwords do not match";
   }
 
-  my $schema = $self->app->schema;
+  $self->inject_sample_data($user, $pass1);
+}
+
+sub inject_sample_data {
+  my $self = shift;
+  my $user = shift or die "Must provide an administrative username";
+  my $pass = shift or die "Must provide a password for $user";
+  my $schema = shift or $self->app->schema;
+
   $schema->deploy;
 
   my $admin = $schema->resultset('User')->create({
     name => $user,
-    password => $pass1,
+    password => $pass,
     is_author => 1,
     is_admin  => 1,
   });
@@ -55,6 +63,8 @@ sub run {
     name => 'main',
     list => $json->encode( [ $about->page_id ] ), 
   });
+
+  return $schema;
 }
 
 1;

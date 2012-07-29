@@ -2,6 +2,8 @@ use strict;
 use warnings;
 
 use MojoCMS;
+use MojoCMS::DB::Schema;
+use MojoCMS::Command::create_database;
 
 use Mojo::JSON;
 use Test::More;
@@ -9,7 +11,8 @@ END{ done_testing(); }
 
 use Test::Mojo;
 
-my $db = do 't/database.pl';
+my $db = MojoCMS::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
+MojoCMS::Command::create_database->inject_sample_data('admin', 'pass', $db);
 ok( $db->resultset('User')->single({name => 'admin'})->check_password('pass'), 'DB user checks out' );
 
 my $t = Test::Mojo->new(MojoCMS->new(db => $db));
