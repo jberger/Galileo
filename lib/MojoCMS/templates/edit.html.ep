@@ -33,7 +33,7 @@ $(function () {
     return text; 
   });
   editor.run();
-})
+});
 
 %= end
 
