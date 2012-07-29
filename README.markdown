@@ -13,7 +13,7 @@ If you don't have `cpanm` (and you should), you may
 
 After that, in order to create the database, simply run
 
-    $ ./script/galileo create_database
+    $ ./script/galileo setup
 
 which will create the sqlite database file in the root of the distribution. In the process it will ask for a username and password for your admin user. This password is no longer stored in clear text!
 

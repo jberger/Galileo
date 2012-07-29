@@ -1,10 +1,10 @@
-package Galileo::Command::create_database;
+package Galileo::Command::setup;
 use Mojo::Base 'Mojolicious::Command';
 
 use Term::Prompt qw/prompt/;
 
 has description => "Create the database for your Galileo CMS application.\n";
-has usage       => "usage: $0 create_database\n";
+has usage       => "usage: $0 setup\n";
 
 use Mojo::JSON;
 my $json = Mojo::JSON->new();
