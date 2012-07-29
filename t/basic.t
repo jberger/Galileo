@@ -61,7 +61,7 @@ my $json = Mojo::JSON->new->encode({
   html  => '<p>I changed this text</p>',
   md    => 'I changed this text',
 });
-$t->websocket_ok( '/store' )
+$t->websocket_ok( '/store/page' )
   ->send_ok( $json )
   ->message_is( 'Changes saved' )
   ->finish_ok;
