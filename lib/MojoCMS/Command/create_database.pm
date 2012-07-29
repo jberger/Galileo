@@ -32,7 +32,7 @@ sub inject_sample_data {
   my $self = shift;
   my $user = shift or die "Must provide an administrative username";
   my $pass = shift or die "Must provide a password for $user";
-  my $schema = shift or $self->app->schema;
+  my $schema = shift || $self->app->schema;
 
   $schema->deploy;
 
