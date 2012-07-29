@@ -4,28 +4,32 @@
 % end
 
 %= javascript begin
-ws = new WebSocket("<%= url_for('store')->to_abs %>");
-ws.onmessage = function (evt) {
-  var message = evt.data;
-  console.log( message );
-  humane.log( message );
-};
+var ws;
+
 function saveButton() {
   var data = {
     store : "main_menu",
     list : $("#list-active-pages").sortable('toArray')
   };
-  var serialized = JSON.stringify(data);
-  console.log( "Sending ==> " + serialized );
-  ws.send( serialized );
+  ws = new WebSocket("<%= url_for('store')->to_abs %>");
+  ws.onmessage = function (evt) {
+    var message = evt.data;
+    console.log( message );
+    humane.log( message );
+  };
+  ws.onopen = function () {
+    var serialized = JSON.stringify(data);
+    console.log( "Sending ==> " + serialized );
+    ws.send( serialized );
+  };
 }
 
-	$(function() {
-		$( "#list-active-pages, #list-inactive-pages" ).sortable({
-			connectWith: ".connectedSortable",
-      items: "li:not(.nav-header)"
-		}).disableSelection();
-	});
+$(function() {
+  $( "#list-active-pages, #list-inactive-pages" ).sortable({
+    connectWith: ".connectedSortable",
+    items: "li:not(.nav-header)"
+  }).disableSelection();
+});
 %= end
 
 <div class="row">
