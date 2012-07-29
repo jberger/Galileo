@@ -51,22 +51,25 @@ sub startup {
     return 0;
   });
 
+  $app->helper( 'get_user' => sub {
+    my ($self, $name) = @_;
+    unless ($name) {
+      $name = $self->session->{username};
+    }
+    return undef unless $name;
+    return $self->schema->resultset('User')->single({name => $name});
+  });
+
   $app->helper( 'is_author' => sub {
     my $self = shift;
-    my ($name) = @_;
-
-    my $user = $self->schema->resultset('User')->single({name => $name});
+    my $user = $self->get_user(@_);
     return undef unless $user;
-
     return $user->is_author;
   });
   $app->helper( 'is_admin' => sub {
     my $self = shift;
-    my ($name) = @_;
-
-    my $user = $self->schema->resultset('User')->single({name => $name});
+    my $user = $self->get_user(@_);
     return undef unless $user;
-
     return $user->is_admin;
   });
 
@@ -112,10 +115,7 @@ sub startup {
   my $if_author = $r->under( sub {
     my $self = shift;
 
-    return $self->auth_fail unless my $name = $self->session->{username};
-
-    my $user = $self->schema->resultset('User')->single({name => $name});
-    return $self->auth_fail unless $user and $user->is_author;
+    return $self->auth_fail unless $self->is_author;
 
     return 1;
   });
@@ -128,10 +128,7 @@ sub startup {
   my $if_admin = $r->under( sub {
     my $self = shift;
 
-    return $self->auth_fail unless my $name = $self->session->{username};
-
-    my $user = $self->schema->resultset('User')->single({name => $name});
-    return $self->auth_fail unless $user and $user->is_admin;
+    return $self->auth_fail unless $self->is_admin;
 
     return 1;
   });
