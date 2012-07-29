@@ -23,8 +23,9 @@ subtest 'Anonymous User' => sub {
   # landing page
   $t->get_ok('/')
     ->status_is(200)
-    ->text_is( h1 => 'Home Page' )
-    ->text_like( p => qr/Welcome to the site!/ )
+    ->text_is( h1 => 'Galileo CMS' )
+    ->text_is( h2 => 'Welcome to your Galileo CMS site!' )
+    ->text_like( p => qr/modern CMS/ )
     ->element_exists( 'form' );
 
   # attempt to get non-existant page
@@ -75,15 +76,16 @@ subtest 'Edit Page' => sub {
   # page editor
   $t->get_ok('/edit/home')
     ->status_is(200)
-    ->text_like( '#wmd-input' => qr/Welcome to the site!/ )
+    ->text_like( '#wmd-input' => qr/Welcome to your Galileo CMS site!/ )
     ->element_exists( '#wmd-preview' );
 
   # save page
+  my $text = 'I changed this text';
   my $json = Mojo::JSON->new->encode({
     name  => 'home',
     title => 'New Home',
-    html  => '<p>I changed this text</p>',
-    md    => 'I changed this text',
+    html  => "<p>$text</p>",
+    md    => $text,
   });
   $t->websocket_ok( '/store/page' )
     ->send_ok( $json )
@@ -94,7 +96,7 @@ subtest 'Edit Page' => sub {
   $t->get_ok('/page/home')
     ->status_is(200)
     ->text_is( h1 => 'New Home' )
-    ->text_like( p => qr/I changed this text/ );
+    ->text_like( p => qr/$text/ );
 
   # author request non-existant page => create new page
   $t->get_ok('/page/doesntexist')
@@ -117,7 +119,7 @@ subtest 'Edit Page' => sub {
 };
 
 subtest 'Edit Main Navigation Menu' => sub {
-  my $title = 'About Me';
+  my $title = 'About Galileo';
 
   # check about page is in nav 
   $t->get_ok('/admin/menu')

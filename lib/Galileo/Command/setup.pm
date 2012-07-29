@@ -45,17 +45,51 @@ sub inject_sample_data {
 
   $schema->resultset('Page')->create({
     name      => 'home',
-    title     => 'Home Page',
-    html      => '<p>Welcome to the site!</p>',
-    md        => 'Welcome to the site!',
+    title     => 'Galileo CMS',
+    html      => <<'HTML',
+<h2>Welcome to your Galileo CMS site!</h2>
+
+<p>Galileo CMS is a very minimal, but very modern CMS. Learn more about it on the <a href="/page/about">about</a> page.</p>
+HTML
+    md        => <<'MARKDOWN',
+##Welcome to your Galileo CMS site!
+
+Galileo CMS is a very minimal, but very modern CMS. Learn more about it on the [about](/page/about) page.
+MARKDOWN
     author_id => $admin->user_id,
   });
 
   my $about = $schema->resultset('Page')->create({
     name      => 'about',
-    title     => 'About Me',
-    html      => '<p>Some really cool stuff about me</p>',
-    md        => 'Some really cool stuff about me',
+    title     => 'About Galileo',
+    html      => <<'HTML',
+<p>Galileo CMS is built upon some great open source projects:</p>
+
+<ul>
+<li><a href="http://perl.org">Perl</a> - if you haven't looked at Perl lately, give it another try!</li>
+<li><a href="http://mojolicio.us">Mojolicious</a> - a next generation web framework for the Perl programming language</li>
+<li><a href="http://www.dbix-class.org/">DBIx::Class</a> - an extensible and flexible Object/Relational Mapper written in Perl</li>
+<li><a href="http://code.google.com/p/pagedown/">PageDown</a> (Markdown engine) - the version of Attacklab's Showdown and WMD as used on Stack Overflow and the other Stack Exchange sites</li>
+<li><a href="http://twitter.github.com/bootstrap">Bootstrap</a> - the beautiful CSS/JS library from Twitter</li>
+<li><a href="http://jquery.com/">jQuery</a> - because everything uses jQuery</li>
+<li><a href="http://wavded.github.com/humane-js/">HumaneJS</a> - A simple, modern, browser notification system</li>
+</ul>
+
+<p>Galileo is developed by <a href="https://github.com/jberger">Joel Berger</a>. Fork it on GitHub!</p>
+HTML
+    md        => <<'MARKDOWN',
+Galileo CMS is built upon some great open source projects:
+
+* [Perl](http://perl.org) - if you haven't looked at Perl lately, give it another try!
+* [Mojolicious](http://mojolicio.us) - a next generation web framework for the Perl programming language
+* [DBIx::Class](http://www.dbix-class.org/) - an extensible and flexible Object/Relational Mapper written in Perl
+* [PageDown](http://code.google.com/p/pagedown/) (Markdown engine) - the version of Attacklab's Showdown and WMD as used on Stack Overflow and the other Stack Exchange sites
+* [Bootstrap](http://twitter.github.com/bootstrap) - the beautiful CSS/JS library from Twitter
+* [jQuery](http://jquery.com/) - because everything uses jQuery
+* [HumaneJS](http://wavded.github.com/humane-js/) - A simple, modern, browser notification system
+
+Galileo is developed by [Joel Berger](https://github.com/jberger). Fork it on GitHub!
+MARKDOWN
     author_id => $admin->user_id,
   });
 
