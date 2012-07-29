@@ -18,11 +18,15 @@ $t->ua->max_redirects(2);
 subtest 'Anonymous User' => sub {
 
   # landing page
-  $t->get_ok('/page/home')
+  $t->get_ok('/')
     ->status_is(200)
     ->text_is( h1 => 'Home Page' )
     ->text_like( p => qr/Welcome to the site!/ )
     ->element_exists( 'form' );
+
+  # attempt to get non-existant page
+  $t->get_ok('/page/doesntexist')
+    ->status_is(404);
 
   # attempt to edit page
   $t->get_ok('/edit/home')
@@ -43,6 +47,19 @@ subtest 'Anonymous User' => sub {
 
 subtest 'Do Login' => sub {
 
+  # fail username
+  $t->post_form_ok( '/login' => {from => '/page/home', username => 'wronguser', password => 'pass' } )
+    ->status_is(200)
+    ->content_like( qr/Sorry try again/ )
+    ->element_exists( 'form' );
+
+  # fail password
+  $t->post_form_ok( '/login' => {from => '/page/home', username => 'admin', password => 'wrongpass' } )
+    ->status_is(200)
+    ->content_like( qr/Sorry try again/ )
+    ->element_exists( 'form' );
+
+  # successfully login
   $t->post_form_ok( '/login' => {from => '/page/home', username => 'admin', password => 'pass' } )
     ->status_is(200)
     ->content_like( qr/Welcome Back/ )
@@ -76,6 +93,12 @@ subtest 'Edit Page' => sub {
     ->text_is( h1 => 'New Home' )
     ->text_like( p => qr/I changed this text/ );
 
+  # author request non-existant page => create new page
+  $t->get_ok('/page/doesntexist')
+    ->status_is(200)
+    ->text_like( '#wmd-input' => qr/Hello World/ )
+    ->element_exists( '#wmd-preview' );
+
 };
 
 subtest 'Administrative Overview Pages' => sub {
@@ -91,5 +114,13 @@ subtest 'Administrative Overview Pages' => sub {
     ->text_is( h1 => 'Administration: Pages' )
     ->text_is( 'tr > td:nth-of-type(2)' => 'home' );
 
+};
+
+subtest 'Logging Out' => sub {
+  # This is essentially a repeat of the first test
+  $t->get_ok('/logout')
+    ->status_is(200)
+    ->text_is( h1 => 'New Home' )
+    ->element_exists( 'form' );
 };
 
