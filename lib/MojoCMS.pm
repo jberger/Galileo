@@ -105,7 +105,7 @@ sub startup {
   my $r = $app->routes;
 
   $r->any( '/' => sub { my $self = shift; $self->redirect_to( $self->home_page ) });
-  $r->any( '/pages/:name' )->to('page#show_page');
+  $r->any( '/pages/:name' )->to('page#show');
   $r->post( '/login' )->to('user#login');
   $r->any( '/logout' )->to('user#logout');
 
