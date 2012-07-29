@@ -6,6 +6,8 @@ use Galileo::DB::Schema;
 use Galileo::Command::setup;
 
 use Mojo::JSON;
+my $json = Mojo::JSON->new;
+
 use Test::More;
 END{ done_testing(); }
 
@@ -81,14 +83,14 @@ subtest 'Edit Page' => sub {
 
   # save page
   my $text = 'I changed this text';
-  my $json = Mojo::JSON->new->encode({
+  my $data = $json->encode({
     name  => 'home',
     title => 'New Home',
     html  => "<p>$text</p>",
     md    => $text,
   });
   $t->websocket_ok( '/store/page' )
-    ->send_ok( $json )
+    ->send_ok( $data )
     ->message_is( 'Changes saved' )
     ->finish_ok;
 
@@ -105,14 +107,14 @@ subtest 'Edit Page' => sub {
     ->element_exists( '#wmd-preview' );
 
   # save page without title (error)
-  my $json_notitle = Mojo::JSON->new->encode({
+  my $data_notitle = $json->encode({
     name  => 'notitle',
     title => '',
     html  => '<p>Hmmm no title</p>',
     md    => 'Hmmm no title',
   });
   $t->websocket_ok( '/store/page' )
-    ->send_ok( $json_notitle )
+    ->send_ok( $data_notitle )
     ->message_is( 'Not saved! A title is required!' )
     ->finish_ok;
 
@@ -128,12 +130,12 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
   # remove about page from list
-  my $json = Mojo::JSON->new->encode({
+  my $data = $json->encode({
     name => 'main',
     list => [],
   });
   $t->websocket_ok('/store/menu')
-    ->send_ok( $json )
+    ->send_ok( $data )
     ->message_is( 'Changes saved' )
     ->finish_ok;
 
@@ -144,12 +146,12 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->text_is( '#list-inactive-pages > #pages-2 > span' => $title );
 
   # put about page back
-  $json = Mojo::JSON->new->encode({
+  $data = $json->encode({
     name => 'main',
     list => ['pages-2'],
   });
   $t->websocket_ok('/store/menu')
-    ->send_ok( $json )
+    ->send_ok( $data )
     ->message_is( 'Changes saved' )
     ->finish_ok;
 
@@ -167,12 +169,74 @@ subtest 'Administrative Overview Pages' => sub {
   $t->get_ok('/admin/users')
     ->status_is(200)
     ->text_is( h1 => 'Administration: Users' )
-    ->text_is( 'tr > td:nth-of-type(2)' => 'admin' );
+    ->text_is( 'tr > td:nth-of-type(2)' => 'admin' )
+    ->text_is( 'tr > td:nth-of-type(3)' => 'Joe Admin' );
 
   $t->get_ok('/admin/pages')
     ->status_is(200)
     ->text_is( h1 => 'Administration: Pages' )
     ->text_is( 'tr > td:nth-of-type(2)' => 'home' );
+
+};
+
+subtest 'Administer Users' => sub {
+
+  $t->get_ok('/admin/user/admin')
+    ->status_is(200)
+    ->element_exists( 'input#name[placeholder=admin]' )
+    ->element_exists( 'input#full[value="Joe Admin"]' )
+    ->element_exists( 'input#is_author[checked=1]' )
+    ->element_exists( 'input#is_admin[checked=1]' );
+
+  # change name
+  my $data = $json->encode({
+    name => "admin",
+    full => "New Name",
+    is_author => 1,
+    is_admin => 1,
+  });
+  $t->websocket_ok('/store/user')
+    ->send_ok( $data )
+    ->message_is( 'Changes saved' )
+    ->finish_ok;
+
+  # check that the name change is reflected
+  $t->get_ok('/admin/user/admin')
+    ->status_is(200)
+    ->element_exists( 'input#name[placeholder=admin]' )
+    ->element_exists( 'input#full[value="New Name"]' );
+
+  # attempt to change password, incorrectly
+  $data = $json->encode({
+    name => "admin",
+    full => "New Name",
+    pass1 => 'newpass',
+    pass2 => 'wrongpass',
+    is_author => 1,
+    is_admin => 1,
+  });
+  $t->websocket_ok('/store/user')
+    ->send_ok( $data )
+    ->message_is( 'Not Updated: Passwords do not match' )
+    ->finish_ok;
+
+  ok( $t->app->get_user('admin')->check_password('pass'), 'Password not changed on non-matching passwords');
+
+  # change password, correctly
+  $data = $json->encode({
+    name => "admin",
+    full => "New Name",
+    pass1 => 'newpass',
+    pass2 => 'newpass',
+    is_author => 1,
+    is_admin => 1,
+  });
+  $t->websocket_ok('/store/user')
+    ->send_ok( $data )
+    ->message_is( 'Changes saved' )
+    ->finish_ok;
+
+  ok( $t->app->get_user('admin')->check_password('newpass'), 'New password checks out');
 
 };
 

@@ -38,6 +38,7 @@ sub inject_sample_data {
 
   my $admin = $schema->resultset('User')->create({
     name => $user,
+    full => 'Joe Admin',
     password => $pass,
     is_author => 1,
     is_admin  => 1,

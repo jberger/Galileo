@@ -10,7 +10,11 @@ primary_column user_id => {
 };
 
 unique_column name => { 
-  data_type => 'text'
+  data_type => 'text',
+};
+
+column full => {
+  data_type => 'text',
 };
 
 column password => {

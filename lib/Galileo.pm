@@ -135,6 +135,8 @@ sub startup {
 
   $if_admin->any( '/admin/users' )->to('admin#users');
   $if_admin->any( '/admin/pages' )->to('admin#pages');
+  $if_admin->any( '/admin/user/:name' )->to('admin#user');
+  $if_admin->websocket( '/store/user' )->to('admin#store_user');
 }
 
 1;

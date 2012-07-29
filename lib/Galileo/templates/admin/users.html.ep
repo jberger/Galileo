@@ -6,6 +6,7 @@
   %= tag tr => begin
     %= tag th => "user_id"
     %= tag th => "Name"
+    %= tag th => "Full Name"
     %= tag th => "Author"
     %= tag th => "Admin"
     %= tag th => "Edit"
@@ -15,6 +16,7 @@
     %= tag tr => begin
       %= tag td => $user->user_id
       %= tag td => $name
+      %= tag td => $user->full
       %= tag td => $user->is_author
       %= tag td => $user->is_admin
       %= tag td => begin
