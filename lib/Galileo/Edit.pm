@@ -32,7 +32,6 @@ sub store_page {
     my $data = $json->decode($message);
 
     my $schema = $self->schema;
-    my $store = delete $data->{store};
 
     unless($data->{title}) {
       $self->send('Not saved! A title is required!');
