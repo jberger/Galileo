@@ -122,7 +122,7 @@ sub startup {
 
   $if_author->any( '/admin/menu' )->to('editor#edit_menu');
   $if_author->any( '/edit/:name' )->to('editor#edit_page');
-  $if_author->websocket( '/store' )->to('editor#ws_update');
+  $if_author->websocket( '/store/page' )->to('editor#store_page');
   $if_author->websocket( '/store/menu' )->to('editor#store_menu');
 
   my $if_admin = $r->under( sub {

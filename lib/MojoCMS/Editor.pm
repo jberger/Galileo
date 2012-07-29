@@ -4,34 +4,6 @@ use Mojo::Base 'Mojolicious::Controller';
 use Mojo::JSON;
 my $json = Mojo::JSON->new;
 
-sub ws_update {
-  my $self = shift;
-  Mojo::IOLoop->stream($self->tx->connection)->timeout(300);
-  $self->on(message => sub {
-    my ($self, $message) = @_;
-    my $data = $json->decode($message);
-
-    my $schema = $self->schema;
-    my $store = delete $data->{store};
-
-    if ($store eq 'pages') {
-      unless($data->{title}) {
-        $self->send('Not saved! A title is required!');
-        return;
-      }
-      my $author = $schema->resultset('User')->single({name=>$self->session->{username}});
-      $data->{author_id} = $author->id;
-      $schema->resultset('Page')->update_or_create(
-        $data, {key => 'pages_name'},
-      );
-      $self->expire('main');
-    } elsif ($store eq 'main_menu') {
-      $self->store_menu($data->{list});
-    }
-    $self->send('Changes saved');
-  });
-}
-
 sub edit_page {
   my $self = shift;
   my $name = $self->param('name');
@@ -51,6 +23,29 @@ sub edit_page {
   }
 
   $self->render( 'edit' );
+}
+
+sub store_page {
+  my $self = shift;
+  $self->on(message => sub {
+    my ($self, $message) = @_;
+    my $data = $json->decode($message);
+
+    my $schema = $self->schema;
+    my $store = delete $data->{store};
+
+    unless($data->{title}) {
+      $self->send('Not saved! A title is required!');
+      return;
+    }
+    my $author = $schema->resultset('User')->single({name=>$self->session->{username}});
+    $data->{author_id} = $author->id;
+    $schema->resultset('Page')->update_or_create(
+      $data, {key => 'pages_name'},
+    );
+    $self->expire('main');
+    $self->send('Changes saved');
+  });
 }
 
 sub edit_menu {

@@ -9,7 +9,6 @@
 
 %= javascript begin
 data = {
-  store : "pages",
   name  : "<%= $name  %>",
   md    : "",
   html  : "",
@@ -18,7 +17,7 @@ data = {
 
 function saveButton() {
   data.title = $("#page-title").val();
-  sendViaWS("<%= url_for('store')->to_abs %>", data);
+  sendViaWS("<%= url_for('storepage')->to_abs %>", data);
 }
 
 $(function () {
