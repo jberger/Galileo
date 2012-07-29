@@ -1,9 +1,10 @@
 % layout 'standard';
 % content_for header => begin
-%= stylesheet '/assets/pagedown/demo.css'
-%= javascript '/assets/pagedown/Markdown.Converter.js'
-%= javascript '/assets/pagedown/Markdown.Sanitizer.js'
-%= javascript '/assets/pagedown/Markdown.Editor.js'
+  %= stylesheet '/assets/pagedown/demo.css'
+  %= javascript '/assets/pagedown/Markdown.Converter.js'
+  %= javascript '/assets/pagedown/Markdown.Sanitizer.js'
+  %= javascript '/assets/pagedown/Markdown.Editor.js'
+  %= javascript '/mojocms-edit.js'
 % end
 
 %= javascript begin
@@ -15,18 +16,9 @@ data = {
   title : ""
 };
 
-ws = new WebSocket("<%= url_for('store')->to_abs %>");
-ws.onmessage = function (evt) {
-  var message = evt.data;
-  console.log( message );
-  humane.log( message );
-};
-
 function saveButton() {
   data.title = $("#page-title").val();
-  var serialized = JSON.stringify(data);
-  console.log( "Sending ==> " + serialized );
-  ws.send( serialized );
+  sendViaWS("<%= url_for('store')->to_abs %>", data);
 }
 
 %= end

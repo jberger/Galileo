@@ -1,27 +1,16 @@
 % layout 'standard';
 % content_for header => begin
-%= javascript '/assets/jquery-ui-1.8.21.custom.min.js'
+  %= javascript '/assets/jquery-ui-1.8.21.custom.min.js'
+  %= javascript '/mojocms-edit.js'
 % end
 
 %= javascript begin
-var ws;
-
 function saveButton() {
   var data = {
     store : "main_menu",
     list : $("#list-active-pages").sortable('toArray')
   };
-  ws = new WebSocket("<%= url_for('store')->to_abs %>");
-  ws.onmessage = function (evt) {
-    var message = evt.data;
-    console.log( message );
-    humane.log( message );
-  };
-  ws.onopen = function () {
-    var serialized = JSON.stringify(data);
-    console.log( "Sending ==> " + serialized );
-    ws.send( serialized );
-  };
+  sendViaWS("<%= url_for('store')->to_abs %>", data);
 }
 
 $(function() {
