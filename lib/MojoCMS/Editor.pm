@@ -85,24 +85,29 @@ sub edit_menu {
 
 sub store_menu {
   my $self = shift;
-  my $schema = $self->schema;
+  $self->on( message => sub {
+    my ($self, $message) = @_;
+    my $data = $json->decode($message);
+    my $name = $data->{name};
+    my $list = $data->{list};
 
-  my $name = (@_ == 0 or ref $_[0]) ? 'main' : shift();
-  my $list = shift;
+    my $schema = $self->schema;
   
-  my @pages = 
-    map { my $page = $_; $page =~ s/^pages-//; $page}
-    grep { ! /^header-/ }
-    @$list;
+    my @pages = 
+      map { my $page = $_; $page =~ s/^pages-//; $page}
+      grep { ! /^header-/ }
+      @$list;
 
-  $schema->resultset('Menu')->update(
-    {
-      list => $json->encode(\@pages),
-    },
-    { key => $name }
-  );
+    $schema->resultset('Menu')->update(
+      {
+        list => $json->encode(\@pages),
+      },
+      { key => $name }
+    );
 
-  $self->expire($name);
+    $self->expire($name);
+    $self->send('Changes saved');
+  });
 }
 
 sub expire {

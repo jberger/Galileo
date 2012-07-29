@@ -7,10 +7,10 @@
 %= javascript begin
 function saveButton() {
   var data = {
-    store : "main_menu",
+    name : "main",
     list : $("#list-active-pages").sortable('toArray')
   };
-  sendViaWS("<%= url_for('store')->to_abs %>", data);
+  sendViaWS("<%= url_for('storemenu')->to_abs %>", data);
 }
 
 $(function() {
