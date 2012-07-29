@@ -7,7 +7,7 @@ sub show {
 
   my $page = $self->schema->resultset('Page')->single({ name => $name });
   if ($page) {
-    $self->render( show => page => $page );
+    $self->render( page => $page );
   } else {
     if ($self->session->{username}) {
       $self->redirect_to("/edit/$name");

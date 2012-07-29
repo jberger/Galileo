@@ -1,4 +1,4 @@
-package MojoCMS::Editor;
+package MojoCMS::Edit;
 use Mojo::Base 'Mojolicious::Controller';
 
 use Mojo::JSON;
@@ -22,7 +22,7 @@ sub edit_page {
     $self->stash( input => "Hello World" );
   }
 
-  $self->render( 'edit' );
+  $self->render;
 }
 
 sub store_page {
@@ -72,7 +72,7 @@ sub edit_menu {
 
   $self->title( 'Setup Main Navigation Menu' );
   $self->content_for( banner => 'Setup Main Navigation Menu' );
-  $self->render( menu => 
+  $self->render(
     active   => Mojo::ByteStream->new( $active   ), 
     inactive => Mojo::ByteStream->new( $inactive ),
   );

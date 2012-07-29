@@ -1,15 +1,9 @@
 package MojoCMS::Admin;
 use Mojo::Base 'Mojolicious::Controller';
 
-sub users {
-  my $self = shift;
-  $self->render('users');
-}
+sub users { shift->render }
 
-sub pages {
-  my $self = shift;
-  $self->render('pages');
-}
+sub pages { shift->render }
 
 1;
 
