@@ -21,6 +21,20 @@ function saveButton() {
   sendViaWS("<%= url_for('store')->to_abs %>", data);
 }
 
+$(function () {
+  var converter = Markdown.getSanitizingConverter();
+  var editor = new Markdown.Editor(converter);
+  converter.hooks.chain("preConversion", function (text) {
+    data.md = text;
+    return text; 
+  });
+  converter.hooks.chain("postConversion", function (text) {
+    data.html = text;
+    return text; 
+  });
+  editor.run();
+})
+
 %= end
 
 <div class="wmd-panel">
@@ -39,20 +53,4 @@ function saveButton() {
   <textarea class="wmd-input" id="wmd-input"><%= $input %></textarea>
   <div id="wmd-preview" class="wmd-preview well"></div>
 </div>
-
-%= javascript begin
-(function () {
-  var converter = Markdown.getSanitizingConverter();
-  var editor = new Markdown.Editor(converter);
-  converter.hooks.chain("preConversion", function (text) {
-    data.md = text;
-    return text; 
-  });
-  converter.hooks.chain("postConversion", function (text) {
-    data.html = text;
-    return text; 
-  });
-  editor.run();
-})();
-%= end
 
