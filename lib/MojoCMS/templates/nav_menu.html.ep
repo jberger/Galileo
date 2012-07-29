@@ -8,7 +8,11 @@
       <li><a href="/">Home</a></li>
       % for my $id (@pages) {
         % my $page = $rs->single({page_id => $id});
-        <li><a href="/pages/<%= $page->name %>"><%= $page->title %></a></li>
+        <li>
+          %= tag a => href => "/page/" . $page->name => begin
+            %= $page->title
+          %= end
+        </li>
       % }
     </ul>
   </div>

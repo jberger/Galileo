@@ -18,7 +18,7 @@ $t->ua->max_redirects(2);
 ## Not logged in ##
 
 # landing page
-$t->get_ok('/pages/home')
+$t->get_ok('/page/home')
   ->status_is(200)
   ->text_is( h1 => 'Home Page' )
   ->text_like( p => qr/Welcome to the site!/ )
@@ -42,7 +42,7 @@ $t->get_ok('/admin/users')
 ## Logged in ##
 
 # do login
-$t->post_form_ok( '/login' => {from => '/pages/home', username => 'admin', password => 'pass' } )
+$t->post_form_ok( '/login' => {from => '/page/home', username => 'admin', password => 'pass' } )
   ->status_is(200)
   ->content_like( qr/Welcome Back/ )
   ->text_like( '#user-menu li' => qr/Hello admin/ );
@@ -55,7 +55,6 @@ $t->get_ok('/edit/home')
 
 # save page
 my $json = Mojo::JSON->new->encode({
-  store => "pages",
   name  => 'home',
   title => 'New Home',
   html  => '<p>I changed this text</p>',
@@ -67,7 +66,7 @@ $t->websocket_ok( '/store/page' )
   ->finish_ok;
 
 # see that the changes are reflected
-$t->get_ok('/pages/home')
+$t->get_ok('/page/home')
   ->status_is(200)
   ->text_is( h1 => 'New Home' )
   ->text_like( p => qr/I changed this text/ );

@@ -22,7 +22,7 @@
         %= tag a => href => "/user/$author" => "$author"
       %= end
       %= tag td => begin
-        %= tag a => href => "/pages/$name" => "Show"
+        %= tag a => href => "/page/$name" => "Show"
       %= end
       %= tag td => begin
         %= tag a => href => "/edit/$name" => "Edit"
