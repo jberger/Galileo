@@ -1,4 +1,4 @@
-package MojoCMS::Admin;
+package Galileo::Admin;
 use Mojo::Base 'Mojolicious::Controller';
 
 sub users { shift->render }

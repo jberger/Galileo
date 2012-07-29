@@ -13,4 +13,4 @@ my $lib = join('/', @base, 'lib');
 
 # Start commands for application
 require Mojolicious::Commands;
-Mojolicious::Commands->start_app('MojoCMS');
+Mojolicious::Commands->start_app('Galileo');

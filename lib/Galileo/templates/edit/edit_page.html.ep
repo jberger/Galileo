@@ -4,7 +4,7 @@
   %= javascript '/assets/pagedown/Markdown.Converter.js'
   %= javascript '/assets/pagedown/Markdown.Sanitizer.js'
   %= javascript '/assets/pagedown/Markdown.Editor.js'
-  %= javascript '/mojocms-edit.js'
+  %= javascript '/galileo-edit.js'
 % end
 
 %= javascript begin

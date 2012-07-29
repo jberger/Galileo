@@ -1,4 +1,4 @@
-package MojoCMS;
+package Galileo;
 
 use Mojo::Base 'Mojolicious';
 
@@ -21,21 +21,21 @@ sub startup {
   my $app = shift;
 
   $app->plugin( Config => { 
-    file => 'mojocms.conf',
+    file => 'galileo.conf',
     default => {
-      db_schema  => 'MojoCMS::DB::Schema',
-      db_connect => 'dbi:SQLite:dbname=mojocms_sqlite.db',
+      db_schema  => 'Galileo::DB::Schema',
+      db_connect => 'dbi:SQLite:dbname=galileo.db',
       secret     => 'MySecret',
     },
   });
 
-  # use content from directories under lib/MojoCMS/
-  $app->home->parse(catdir(dirname(__FILE__), 'MojoCMS'));
+  # use content from directories under lib/Galileo/
+  $app->home->parse(catdir(dirname(__FILE__), 'Galileo'));
   $app->static->paths->[0] = $app->home->rel_dir('public');
   $app->renderer->paths->[0] = $app->home->rel_dir('templates');
 
-  # use commands from MojoCMS::Command namespace
-  push @{$app->commands->namespaces}, 'MojoCMS::Command';
+  # use commands from Galileo::Command namespace
+  push @{$app->commands->namespaces}, 'Galileo::Command';
 
   $app->secret( $app->config->{secret} );
 

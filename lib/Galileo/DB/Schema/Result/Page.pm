@@ -1,4 +1,4 @@
-package MojoCMS::DB::Schema::Result::Page;
+package Galileo::DB::Schema::Result::Page;
 
 use DBIx::Class::Candy
   -autotable => v1;
@@ -28,7 +28,7 @@ column md => {
   data_type => 'text'
 };
 
-belongs_to author => 'MojoCMS::DB::Schema::Result::User', 'author_id';
+belongs_to author => 'Galileo::DB::Schema::Result::User', 'author_id';
 
 1;
 

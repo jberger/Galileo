@@ -1,4 +1,4 @@
-package MojoCMS::DB::Schema::Result::User;
+package Galileo::DB::Schema::Result::User;
 
 use DBIx::Class::Candy
   -autotable => v1,
@@ -30,7 +30,7 @@ column is_admin => {
   default_value => 0,
 };
 
-has_many pages => 'MojoCMS::DB::Schema::Result::Page', 'author_id';
+has_many pages => 'Galileo::DB::Schema::Result::Page', 'author_id';
 
 1;
 

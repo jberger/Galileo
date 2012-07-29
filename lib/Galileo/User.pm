@@ -1,4 +1,4 @@
-package MojoCMS::User;
+package Galileo::User;
 use Mojo::Base 'Mojolicious::Controller';
 
 sub login {

@@ -1,4 +1,4 @@
-package MojoCMS::Edit;
+package Galileo::Edit;
 use Mojo::Base 'Mojolicious::Controller';
 
 use Mojo::JSON;

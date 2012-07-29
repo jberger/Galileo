@@ -1,4 +1,4 @@
-package MojoCMS::DB::Schema::Result::Menu;
+package Galileo::DB::Schema::Result::Menu;
 
 use DBIx::Class::Candy
   -autotable => v1;

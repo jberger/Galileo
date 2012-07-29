@@ -4,7 +4,7 @@ use warnings;
 use Module::Build;
 
 my $builder = Module::Build->new(
-  module_name => 'MojoCMS',
+  module_name => 'Galileo',
   dist_version => '0.000_001',
   dist_author => 'Joel Berger',
   dist_abstract => 'A simple CMS using Mojolicious',

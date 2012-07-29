@@ -1,4 +1,4 @@
-package MojoCMS::Page;
+package Galileo::Page;
 use Mojo::Base 'Mojolicious::Controller';
 
 sub show {
