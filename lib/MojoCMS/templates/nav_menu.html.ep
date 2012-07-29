@@ -3,7 +3,7 @@
   % my @pages = @{ Mojo::JSON->new->decode($menu->list) };
   % my $rs = schema->resultset('Page');
   <div class="well" style="padding: 8px 0;">
-    <ul class="nav nav-list">
+    <ul id="main" class="nav nav-list">
       <li class="nav-header">Navigation</li>
       <li><a href="/">Home</a></li>
       % for my $id (@pages) {

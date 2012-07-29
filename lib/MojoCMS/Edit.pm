@@ -59,7 +59,7 @@ sub edit_menu {
       $schema->resultset('Menu')->single({name => $name})->list
     )};
   
-  my ($active, $inactive);
+  my ($active, $inactive) = ( '', '' );
   my @pages = $schema->resultset('Page')->all;
   for my $page ( @pages ) {
     next unless $page;
@@ -73,7 +73,7 @@ sub edit_menu {
   $self->title( 'Setup Main Navigation Menu' );
   $self->content_for( banner => 'Setup Main Navigation Menu' );
   $self->render(
-    active   => Mojo::ByteStream->new( $active   ), 
+    active   => Mojo::ByteStream->new( $active ), 
     inactive => Mojo::ByteStream->new( $inactive ),
   );
 }

@@ -113,6 +113,49 @@ subtest 'Edit Page' => sub {
 
 };
 
+subtest 'Edit Main Navigation Menu' => sub {
+  my $title = 'About Me';
+
+  # check about page is in nav 
+  $t->get_ok('/admin/menu')
+    ->status_is(200)
+    ->text_is( 'ul#main > li:nth-of-type(3) > a' => $title )
+    ->text_is( '#list-active-pages > #pages-2' => $title );
+
+  # remove about page from list
+  my $json = Mojo::JSON->new->encode({
+    name => 'main',
+    list => [],
+  });
+  $t->websocket_ok('/store/menu')
+    ->send_ok( $json )
+    ->message_is( 'Changes saved' )
+    ->finish_ok;
+
+  # check that item is removed
+  $t->get_ok('/admin/menu')
+    ->status_is(200)
+    ->element_exists_not( 'ul#main > li:nth-of-type(3) > a' )
+    ->text_is( '#list-inactive-pages > #pages-2' => $title );
+
+  # put about page back
+  $json = Mojo::JSON->new->encode({
+    name => 'main',
+    list => ['pages-2'],
+  });
+  $t->websocket_ok('/store/menu')
+    ->send_ok( $json )
+    ->message_is( 'Changes saved' )
+    ->finish_ok;
+
+  # check about page is back in nav (same as first test block)
+  $t->get_ok('/admin/menu')
+    ->status_is(200)
+    ->text_is( 'ul#main > li:nth-of-type(3) > a' => $title )
+    ->text_is( '#list-active-pages > #pages-2' => $title );
+
+};
+
 subtest 'Administrative Overview Pages' => sub {
 
   # test the admin pages
