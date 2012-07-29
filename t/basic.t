@@ -99,6 +99,18 @@ subtest 'Edit Page' => sub {
     ->text_like( '#wmd-input' => qr/Hello World/ )
     ->element_exists( '#wmd-preview' );
 
+  # save page without title (error)
+  my $json_notitle = Mojo::JSON->new->encode({
+    name  => 'notitle',
+    title => '',
+    html  => '<p>Hmmm no title</p>',
+    md    => 'Hmmm no title',
+  });
+  $t->websocket_ok( '/store/page' )
+    ->send_ok( $json_notitle )
+    ->message_is( 'Not saved! A title is required!' )
+    ->finish_ok;
+
 };
 
 subtest 'Administrative Overview Pages' => sub {
