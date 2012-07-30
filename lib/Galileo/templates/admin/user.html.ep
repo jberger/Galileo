@@ -1,0 +1,89 @@
+% layout 'standard';
+% title "Administrate User: $name";
+% content_for banner => "Administrate User: $name";
+
+%= content_for header => begin
+  %= javascript '/galileo-edit.js';
+%= end
+
+% my $user = get_user( $name );
+% my $full = $user ? $user->full : '';
+% my $is_author = $user ? $user->is_author : 0;
+% my $is_admin  = $user ? $user->is_admin  : 0;
+
+%= javascript begin
+  function saveButton () {
+    var data = {
+      name: "<%= $name %>",
+      full: $('input#full').val(),
+      pass1: $('input#pass1').val() || 0,
+      pass2: $('input#pass2').val() || 0,
+      is_author: $('input#is_author').val(),
+      is_admin: $('input#is_admin').val()
+    };
+    sendViaWS("<%= url_for('storeuser')->to_abs %>", data);
+  }
+%= end
+
+<form class="form-horizontal">
+  <legend>Names</legend>
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="name">User Name</label>
+      <div class="controls">
+        <input class="input-xlarge disabled" id="name" 
+               type="text" placeholder="<%= $name %>" disabled>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="full">Full Name</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" id="full" value="<%= $full %>">
+      </div>
+    </div>
+  </fieldset>
+  <legend>Set a New Password</legend>
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="pass1">New Password</label>
+      <div class="controls">
+        <input type="password" class="input-xlarge" id="pass1">
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="pass2">Repeat Password</label>
+      <div class="controls">
+        <input type="password" class="input-xlarge" id="pass2">
+        <p>Only fill these boxes to set a new password</p>
+      </div>
+    </div>
+  </fieldset>
+  <legend>Permissions</legend>
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="is_author">Author</label>
+      <div class="controls">
+        <label class="checkbox">
+          <input type="checkbox" class="input-xlarge" id="is_author" checked="<%= $is_author %>">
+          Authors are allowed to create and edit pages, as well as edit menus
+        </label>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="is_admin">Administrator</label>
+      <div class="controls">
+        <label class="checkbox">
+          <input type="checkbox" class="input-xlarge" id="is_admin" checked="<%= $is_admin %>">
+          Administrators can add and change users
+        </label>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<button class="btn" onClick="saveButton()">Save</button>
