@@ -273,8 +273,8 @@ subtest 'Create New User' => sub {
     ->status_is(200)
     ->element_exists( 'input#name[placeholder=someone]' )
     ->element_exists( 'input#full[value="Jane Doe"]' )
-    ->element_exists( 'input#is_author[checked=1]' )
-    ->element_exists( 'input#is_admin[checked=0]' );
+    ->element_exists( 'input#is_author:checked' )
+    ->element_exists( 'input#is_admin:not(:checked)' );
 
 };
 
