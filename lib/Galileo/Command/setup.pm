@@ -90,7 +90,7 @@ MARKDOWN
 <li><a href="http://wavded.github.com/humane-js/">HumaneJS</a> - A simple, modern, browser notification system</li>
 </ul>
 
-<p>Galileo is developed by <a href="https://github.com/jberger">Joel Berger</a>. Fork it on GitHub!</p>
+<p>Galileo is developed by <a href="https://github.com/jberger">Joel Berger</a>. <a href="https://github.com/jberger/Galileo">Fork it</a> on GitHub!</p>
 HTML
     md        => <<'MARKDOWN',
 Galileo CMS is built upon some great open source projects:
@@ -103,7 +103,7 @@ Galileo CMS is built upon some great open source projects:
 * [jQuery](http://jquery.com/) - because everything uses jQuery
 * [HumaneJS](http://wavded.github.com/humane-js/) - A simple, modern, browser notification system
 
-Galileo is developed by [Joel Berger](https://github.com/jberger). Fork it on GitHub!
+Galileo is developed by [Joel Berger](https://github.com/jberger). [Fork it](https://github.com/jberger/Galileo) on GitHub!
 MARKDOWN
     author_id => $admin->user_id,
   });
