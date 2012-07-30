@@ -5,9 +5,7 @@ use Module::Build;
 
 my $builder = Module::Build->new(
   module_name => 'Galileo',
-  dist_version => '0.000_001',
   dist_author => 'Joel Berger',
-  dist_abstract => 'A simple CMS using Mojolicious',
   license => 'perl',
   
   requires => {
@@ -23,6 +21,13 @@ my $builder = Module::Build->new(
   configure_requires => {
     'Module::Build' => 0.38,
   },
+  meta_merge => {
+    resources  => {
+      repository => "http://github.com/jberger/Galileo",
+      bugtracker => "http://github.com/jberger/Galileo/issues",
+    },
+  }
 );
 
 $builder->create_build_script;
+

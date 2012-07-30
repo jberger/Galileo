@@ -1,6 +1,8 @@
 package Galileo;
-
 use Mojo::Base 'Mojolicious';
+
+our $VERSION = 0.001;
+$VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
 use File::Spec::Functions 'catdir';
@@ -140,4 +142,68 @@ sub startup {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Galileo - A simple modern CMS built on Mojolicious
+
+=head1 SYNOPSIS
+
+ $ galileo setup
+ $ galileo daemon
+
+=head1 DESCRIPTION
+
+L<Galileo> is a Perl CMS with some modern features. Run C<galileo setup> to setup a database. Afterward the database is ready, you can run C<galileo daemon> or use L<morbo> or L<hypnotoad> to start the server.
+
+=head1 SEE ALSO
+
+=over
+
+=item * 
+
+L<Mojolicious|http://mojolicio.us> - a next generation web framework for the Perl programming language
+
+=item * 
+
+L<DBIx::Class|http://www.dbix-class.org/> - an extensible and flexible Object/Relational Mapper written in Perl
+
+=item * 
+
+L<PageDown|http://code.google.com/p/pagedown/> (Markdown engine) - the version of Attacklab's Showdown and WMD as used on Stack Overflow and the other Stack Exchange sites
+
+=item * 
+
+L<Bootstrap|http://twitter.github.com/bootstrap> - the beautiful CSS/JS library from Twitter
+
+=item * 
+
+L<jQuery|http://jquery.com/> - because everything uses jQuery
+
+=item * 
+
+L<HumaneJS|http://wavded.github.com/humane-js/> - A simple, modern, browser notification system
+
+=back
+
+=head1 SOURCE REPOSITORY
+
+L<http://github.com/jberger/Galileo>
+
+=head1 AUTHOR
+
+Joel Berger, E<lt>joel.a.berger@gmail.comE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2012 by Joel Berger
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
+
+
 
