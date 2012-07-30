@@ -27,7 +27,7 @@ sub store_user {
       return 0;
     }
 
-    $data->{$_} = 0 + $data->{$_} for ( qw/is_author is_admin/ );
+    $data->{$_} = $data->{$_} ? 1 : 0 for ( qw/is_author is_admin/ );
 
     $rs->update_or_create(
       $data, {key => 'users_name'},

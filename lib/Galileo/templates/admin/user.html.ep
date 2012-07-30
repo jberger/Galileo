@@ -8,8 +8,8 @@
 
 % my $user = get_user( $name );
 % my $full = $user ? $user->full : '';
-% my $is_author = $user ? $user->is_author : 0;
-% my $is_admin  = $user ? $user->is_admin  : 0;
+% my $is_author = ($user and $user->is_author) ? "checked" : "";
+% my $is_admin  = ($user and $user->is_admin ) ? "checked" : "";
 
 %= javascript begin
   function saveButton () {
@@ -18,8 +18,8 @@
       full: $('input#full').val(),
       pass1: $('input#pass1').val() || 0,
       pass2: $('input#pass2').val() || 0,
-      is_author: $('input#is_author').val(),
-      is_admin: $('input#is_admin').val()
+      is_author: $('input#is_author').is(':checked'),
+      is_admin: $('input#is_admin').is(':checked')
     };
     sendViaWS("<%= url_for('storeuser')->to_abs %>", data);
   }
@@ -68,7 +68,7 @@
       <label class="control-label" for="is_author">Author</label>
       <div class="controls">
         <label class="checkbox">
-          <input type="checkbox" class="input-xlarge" id="is_author" checked="<%= $is_author %>">
+          <input type="checkbox" class="input-xlarge" id="is_author" <%= $is_author %>>
           Authors are allowed to create and edit pages, as well as edit menus
         </label>
       </div>
@@ -79,7 +79,7 @@
       <label class="control-label" for="is_admin">Administrator</label>
       <div class="controls">
         <label class="checkbox">
-          <input type="checkbox" class="input-xlarge" id="is_admin" checked="<%= $is_admin %>">
+          <input type="checkbox" class="input-xlarge" id="is_admin" <%= $is_admin %>>
           Administrators can add and change users
         </label>
       </div>
