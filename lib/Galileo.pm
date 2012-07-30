@@ -158,6 +158,8 @@ Galileo - A simple modern CMS built on Mojolicious
 
 L<Galileo> is a Perl CMS with some modern features. Run C<galileo setup> to setup a database. Afterward the database is ready, you can run C<galileo daemon> or use L<morbo> or L<hypnotoad> to start the server.
 
+This release is very young, don't expect anything not to break, for now. Bug reports very welcome.
+
 =head1 SEE ALSO
 
 =over
