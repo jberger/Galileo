@@ -1,6 +1,6 @@
+bin/galileo
 Build.PL
 Changes
-galileo.db
 lib/Galileo.pm
 lib/Galileo/Admin.pm
 lib/Galileo/Command/setup.pm
@@ -42,8 +42,7 @@ lib/Galileo/files/templates/user_menu.html.ep
 lib/Galileo/Page.pm
 lib/Galileo/User.pm
 MANIFEST			This list of files
-README.markdown
-script/galileo
-t/basic.t
-META.yml
 META.json
+META.yml
+README.markdown
+t/basic.t
