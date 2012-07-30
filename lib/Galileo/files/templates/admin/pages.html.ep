@@ -19,7 +19,7 @@
       %= tag td => $page->title
       % my $author = $page->author->name;
       %= tag td => begin
-        %= tag a => href => "/user/$author" => "$author"
+        %= tag a => href => "/admin/user/$author" => "$author"
       %= end
       %= tag td => begin
         %= tag a => href => "/page/$name" => "Show"
