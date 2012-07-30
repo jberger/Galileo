@@ -1,0 +1,60 @@
+---
+abstract: 'A simple modern CMS built on Mojolicious'
+author:
+  - 'Joel Berger'
+build_requires: {}
+configure_requires:
+  Module::Build: 0.38
+dynamic_config: 1
+generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120921'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Galileo
+provides:
+  Galileo:
+    file: lib/Galileo.pm
+    version: 0.001
+  Galileo::Admin:
+    file: lib/Galileo/Admin.pm
+    version: 0
+  Galileo::Command::setup:
+    file: lib/Galileo/Command/setup.pm
+    version: 0
+  Galileo::DB::Schema:
+    file: lib/Galileo/DB/Schema.pm
+    version: 0
+  Galileo::DB::Schema::Result::Menu:
+    file: lib/Galileo/DB/Schema/Result/Menu.pm
+    version: 0
+  Galileo::DB::Schema::Result::Page:
+    file: lib/Galileo/DB/Schema/Result/Page.pm
+    version: 0
+  Galileo::DB::Schema::Result::User:
+    file: lib/Galileo/DB/Schema/Result/User.pm
+    version: 0
+  Galileo::Edit:
+    file: lib/Galileo/Edit.pm
+    version: 0
+  Galileo::Page:
+    file: lib/Galileo/Page.pm
+    version: 0
+  Galileo::User:
+    file: lib/Galileo/User.pm
+    version: 0
+requires:
+  Crypt::Eksblowfish::Bcrypt: 0
+  DBD::SQLite: 0
+  DBIx::Class: 0
+  DBIx::Class::Candy: 0
+  DBIx::Class::EncodedColumn: 0
+  File::ShareDir: 1.00
+  Mojolicious: 3.0
+  SQL::Translator: 0
+  Term::Prompt: 0
+resources:
+  bugtracker: http://github.com/jberger/Galileo/issues
+  license: http://dev.perl.org/licenses/
+  repository: http://github.com/jberger/Galileo
+version: 0.001

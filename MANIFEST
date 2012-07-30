@@ -45,3 +45,5 @@ MANIFEST			This list of files
 README.markdown
 script/galileo
 t/basic.t
+META.yml
+META.json

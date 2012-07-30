@@ -1,0 +1,91 @@
+{
+   "abstract" : "A simple modern CMS built on Mojolicious",
+   "author" : [
+      "Joel Berger"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120921",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Galileo",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.38"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Crypt::Eksblowfish::Bcrypt" : "0",
+            "DBD::SQLite" : "0",
+            "DBIx::Class" : "0",
+            "DBIx::Class::Candy" : "0",
+            "DBIx::Class::EncodedColumn" : "0",
+            "File::ShareDir" : "1.00",
+            "Mojolicious" : "3.0",
+            "SQL::Translator" : "0",
+            "Term::Prompt" : "0"
+         }
+      }
+   },
+   "provides" : {
+      "Galileo" : {
+         "file" : "lib/Galileo.pm",
+         "version" : "0.001"
+      },
+      "Galileo::Admin" : {
+         "file" : "lib/Galileo/Admin.pm",
+         "version" : 0
+      },
+      "Galileo::Command::setup" : {
+         "file" : "lib/Galileo/Command/setup.pm",
+         "version" : 0
+      },
+      "Galileo::DB::Schema" : {
+         "file" : "lib/Galileo/DB/Schema.pm",
+         "version" : 0
+      },
+      "Galileo::DB::Schema::Result::Menu" : {
+         "file" : "lib/Galileo/DB/Schema/Result/Menu.pm",
+         "version" : 0
+      },
+      "Galileo::DB::Schema::Result::Page" : {
+         "file" : "lib/Galileo/DB/Schema/Result/Page.pm",
+         "version" : 0
+      },
+      "Galileo::DB::Schema::Result::User" : {
+         "file" : "lib/Galileo/DB/Schema/Result/User.pm",
+         "version" : 0
+      },
+      "Galileo::Edit" : {
+         "file" : "lib/Galileo/Edit.pm",
+         "version" : 0
+      },
+      "Galileo::Page" : {
+         "file" : "lib/Galileo/Page.pm",
+         "version" : 0
+      },
+      "Galileo::User" : {
+         "file" : "lib/Galileo/User.pm",
+         "version" : 0
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "http://github.com/jberger/Galileo/issues"
+      },
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "url" : "http://github.com/jberger/Galileo"
+      }
+   },
+   "version" : "0.001"
+}
