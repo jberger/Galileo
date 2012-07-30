@@ -9,7 +9,7 @@ my $builder = Module::Build->new(
   license => 'perl',
   
   requires => {
-    'Mojolicious' => 0,
+    'Mojolicious' => '3.0',
     'DBD::SQLite' => 0,
     'DBIx::Class' => 0,
     'DBIx::Class::Candy' => 0,
@@ -17,10 +17,14 @@ my $builder = Module::Build->new(
     'Crypt::Eksblowfish::Bcrypt' => 0,
     'SQL::Translator' => 0,
     'Term::Prompt' => 0,
+    'File::ShareDir' => 0,
   },
   configure_requires => {
     'Module::Build' => 0.38,
   },
+
+  share_dir => 'lib/Galileo/files',
+
   meta_merge => {
     resources  => {
       repository => "http://github.com/jberger/Galileo",

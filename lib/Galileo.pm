@@ -6,6 +6,7 @@ $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
 use File::Spec::Functions 'catdir';
+use File::ShareDir 'dist_dir';
 
 has db => sub {
   my $self = shift;
@@ -31,10 +32,14 @@ sub startup {
     },
   });
 
-  # use content from directories under lib/Galileo/
+  # use content from directories under lib/Galileo/files or using File::ShareDir
   $app->home->parse(catdir(dirname(__FILE__), 'Galileo'));
-  $app->static->paths->[0] = $app->home->rel_dir('public');
-  $app->renderer->paths->[0] = $app->home->rel_dir('templates');
+  {
+    my $public = $app->home->rel_dir('files/public');
+    $app->static->paths->[0] = -d $public ? $public : catdir(dist_dir('Galileo'), 'public');
+    my $templates = $app->home->rel_dir('files/templates');
+    $app->renderer->paths->[0] = -d $templates ? $templates : catdir(dist_dir('Galileo'), 'templates');
+  }
 
   # use commands from Galileo::Command namespace
   push @{$app->commands->namespaces}, 'Galileo::Command';
