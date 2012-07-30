@@ -1,12 +1,20 @@
+#Galileo CMS
+
 Galileo CMS is my first attempt at a Perl CMS using Mojolicious, Bootstrap, Pagedown and DBIx::Class/SQLite.
 
 It uses client-side markdown rendering and websockets for saving page data without reloading.
+
+#Installing from CPAN
 
 Galileo is now available from CPAN! Have a fully running CMS in these short commands
 
     $ cpanm Galileo
     $ galileo setup
     $ hypnotoad `which galileo`
+
+Hypnotoad is Mojolcious' production server. Check for the server on port `:8080`.
+
+#Running from a local clone
 
 To start you will need to install a few Perl modules. Do so by installing the dependencies specified in the file `Build.PL`. If you have `cpanm` this is as easy as
 
