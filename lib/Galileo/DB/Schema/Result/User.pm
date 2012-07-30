@@ -5,32 +5,32 @@ use DBIx::Class::Candy
   -components => [ qw/ EncodedColumn / ];
 
 primary_column user_id => {
-  data_type => 'integer',
+  data_type => 'INT',
   is_auto_increment => 1,
 };
 
 unique_column name => { 
-  data_type => 'text',
+  data_type => 'VARCHAR',
 };
 
 column full => {
-  data_type => 'text',
+  data_type => 'VARCHAR',
 };
 
 column password => {
-    data_type => 'text',
+    data_type => 'VARCHAR',
     encode_column => 1,
     encode_class  => 'Crypt::Eksblowfish::Bcrypt',
     encode_check_method => 'check_password',
 };
 
 column is_author => { 
-  data_type => 'integer',
+  data_type => 'BOOL',
   default_value => 0,
 };
 
 column is_admin => { 
-  data_type => 'integer',
+  data_type => 'BOOL',
   default_value => 0,
 };
 
