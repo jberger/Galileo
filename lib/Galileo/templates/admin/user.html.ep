@@ -1,6 +1,6 @@
 % layout 'standard';
-% title "Administrate User: $name";
-% content_for banner => "Administrate User: $name";
+% title "Administer User: $name";
+% content_for banner => "Administer User: $name";
 
 %= content_for header => begin
   %= javascript '/galileo-edit.js';
@@ -58,7 +58,7 @@
       <label class="control-label" for="pass2">Repeat Password</label>
       <div class="controls">
         <input type="password" class="input-xlarge" id="pass2">
-        <p>Only fill these boxes to set a new password</p>
+        <p>Only fill these boxes to set a new password (required for new account).</p>
       </div>
     </div>
   </fieldset>

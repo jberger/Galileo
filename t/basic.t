@@ -217,7 +217,7 @@ subtest 'Administer Users' => sub {
   });
   $t->websocket_ok('/store/user')
     ->send_ok( $data )
-    ->message_is( 'Not Updated: Passwords do not match' )
+    ->message_is( 'Not saved! Passwords do not match' )
     ->finish_ok;
 
   ok( $t->app->get_user('admin')->check_password('pass'), 'Password not changed on non-matching passwords');
@@ -237,6 +237,44 @@ subtest 'Administer Users' => sub {
     ->finish_ok;
 
   ok( $t->app->get_user('admin')->check_password('newpass'), 'New password checks out');
+
+};
+
+subtest 'Create New User' => sub {
+
+  # attempt to create a user without providing a password (fails)
+  my $data = $json->encode({
+    name => "someone",
+    full => "Jane Dow",
+    is_author => 1,
+    is_admin => 0,
+  });
+  $t->websocket_ok('/store/user')
+    ->send_ok( $data )
+    ->message_is( 'Cannot create user without a password' )
+    ->finish_ok;
+
+  # create a user
+  $data = $json->encode({
+    name => "someone",
+    full => "Jane Doe",
+    pass1 => 'mypass',
+    pass2 => 'mypass',
+    is_author => 1,
+    is_admin => 0,
+  });
+  $t->websocket_ok('/store/user')
+    ->send_ok( $data )
+    ->message_is( 'Changes saved' )
+    ->finish_ok;
+
+  # check the new user
+  $t->get_ok('/admin/user/someone')
+    ->status_is(200)
+    ->element_exists( 'input#name[placeholder=someone]' )
+    ->element_exists( 'input#full[value="Jane Doe"]' )
+    ->element_exists( 'input#is_author[checked=1]' )
+    ->element_exists( 'input#is_admin[checked=0]' );
 
 };
 

@@ -15,13 +15,21 @@ sub store_user {
     my $pass2 = delete $data->{pass2};
     if ( $pass1 or $pass2 ) {
       unless ( $pass1 eq $pass2 ) {
-        $self->send( 'Not Updated: Passwords do not match' );
+        $self->send( 'Not saved! Passwords do not match' );
         return 0;
       }
       $data->{password} = $pass1;
     }
 
-    $self->schema->resultset('User')->update_or_create(
+    my $rs = $self->schema->resultset('User');
+    unless ( $rs->single({ name => $data->{name} }) or $data->{password}) {
+      $self->send( 'Cannot create user without a password' );
+      return 0;
+    }
+
+    $data->{$_} = 0 + $data->{$_} for ( qw/is_author is_admin/ );
+
+    $rs->update_or_create(
       $data, {key => 'users_name'},
     );
     $self->send('Changes saved');
