@@ -48,11 +48,11 @@ sub inject_sample_data {
     name      => 'home',
     title     => 'Galileo CMS',
     html      => <<'HTML',
+<h2>Welcome to your Galileo CMS site!</h2>
+
 <blockquote>
   <p>Galileo Galilei was "was an Italian physicist, mathematician, astronomer, and philosopher who played a major role in the Scientific Revolution." -- <a href="https://en.wikipedia.org/wiki/Galileo_Galilei">Wikipedia</a> </p>
 </blockquote>
-
-<h2>Welcome to your Galileo CMS site!</h2>
 
 <p>When he first turned the telescope to face Jupiter, he used modern technology to improve the world around him.</p>
 
@@ -61,9 +61,9 @@ sub inject_sample_data {
 <p><img src="/portrait.jpg" alt="Portrait of Galileo Galilei" title="" /></p>
 HTML
     md        => <<'MARKDOWN',
-> Galileo Galilei was "was an Italian physicist, mathematician, astronomer, and philosopher who played a major role in the Scientific Revolution." -- [Wikipedia](https://en.wikipedia.org/wiki/Galileo_Galilei) 
-
 ##Welcome to your Galileo CMS site!
+
+> Galileo Galilei was "was an Italian physicist, mathematician, astronomer, and philosopher who played a major role in the Scientific Revolution." -- [Wikipedia](https://en.wikipedia.org/wiki/Galileo_Galilei) 
 
 When he first turned the telescope to face Jupiter, he used modern technology to improve the world around him.
 

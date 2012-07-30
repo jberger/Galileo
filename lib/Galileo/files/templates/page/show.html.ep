@@ -2,6 +2,15 @@
 % my $page_title  = $page->title;
 % title $page_title;
 % content_for banner => $page_title;
+% content_for header => begin
+  %= stylesheet begin
+    #page-contents img {
+      margin:0px auto;
+      display:block;
+    }
+  %= end
+% end
 
-<%== $page->html %>
-
+<div id="page-contents">
+  <%== $page->html %>
+</div>
