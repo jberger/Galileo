@@ -1,5 +1,8 @@
 Revision history for Perl module Alien::Base.
 
+0.003  July 29, 2012
+	- Fixed a bad link
+
 0.002  July 29, 2012
 	- Fixed some issues from packaging
 
