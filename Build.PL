@@ -15,6 +15,7 @@ my $builder = Module::Build->new(
     'DBIx::Class::Candy' => 0,
     'DBIx::Class::EncodedColumn' => 0,
     'Crypt::Eksblowfish::Bcrypt' => 0,
+    'Encode' => 0,
     'SQL::Translator' => 0,
     'Term::Prompt' => 0,
     'File::ShareDir' => 0,
