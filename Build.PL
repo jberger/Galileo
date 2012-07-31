@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 
+use 5.8.0;
 use Module::Build;
 
 my $builder = Module::Build->new(
@@ -9,6 +10,7 @@ my $builder = Module::Build->new(
   license => 'perl',
   
   requires => {
+    'perl' => '5.8.0',
     'Mojolicious' => '3.0',
     'DBD::SQLite' => 0,
     'DBIx::Class' => 0,

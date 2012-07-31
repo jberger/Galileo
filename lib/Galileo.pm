@@ -14,8 +14,10 @@ has db => sub {
   eval "require $schema_class" or die "Could not load Schema Class ($schema_class)";
 
   my $db_connect = $self->config->{db_connect} or die "No DBI connection string provided";
-  my $schema = $schema_class->connect( $db_connect ) 
-    or die "Could not connect to $schema_class using $db_connect";
+  my @db_connect = ref $db_connect ? @$db_connect : ( $db_connect );
+
+  my $schema = $schema_class->connect( @db_connect ) 
+    or die "Could not connect to $schema_class using $db_connect[0]";
 
   return $schema;
 };
@@ -27,7 +29,12 @@ sub startup {
     file => 'galileo.conf',
     default => {
       db_schema  => 'Galileo::DB::Schema',
-      db_connect => 'dbi:SQLite:dbname=galileo.db',
+      db_connect => [
+        'dbi:SQLite:dbname=galileo.db',
+        undef,
+        undef,
+        { sqlite_unicode => 1 },
+      ],
       secret     => 'MySecret',
     },
   });

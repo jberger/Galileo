@@ -53,6 +53,7 @@ requires:
   Mojolicious: 3.0
   SQL::Translator: 0
   Term::Prompt: 0
+  perl: v5.8.0
 resources:
   bugtracker: http://github.com/jberger/Galileo/issues
   license: http://dev.perl.org/licenses/
