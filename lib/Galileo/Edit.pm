@@ -4,6 +4,8 @@ use Mojo::Base 'Mojolicious::Controller';
 use Mojo::JSON;
 my $json = Mojo::JSON->new;
 
+use Encode qw( encode_utf8 );
+
 sub edit_page {
   my $self = shift;
   my $name = $self->param('name');
@@ -29,7 +31,7 @@ sub store_page {
   my $self = shift;
   $self->on(message => sub {
     my ($self, $message) = @_;
-    my $data = $json->decode($message);
+    my $data = $json->decode( encode_utf8($message) );
 
     my $schema = $self->schema;
 
