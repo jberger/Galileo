@@ -14,8 +14,12 @@ has db => sub {
   eval "require $schema_class" or die "Could not load Schema Class ($schema_class)";
 
   my $db_connect = $self->config->{db_connect} or die "No DBI connection string provided";
-  my $schema = $schema_class->connect( $db_connect ) 
-    or die "Could not connect to $schema_class using $db_connect";
+  my $schema = $schema_class->connect(
+    $db_connect,
+    undef,
+    undef,
+    { sqlite_unicode => 1 },
+  ) or die "Could not connect to $schema_class using $db_connect";
 
   return $schema;
 };
