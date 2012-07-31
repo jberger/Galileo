@@ -5,14 +5,16 @@
   <ul class="nav nav-list" id="user-menu">
     <li class="nav-header">Hello <%== $user %></li>
     % if ( is_author($user) and $url =~ s{/page/}{/edit/} ) {
+      <li><a href="#" class="galileo-popover" rel="popover" data-content="For now visit /edit/mynewpagename" data-original-title="Not quite ready yet ...">Add New Page</a></li>
       <li><a href="<%= $url %>">Edit This Page</a></li>
     % }
     <li><a href="/admin/menu">Setup Nav Menu</a></li>
     <li><a href="/logout">Log Out</a></li>
     % if ( is_admin $user ) {
       <li class="nav-header">Administration</li>
-      <li><a href="/admin/users">Users</a></li>
-      <li><a href="/admin/pages">Pages</a></li>
+      <li><a href="#" class="galileo-popover" rel="popover" data-content="For now visit /admin/user/mynewusername" data-original-title="Not quite ready yet ...">Add New User</a></li>
+      <li><a href="/admin/users">All Users</a></li>
+      <li><a href="/admin/pages">All Pages</a></li>
     % }
   </ul>
 </div>
@@ -24,3 +26,6 @@
   <input type="submit" class="btn" value="Sign In">
 </form>
 % }
+%= javascript begin
+  $('.galileo-popover').each(function(){$(this).popover({placement:'right'})});
+%= end
