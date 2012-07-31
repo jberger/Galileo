@@ -14,7 +14,7 @@ END{ done_testing(); }
 use Test::Mojo;
 
 my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
-Galileo::Command::setup->inject_sample_data('admin', 'pass', $db);
+Galileo::Command::setup->inject_sample_data('admin', 'pass', 'Joe Admin', $db);
 ok( $db->resultset('User')->single({name => 'admin'})->check_password('pass'), 'DB user checks out' );
 
 my $t = Test::Mojo->new(Galileo->new(db => $db));

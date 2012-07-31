@@ -12,7 +12,8 @@ my $json = Mojo::JSON->new();
 sub run {
   my ($self) = @_;
 
-  my $user = prompt('x', 'Admin Username: ', '', 'admin');
+  my $user = prompt('x', 'Admin Username: ', '', '');
+  my $full = prompt('x', 'Admin Full Name: ', '', '');
   my $pass1 = prompt('p', 'Admin Password: ', '', '');
   print "\n";
 
@@ -25,20 +26,24 @@ sub run {
     die "Passwords do not match";
   }
 
-  $self->inject_sample_data($user, $pass1);
+  $self->inject_sample_data($user, $pass1, $full);
+
+  print "Database created! Run 'galileo daemon' to start the server.\n";
 }
 
 sub inject_sample_data {
   my $self = shift;
+  my $schema = eval { $_[-1]->isa('Galileo::DB::Schema') } ? pop() : $self->app->schema;
+
   my $user = shift or die "Must provide an administrative username";
   my $pass = shift or die "Must provide a password for $user";
-  my $schema = shift || $self->app->schema;
+  my $full = shift || "Administrator";
 
   $schema->deploy;
 
   my $admin = $schema->resultset('User')->create({
     name => $user,
-    full => 'Joe Admin',
+    full => $full,
     password => $pass,
     is_author => 1,
     is_admin  => 1,
