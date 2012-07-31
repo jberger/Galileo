@@ -15,7 +15,7 @@ name: Galileo
 provides:
   Galileo:
     file: lib/Galileo.pm
-    version: 0.003
+    version: 0.004
   Galileo::Admin:
     file: lib/Galileo/Admin.pm
     version: 0
@@ -58,4 +58,4 @@ resources:
   bugtracker: http://github.com/jberger/Galileo/issues
   license: http://dev.perl.org/licenses/
   repository: http://github.com/jberger/Galileo
-version: 0.003
+version: 0.004
