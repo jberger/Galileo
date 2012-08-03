@@ -68,7 +68,7 @@ HTML
     md        => <<'MARKDOWN',
 ##Welcome to your Galileo CMS site!
 
-> Galileo Galilei was "was an Italian physicist, mathematician, astronomer, and philosopher who played a major role in the Scientific Revolution." -- [Wikipedia](https://en.wikipedia.org/wiki/Galileo_Galilei) 
+> Galileo Galilei was "an Italian physicist, mathematician, astronomer, and philosopher who played a major role in the Scientific Revolution." -- [Wikipedia](https://en.wikipedia.org/wiki/Galileo_Galilei) 
 
 When he first turned the telescope to face Jupiter, he used modern technology to improve the world around him.
 
