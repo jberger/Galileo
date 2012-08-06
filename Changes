@@ -1,15 +1,18 @@
 Revision history for Perl module Alien::Base.
 
+0.005  
+	- Added config command
+
 0.004  July 31, 2012
 	- Allow unicode page name (Keedi Kim (keedi)++)
 	- Improve setup prompts (Steven Haryanto)
 	- Add popover about adding user/page (Ron Savage)
 
-0.003  July 29, 2012
+0.003  July 30, 2012
 	- Fixed a bad link
 
-0.002  July 29, 2012
+0.002  July 30, 2012
 	- Fixed some issues from packaging
 
-0.001  July 29, 2012
+0.001  July 30, 2012
 	- Initial release
