@@ -206,7 +206,13 @@ Run C<galileo setup> to setup a database. This step is required. It will use the
 
  $ galileo daemon
 
-After the database is has been setup, you can run C<galileo daemon> to start the server. You may also use L<morbo> (Mojolicious' development server) or L<hypnotoad> (Mojolicious' production server). You may even use any other server that Mojolicious supports, however for full functionality it must support websockets.
+After the database is has been setup, you can run C<galileo daemon> to start the server. 
+
+You may also use L<morbo> (Mojolicious' development server) or L<hypnotoad> (Mojolicious' production server). You may even use any other server that Mojolicious supports, however for full functionality it must support websockets. When doing so you will need to know the full path to the C<galileo> application. A useful recipe might be
+
+ $ hypnotoad `which galileo`
+
+or replace C<hypnotoad> with your server of choice.
 
 =head1 TECHNOLOGIES USED
 
