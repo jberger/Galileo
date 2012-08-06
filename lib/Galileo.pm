@@ -250,7 +250,7 @@ L<HumaneJS|http://wavded.github.com/humane-js/> - A simple, modern, browser noti
 
 =item *
 
-L<Contentious> - File-based Markdown website application
+L<Contenticious> - File-based Markdown website application
 
 =back
 
