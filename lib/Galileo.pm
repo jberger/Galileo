@@ -22,11 +22,13 @@ has db => sub {
   return $schema;
 };
 
+has config_file => 'galileo.conf';
+
 sub startup {
   my $app = shift;
 
   $app->plugin( Config => { 
-    file => 'galileo.conf',
+    file => $app->config_file,
     default => {
       db_schema  => 'Galileo::DB::Schema',
       db_connect => [
