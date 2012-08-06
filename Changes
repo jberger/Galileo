@@ -2,6 +2,7 @@ Revision history for Perl module Alien::Base.
 
 0.005  
 	- Added config command
+	- Improved documentation
 
 0.004  July 31, 2012
 	- Allow unicode page name (Keedi Kim (keedi)++)

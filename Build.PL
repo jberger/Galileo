@@ -32,6 +32,9 @@ my $builder = Module::Build->new(
       repository => "http://github.com/jberger/Galileo",
       bugtracker => "http://github.com/jberger/Galileo/issues",
     },
+    no_index => {
+      file      => [ 'README.pod' ],
+    },
   }
 );
 
