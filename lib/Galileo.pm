@@ -7,6 +7,7 @@ $VERSION = eval $VERSION;
 use File::Basename 'dirname';
 use File::Spec::Functions 'catdir';
 use File::ShareDir 'dist_dir';
+use Cwd 'abs_path';
 
 has db => sub {
   my $self = shift;
@@ -22,7 +23,7 @@ has db => sub {
   return $schema;
 };
 
-has config_file => 'galileo.conf';
+has config_file => $ENV{GALILEO_CONFIG} || abs_path 'galileo.conf';
 
 sub startup {
   my $app = shift;
@@ -213,6 +214,10 @@ You may also use L<morbo> (Mojolicious' development server) or L<hypnotoad> (Moj
  $ hypnotoad `which galileo`
 
 or replace C<hypnotoad> with your server of choice.
+
+=head2 Configuration
+
+L<Galileo> will look for a configuration file named F<galileo.conf> in the current working directory. To change this behavior set the environment variable C<GALILEO_CONFIG> to the full path to your configuration file. Note that the `galileo config` action will respect this variable and will write a configuration file to that full file path if detected.
 
 =head1 TECHNOLOGIES USED
 

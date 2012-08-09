@@ -13,6 +13,11 @@
       "version" : "2"
    },
    "name" : "Galileo",
+   "no_index" : {
+      "file" : [
+         "README.pod"
+      ]
+   },
    "prereqs" : {
       "configure" : {
          "requires" : {
@@ -41,6 +46,10 @@
       },
       "Galileo::Admin" : {
          "file" : "lib/Galileo/Admin.pm",
+         "version" : 0
+      },
+      "Galileo::Command::config" : {
+         "file" : "lib/Galileo/Command/config.pm",
          "version" : 0
       },
       "Galileo::Command::setup" : {
