@@ -35,12 +35,14 @@ has config_file => sub {
 sub startup {
   my $app = shift;
 
+  $app->home->parse( $app->home_path );
+
   $app->plugin( Config => { 
     file => $app->config_file,
     default => {
       db_schema  => 'Galileo::DB::Schema',
       db_connect => [
-        'dbi:SQLite:dbname=galileo.db',
+        'dbi:SQLite:dbname=' . $app->home->rel_file( 'galileo.db' ),
         undef,
         undef,
         { sqlite_unicode => 1 },
@@ -48,8 +50,6 @@ sub startup {
       secret => 'MySecret',
     },
   });
-
-  $app->home->parse( $app->home_path );
 
   {
     # use content from directories under lib/Galileo/files or using File::ShareDir
