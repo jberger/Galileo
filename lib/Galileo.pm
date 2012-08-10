@@ -23,7 +23,8 @@ has db => sub {
   return $schema;
 };
 
-has home_path   => $ENV{GALILEO_HOME}   || getcwd;
+has home_path => $ENV{GALILEO_HOME} || getcwd;
+
 has config_file => sub {
   my $self = shift;
   return $ENV{GALILEO_CONFIG} if $ENV{GALILEO_CONFIG}; 
@@ -44,9 +45,11 @@ sub startup {
         undef,
         { sqlite_unicode => 1 },
       ],
-      secret     => 'MySecret',
+      secret => 'MySecret',
     },
   });
+
+  $app->home->parse( $app->home_path );
 
   {
     # use content from directories under lib/Galileo/files or using File::ShareDir
