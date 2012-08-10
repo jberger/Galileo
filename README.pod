@@ -71,6 +71,10 @@ You may also use L<morbo> (Mojolicious' development server) or L<hypnotoad> (Moj
 
 where you may replace C<hypnotoad> with your server of choice.
 
+=head2 Logging
+
+Logging in L<Galileo> is the same as in L<Mojolicious|Mojolicious::Lite/Logging>. Messages will be printed to C<STDERR> unless a directory named F<log> exists in the C<GALILEO_HOME> path, in which case messages will be logged to a file in that directory.
+
 =head1 TECHNOLOGIES USED
 
 =over
