@@ -55,7 +55,7 @@ or replace C<hypnotoad> with your server of choice.
 
 =head2 Configuration
 
-L<Galileo> will look for a configuration file named F<galileo.conf> in the current working directory. To change this behavior set the environment variable C<GALILEO_CONFIG> to the full path to your configuration file. Note that the `galileo config` action will respect this variable and will write a configuration file to that full file path if detected.
+L<Galileo> will look for a configuration file named F<galileo.conf> in the current working directory. To change this behavior set the environment variable C<GALILEO_CONFIG> to the full path to your configuration file. Note that the C<galileo config> action will respect this variable and will write a configuration file to that full file path if detected.
 
 =head1 TECHNOLOGIES USED
 
