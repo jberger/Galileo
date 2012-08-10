@@ -35,7 +35,15 @@ has config_file => sub {
 sub startup {
   my $app = shift;
 
-  $app->home->parse( $app->home_path );
+  {
+    $app->home->parse( $app->home_path );
+
+    # mock code from Mojolicious.pm
+    my $mode = $app->mode;
+
+    $app->log->path($app->home->rel_file("log/$mode.log"))
+      if -w $app->home->rel_file('log');
+  }
 
   $app->plugin( Config => { 
     file => $app->config_file,
