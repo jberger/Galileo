@@ -42,12 +42,15 @@ sub startup {
     },
   });
 
-  # use content from directories under lib/Galileo/files or using File::ShareDir
-  $app->home->parse(catdir(dirname(__FILE__), 'Galileo'));
+
   {
-    my $public = $app->home->rel_dir('files/public');
+    # use content from directories under lib/Galileo/files or using File::ShareDir
+    my $lib_base = catdir(dirname(__FILE__), 'Galileo', 'files');
+
+    my $public = catdir($lib_base, 'public');
     $app->static->paths->[0] = -d $public ? $public : catdir(dist_dir('Galileo'), 'public');
-    my $templates = $app->home->rel_dir('files/templates');
+
+    my $templates = catdir($lib_base, 'templates');
     $app->renderer->paths->[0] = -d $templates ? $templates : catdir(dist_dir('Galileo'), 'templates');
   }
 
