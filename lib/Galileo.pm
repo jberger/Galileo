@@ -5,9 +5,9 @@ our $VERSION = 0.006;
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
-use File::Spec::Functions 'catdir';
+use File::Spec::Functions qw'rel2abs catdir';
 use File::ShareDir 'dist_dir';
-use Cwd 'abs_path';
+use Cwd;
 
 has db => sub {
   my $self = shift;
@@ -23,7 +23,13 @@ has db => sub {
   return $schema;
 };
 
-has config_file => $ENV{GALILEO_CONFIG} || abs_path 'galileo.conf';
+has home_path   => $ENV{GALILEO_HOME}   || getcwd;
+has config_file => sub {
+  my $self = shift;
+  return $ENV{GALILEO_CONFIG} if $ENV{GALILEO_CONFIG}; 
+
+  return rel2abs( 'galileo.conf', $self->home_path );
+};
 
 sub startup {
   my $app = shift;
@@ -42,10 +48,9 @@ sub startup {
     },
   });
 
-
   {
     # use content from directories under lib/Galileo/files or using File::ShareDir
-    my $lib_base = catdir(dirname(__FILE__), 'Galileo', 'files');
+    my $lib_base = catdir(dirname(rel2abs(__FILE__)), 'Galileo', 'files');
 
     my $public = catdir($lib_base, 'public');
     $app->static->paths->[0] = -d $public ? $public : catdir(dist_dir('Galileo'), 'public');
