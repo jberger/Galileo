@@ -35,10 +35,12 @@ has config_file => sub {
 sub startup {
   my $app = shift;
 
-  {
-    $app->home->parse( $app->home_path );
+  # set home folder
+  $app->home->parse( $app->home_path );
 
-    # mock code from Mojolicious.pm
+  {
+    # setup logging path
+    # code stolen from Mojolicious.pm
     my $mode = $app->mode;
 
     $app->log->path($app->home->rel_file("log/$mode.log"))
