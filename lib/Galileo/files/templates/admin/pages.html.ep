@@ -8,8 +8,7 @@
     %= tag th => "Name"
     %= tag th => "Title"
     %= tag th => "Author"
-    %= tag th => "Show"
-    %= tag th => "Edit"
+    %= tag th => "Actions"
   %= end
   % while (my $page = $pages->next) {
     % my $name = $page->name;
@@ -22,10 +21,19 @@
         %= tag a => href => "/admin/user/$author" => "$author"
       %= end
       %= tag td => begin
-        %= tag a => href => "/page/$name" => "Show"
-      %= end
-      %= tag td => begin
-        %= tag a => href => "/edit/$name" => "Edit"
+        %= div => class => 'btn-toolbar' => begin
+          %= div => class => 'btn-group' => begin
+            %= tag a => class => btn => href => "/page/$name" => begin
+              %= tag i => class => 'icon-eye-open'
+            %= end
+            %= tag a => class => btn => href => "/edit/$name" => begin
+              %= tag i => class => 'icon-pencil'
+            %= end
+            %= tag a => class => btn => href => '#' => begin
+              %= tag i => class => 'icon-trash'
+            %= end
+          %= end
+        %= end
       %= end
     %= end
   % }
