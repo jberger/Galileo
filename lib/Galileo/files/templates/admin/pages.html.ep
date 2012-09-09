@@ -21,19 +21,11 @@
         %= tag a => href => "/admin/user/$author" => "$author"
       %= end
       %= tag td => begin
-        %= div => class => 'btn-toolbar' => begin
-          %= div => class => 'btn-group' => begin
-            %= tag a => class => btn => href => "/page/$name" => begin
-              %= tag i => class => 'icon-eye-open'
-            %= end
-            %= tag a => class => btn => href => "/edit/$name" => begin
-              %= tag i => class => 'icon-pencil'
-            %= end
-            %= tag a => class => btn => href => '#' => begin
-              %= tag i => class => 'icon-trash'
-            %= end
-          %= end
-        %= end
+        <div class="btn-group">
+          <a class="btn" href="<%= qq{/page/$name} %>"><i class="icon-eye-open"></i></a>
+          <a class="btn" href="<%= qq{/edit/$name} %>"><i class="icon-pencil"></i></a>
+          <a class="btn" href="#"><i class="icon-trash"></i></a>
+        </div>
       %= end
     %= end
   % }
