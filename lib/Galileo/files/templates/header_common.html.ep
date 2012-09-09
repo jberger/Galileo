@@ -1,8 +1,6 @@
 <title><%= title %></title>
 %= javascript '/assets/jquery-1.7.2.min.js'
 %= javascript '/assets/bootstrap/js/bootstrap.min.js'
-%#= javascript '/assets/bootstrap/js/bootstrap-modal.js'
-%= javascript '/assets/bootstrap/js/bootstrap-popover.js'
 %= stylesheet '/assets/bootstrap/css/bootstrap.min.css'
 %= javascript '/assets/humane/humane.min.js'
 %= stylesheet '/assets/humane/libnotify.css'
