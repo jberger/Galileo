@@ -24,7 +24,6 @@ lib/Galileo/files/public/assets/pagedown/Markdown.Converter.js
 lib/Galileo/files/public/assets/pagedown/Markdown.Editor.js
 lib/Galileo/files/public/assets/pagedown/Markdown.Sanitizer.js
 lib/Galileo/files/public/assets/pagedown/wmd-buttons.png
-lib/Galileo/files/public/assets/ui-example.html
 lib/Galileo/files/public/galileo-edit.js
 lib/Galileo/files/public/galileo-modal.js
 lib/Galileo/files/public/portrait.jpg
