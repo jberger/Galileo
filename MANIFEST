@@ -14,8 +14,6 @@ lib/Galileo/files/public/assets/bootstrap/css/bootstrap-responsive.min.css
 lib/Galileo/files/public/assets/bootstrap/css/bootstrap.min.css
 lib/Galileo/files/public/assets/bootstrap/img/glyphicons-halflings-white.png
 lib/Galileo/files/public/assets/bootstrap/img/glyphicons-halflings.png
-lib/Galileo/files/public/assets/bootstrap/js/bootstrap-modal.js
-lib/Galileo/files/public/assets/bootstrap/js/bootstrap-popover.js
 lib/Galileo/files/public/assets/bootstrap/js/bootstrap.min.js
 lib/Galileo/files/public/assets/humane/humane.min.js
 lib/Galileo/files/public/assets/humane/libnotify.css
@@ -28,6 +26,7 @@ lib/Galileo/files/public/assets/pagedown/Markdown.Sanitizer.js
 lib/Galileo/files/public/assets/pagedown/wmd-buttons.png
 lib/Galileo/files/public/assets/ui-example.html
 lib/Galileo/files/public/galileo-edit.js
+lib/Galileo/files/public/galileo-modal.js
 lib/Galileo/files/public/portrait.jpg
 lib/Galileo/files/templates/admin/pages.html.ep
 lib/Galileo/files/templates/admin/user.html.ep
