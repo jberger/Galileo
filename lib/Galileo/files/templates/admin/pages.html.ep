@@ -50,7 +50,6 @@
 
 %= javascript begin
   function confirm_delete(id, name) {
-    pageid = id;
     $('#modal p').replaceWith('<p>Are you sure that you want to delete the page "' + name + '"</p>');
 
     $('#confirm-delete').click(function(){ delete_page(id) });
