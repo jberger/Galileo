@@ -2,7 +2,6 @@
 <html>
 <head>
   <%= include 'header_common' %>
-  <%= content_for 'header' %>
 </head>
 <body>
 <div class="container">
