@@ -13,7 +13,7 @@
   % while (my $page = $pages->next) {
     % my $name = $page->name;
     % my $id = $page->page_id;
-    %= tag tr => begin
+    %= tag tr => id => "row-$id" => begin
       %= tag td => $id
       %= tag td => $name
       %= tag td => $page->title
@@ -25,7 +25,9 @@
         <div class="btn-group">
           <a class="btn" href="<%= qq{/page/$name} %>"><i class="icon-eye-open"></i></a>
           <a class="btn" href="<%= qq{/edit/$name} %>"><i class="icon-pencil"></i></a>
-          <a class="btn" href="#" onclick="confirm_delete('<%= $id %>', '<%= $name %>')"><i class="icon-trash"></i></a>
+          <a class="btn" href="#" onclick="confirm_delete('<%= $id %>', '<%= $name %>')">
+            <i class="icon-trash"></i>
+          </a>
         </div>
       %= end
     %= end
@@ -38,17 +40,36 @@
     <h3>Confirm Action</h3>
   </div>
   <div class="modal-body" id="modal-text">
-    <p>One fine body…</p>
+    <p></p>
   </div>
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Close</a>
-    <a href="#" class="btn btn-primary">Confirm</a>
+    <a href="#" class="btn btn-primary" data-dismiss="modal" id="confirm-delete">Confirm</a>
   </div>
 </div>
 
 %= javascript begin
   function confirm_delete(id, name) {
+    pageid = id;
     $('#modal p').replaceWith('<p>Are you sure that you want to delete the page "' + name + '"</p>');
+
+    $('#confirm-delete').click(function(){ delete_page(id) });
+
     $('#modal').modal();
+  }
+
+  function delete_page(id) {
+    ws = new WebSocket( '<%= url_for("removepage")->to_abs %>' );
+    ws.onmessage = function (evt) {
+      var data = JSON.parse(evt.data);
+      //console.log( data );
+      humane.log( data.message );
+      if ( data.success ) {
+        $( '#row-' + id ).remove();
+      }
+    };
+    ws.onopen = function () {
+      ws.send( id );
+    };
   }
 %= end

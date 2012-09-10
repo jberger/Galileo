@@ -8,6 +8,7 @@
       <li><a href="/">Home</a></li>
       % for my $id (@pages) {
         % my $page = $rs->single({page_id => $id});
+        % next unless $page;
         <li>
           %= tag a => href => "/page/" . $page->name => begin
             %= $page->title

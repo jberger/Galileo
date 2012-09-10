@@ -163,7 +163,7 @@ subtest 'Edit Main Navigation Menu' => sub {
 
 };
 
-subtest 'Administrative Overview Pages' => sub {
+subtest 'Administrative Overview: All Users' => sub {
 
   # test the admin pages
   $t->get_ok('/admin/users')
@@ -172,10 +172,32 @@ subtest 'Administrative Overview Pages' => sub {
     ->text_is( 'tr > td:nth-of-type(2)' => 'admin' )
     ->text_is( 'tr > td:nth-of-type(3)' => 'Joe Admin' );
 
+};
+
+subtest 'Administrative Overview: All Pages' => sub {
+
   $t->get_ok('/admin/pages')
     ->status_is(200)
     ->text_is( h1 => 'Administration: Pages' )
     ->text_is( 'tr > td:nth-of-type(2)' => 'home' );
+
+  # attempt to remove home page
+  $t->websocket_ok('/remove/page')
+    ->send_ok('1')
+    ->message_like( qr'Cannot remove home page' )
+    ->finish_ok;
+
+  # attempt to remove invalid page
+  $t->websocket_ok('/remove/page')
+    ->send_ok('5')
+    ->message_like( qr'Could not access page' )
+    ->finish_ok;
+
+  # remove page
+  $t->websocket_ok('/remove/page')
+    ->send_ok('2')
+    ->message_like( qr'Page removed' )
+    ->finish_ok;
 
 };
 

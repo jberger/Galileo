@@ -36,5 +36,50 @@ sub store_user {
   });
 }
 
+sub remove_page {
+  my $self = shift;
+
+  $self->on( message => sub {
+    my ($self, $id) = @_;
+    my $json = Mojo::JSON->new;
+
+    if ($id == 1) {
+      $self->send($json->encode({
+        success => 0,
+        message => 'Cannot remove home page',
+      }));
+      return;
+    }
+
+    my $page = $self->schema->resultset('Page')->single({ page_id => $id });
+
+    unless ( $page ) {
+      $self->send($json->encode({
+        success => 0,
+        message => 'Could not access page',
+      }));
+      return;
+    }
+
+    my $affected = $page->delete;
+    #TODO remove page from nav menu if present
+
+    unless ( $affected ) {
+      $self->send($json->encode({
+        success => 0,
+        message => 'Database reports failure on deleting page',
+      }));
+      return;
+    }
+
+    $self->send($json->encode({
+      success => 1,
+      message => 'Page removed',
+    }));
+    return;
+
+  });
+}
+
 1;
 
