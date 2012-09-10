@@ -1,6 +1,6 @@
 Revision history for Perl module Galileo.
 
-0.006
+0.006  September 10, 2012
 	- Implement page deletion
         - Page and User creation now available on menu
 	- Improved configuration file detection
