@@ -34,42 +34,26 @@
   % }
 %= end
 
-<div class="modal hide fade" id="modal">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>Confirm Action</h3>
-  </div>
-  <div class="modal-body" id="modal-text">
-    <p></p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Close</a>
-    <a href="#" class="btn btn-primary" data-dismiss="modal" id="confirm-delete">Confirm</a>
-  </div>
-</div>
-
 %= javascript begin
-  function confirm_delete(id, name) {
-    pageid = id;
-    $('#modal p').replaceWith('<p>Are you sure that you want to delete the page "' + name + '"</p>');
+function confirm_delete(id, name) {
+  show_modal(
+    'Are you sure that you want to delete the page "' + name + '"',
+    function(){ delete_page(id) }
+  );
+}
 
-    $('#confirm-delete').click(function(){ delete_page(id) });
-
-    $('#modal').modal();
-  }
-
-  function delete_page(id) {
-    ws = new WebSocket( '<%= url_for("removepage")->to_abs %>' );
-    ws.onmessage = function (evt) {
-      var data = JSON.parse(evt.data);
-      //console.log( data );
-      humane.log( data.message );
-      if ( data.success ) {
-        $( '#row-' + id ).remove();
-      }
-    };
-    ws.onopen = function () {
-      ws.send( id );
-    };
-  }
+function delete_page(id) {
+  ws = new WebSocket( '<%= url_for("removepage")->to_abs %>' );
+  ws.onmessage = function (evt) {
+    var data = JSON.parse(evt.data);
+    //console.log( data );
+    humane.log( data.message );
+    if ( data.success ) {
+      $( '#row-' + id ).remove();
+    }
+  };
+  ws.onopen = function () {
+    ws.send( id );
+  };
+}
 %= end
