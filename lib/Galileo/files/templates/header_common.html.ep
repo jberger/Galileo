@@ -4,6 +4,7 @@
 %= stylesheet '/assets/bootstrap/css/bootstrap.min.css'
 %= javascript '/assets/humane/humane.min.js'
 %= stylesheet '/assets/humane/libnotify.css'
+%= javascript '/galileo-modal.js'
 %= javascript begin
   humane.baseCls = 'humane-libnotify';
   % if (my $message = flash 'onload_message' ) {
