@@ -57,6 +57,7 @@ sub startup {
         undef,
         { sqlite_unicode => 1 },
       ],
+      sanitize => 1,
       secret => 'MySecret',
     },
   });

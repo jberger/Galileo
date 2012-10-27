@@ -24,6 +24,8 @@ sub edit_page {
     $self->stash( input => "Hello World" );
   }
 
+  $self->stash( sanitize => $self->config('sanitize') // 1 );
+
   $self->render;
 }
 

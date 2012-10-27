@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.008  October 27, 2012
+	- Sanitizing editor is now optional
+
 0.007  September 10, 2012
 	- Implement page deletion
         - Page and User creation now available on menu

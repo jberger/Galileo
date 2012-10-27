@@ -24,6 +24,7 @@ sub run {
 
   my $config = $self->app->config;
   local $config->{secret} = prompt('x', 'Application Secret: ', '', '');
+  local $config->{sanitize} = prompt('y', 'Use Sanitizing Editor: ', '', 'Yes');
 
   open my $fh, '>', $file 
     or die "Could not open file $file for writing: $!\n";
