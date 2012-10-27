@@ -1,5 +1,5 @@
 % layout 'standard';
-% my $sanitize = 1;
+% my $sanitize = stash('sanitize') // 1 ? 'true' : 'false';
 % content_for header => begin
   %= stylesheet '/assets/pagedown/demo.css'
   %= javascript '/assets/pagedown/Markdown.Converter.js'
@@ -18,7 +18,7 @@ function saveButton() {
 }
 
 $(function () {
-  editor = new Editor("<%= $name =%>", "<%= url_for('storepage')->to_abs %>", <%= $sanitize =%>);
+  editor = new Editor("<%= $name =%>", "<%= url_for('storepage')->to_abs =%>", <%= $sanitize =%>);
 });
 
 %= end
