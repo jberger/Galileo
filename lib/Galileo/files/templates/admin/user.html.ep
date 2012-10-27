@@ -2,9 +2,9 @@
 % title "Administer User: $name";
 % content_for banner => "Administer User: $name";
 
-%= content_for header => begin
-  %= javascript '/galileo-edit.js';
-%= end
+% content_for header => begin
+  %= javascript '/galileo-edit.js'
+% end
 
 % my $user = get_user( $name );
 % my $full = $user ? $user->full : '';
