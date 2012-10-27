@@ -1,4 +1,5 @@
 % layout 'standard';
+% my $sanitize = 0;
 % content_for header => begin
   %= stylesheet '/assets/pagedown/demo.css'
   %= javascript '/assets/pagedown/Markdown.Converter.js'
@@ -20,8 +21,16 @@ function saveButton() {
   sendViaWS("<%= url_for('storepage')->to_abs %>", data);
 }
 
+function getConverter(sanitize) {
+  if ( sanitize ) {
+    return Markdown.getSanitizingConverter();
+  } else {
+    return new Markdown.Converter();
+  }
+}
+
 $(function () {
-  var converter = Markdown.getSanitizingConverter();
+  var converter = getConverter(<%= $sanitize =%>);
   var editor = new Markdown.Editor(converter);
   converter.hooks.chain("preConversion", function (text) {
     data.md = text;
