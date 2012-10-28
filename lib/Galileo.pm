@@ -57,6 +57,7 @@ sub startup {
         undef,
         { sqlite_unicode => 1 },
       ],
+      files => 'public',
       sanitize => 1,
       secret => 'MySecret',
     },
@@ -73,10 +74,18 @@ sub startup {
     $app->renderer->paths->[0] = -d $templates ? $templates : catdir(dist_dir('Galileo'), 'templates');
   }
 
+  {
+    # add the files directory to array of static content folders
+    my $dir = $app->home->rel_dir( $self->config->{files} );
+    push @{ $app->static->paths }, $dir if -d $dir;
+  }
+
   # use commands from Galileo::Command namespace
   push @{$app->commands->namespaces}, 'Galileo::Command';
 
   $app->secret( $app->config->{secret} );
+
+  ## Helpers ##
 
   $app->helper( schema => sub { shift->app->db } );
 
@@ -143,6 +152,8 @@ sub startup {
       return $mem{$name}{content} = $cb->();
     }
   );
+
+  ## Routing ##
 
   my $r = $app->routes;
 
