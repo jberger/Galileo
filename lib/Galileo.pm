@@ -271,7 +271,7 @@ where you may replace C<hypnotoad> with your server of choice.
 
 Logging in L<Galileo> is the same as in L<Mojolicious|Mojolicious::Lite/Logging>. Messages will be printed to C<STDERR> unless a directory named F<log> exists in the C<GALILEO_HOME> path, in which case messages will be logged to a file in that directory.
 
-=head2 Static Files Folder
+=head2 Static files folder
 
 If Galileo detects a folder named F<static> inside the C<GALILEO_HOME> path, that path is added to the list of folders for serving static files. The name of this folder may be changed in the configuration file via the key C<files>.
 
