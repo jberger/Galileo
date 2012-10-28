@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.010  October 28, 2012
+	- Forgot to include new test file in MANIFEST
+
 0.009  October 28, 2012
 	- Add a configurable static files folder
 	- Check GALILEO_HOME at object creation time
