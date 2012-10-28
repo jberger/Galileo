@@ -1,7 +1,9 @@
 Revision history for Perl module Galileo.
 
-0.009
+0.009  October 28, 2012
 	- Add a configurable static files folder
+	- Check GALILEO_HOME at object creation time
+	- Various bugfixes
 
 0.008  October 27, 2012
 	- Sanitizing editor is now optional

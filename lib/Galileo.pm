@@ -1,7 +1,7 @@
 package Galileo;
 use Mojo::Base 'Mojolicious';
 
-our $VERSION = 0.008;
+our $VERSION = 0.009;
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
