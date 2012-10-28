@@ -23,7 +23,7 @@ has db => sub {
   return $schema;
 };
 
-has home_path => $ENV{GALILEO_HOME} || getcwd;
+has home_path => sub { $ENV{GALILEO_HOME} || getcwd };
 
 has config_file => sub {
   my $self = shift;
@@ -57,7 +57,7 @@ sub startup {
         undef,
         { sqlite_unicode => 1 },
       ],
-      files => 'public',
+      files => 'static',
       sanitize => 1,
       secret => 'MySecret',
     },
@@ -76,7 +76,7 @@ sub startup {
 
   {
     # add the files directory to array of static content folders
-    my $dir = $app->home->rel_dir( $self->config->{files} );
+    my $dir = $app->home->rel_dir( $app->config->{files} );
     push @{ $app->static->paths }, $dir if -d $dir;
   }
 
