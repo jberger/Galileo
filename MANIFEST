@@ -44,3 +44,4 @@ META.json
 META.yml
 README.pod
 t/basic.t
+t/locations.t
