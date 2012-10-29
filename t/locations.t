@@ -11,8 +11,6 @@ use Galileo::DB::Schema;
 use Galileo::Command::setup;
 
 use Test::More;
-END{ done_testing(); }
-
 use Test::Mojo;
 
 # create a test file at $home/static/test.html
@@ -51,3 +49,6 @@ ok( grep { $_ eq $static } @{ $app->static->paths }, "'static' directory is encl
 $t->get_ok('/test.html')
   ->status_is(200)
   ->text_is('body' => 'test text');
+
+done_testing();
+

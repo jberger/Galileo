@@ -9,8 +9,6 @@ use Mojo::JSON;
 my $json = Mojo::JSON->new;
 
 use Test::More;
-END{ done_testing(); }
-
 use Test::Mojo;
 
 my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
@@ -307,4 +305,6 @@ subtest 'Logging Out' => sub {
     ->text_is( h1 => 'New Home' )
     ->element_exists( 'form' );
 };
+
+done_testing();
 
