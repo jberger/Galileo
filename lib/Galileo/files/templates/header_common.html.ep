@@ -8,9 +8,7 @@
 %= javascript begin
   humane.baseCls = 'humane-libnotify';
   % if (my $message = flash 'onload_message' ) {
-    $(document).ready(function () { 
-      humane.log( "<%= $message %>" );
-    });
+    $(function () { humane.log( "<%= $message =%>" ) });
   % }
 %= end
 
