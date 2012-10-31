@@ -1,7 +1,7 @@
 package Galileo;
 use Mojo::Base 'Mojolicious';
 
-our $VERSION = 0.010;
+our $VERSION = 0.011;
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
@@ -57,6 +57,8 @@ sub startup {
         undef,
         { sqlite_unicode => 1 },
       ],
+      extra_css => [],
+      extra_js => [],
       files => 'static',
       sanitize => 1,
       secret => 'MySecret',
@@ -274,6 +276,10 @@ Logging in L<Galileo> is the same as in L<Mojolicious|Mojolicious::Lite/Logging>
 =head2 Static files folder
 
 If Galileo detects a folder named F<static> inside the C<GALILEO_HOME> path, that path is added to the list of folders for serving static files. The name of this folder may be changed in the configuration file via the key C<files>.
+
+=head1 CUSTOMIZING
+
+L<Galileo> doesn't have too much in the way of theming or customization as yet, however the L</config> keys C<extra_css> and C<extra_js> take array references pointing to CSS or Javascript files (respectively) within a L<static directory|/"Static files folder">.
 
 =head1 TECHNOLOGIES USED
 

@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.011  October 21, 2012
+	- Added extra_css and extra_js config options
+
 0.010  October 28, 2012
 	- Forgot to include new test file in MANIFEST
 

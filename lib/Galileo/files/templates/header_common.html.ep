@@ -16,3 +16,5 @@
 
 %= content_for 'header'
 
+%= stylesheet $_ for @{config->{extra_css}}
+%= javascript $_ for @{config->{extra_js}}

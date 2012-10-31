@@ -298,6 +298,16 @@ subtest 'Create New User' => sub {
 
 };
 
+subtest 'Extra CSS/JS' => sub {
+  my $app = $t->app;
+  local $app->config->{extra_css} = ['mytest.css'];
+  local $app->config->{extra_js}  = ['mytest.js' ];
+  $t->get_ok('/')
+    ->status_is(200)
+    ->element_exists( 'link[href=mytest.css]' )
+    ->element_exists( 'script[src=mytest.js]' );
+};
+
 subtest 'Logging Out' => sub {
   # This is essentially a repeat of the first test
   $t->get_ok('/logout')
