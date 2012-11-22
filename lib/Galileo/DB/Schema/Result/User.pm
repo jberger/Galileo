@@ -20,9 +20,11 @@ column full => {
 };
 
 column password => {
-    data_type => 'VARCHAR',
+    data_type => 'CHAR',
+    size      => 59,
     encode_column => 1,
     encode_class  => 'Crypt::Eksblowfish::Bcrypt',
+    encode_args   => { key_nul => 0, cost => 8 },
     encode_check_method => 'check_password',
 };
 
