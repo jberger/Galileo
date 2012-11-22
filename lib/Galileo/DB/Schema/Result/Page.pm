@@ -13,19 +13,23 @@ column author_id => {
 };
 
 unique_column name => { 
-  data_type => 'VARCHAR'
+  data_type => 'VARCHAR',
+  size => 'MAX',
 };
   
 column title => { 
-  data_type => 'VARCHAR'
+  data_type => 'VARCHAR',
+  size => 'MAX',
 };
 
 column html => {
-  data_type => 'VARCHAR'
+  data_type => 'VARCHAR',
+  size => 'MAX',
 };
 
 column md => { 
-  data_type => 'VARCHAR'
+  data_type => 'VARCHAR',
+  size => 'MAX',
 };
 
 belongs_to author => 'Galileo::DB::Schema::Result::User', 'author_id';
