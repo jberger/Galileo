@@ -10,12 +10,11 @@ primary_column menu_id => {
 
 unique_column name => { 
   data_type => 'VARCHAR',
-  size => 'MAX',
+  size => 255,
 };
 
 column list => { 
-  data_type => 'VARCHAR',
-  size => 'MAX',
+  data_type => 'TEXT',
 };
 
 1;

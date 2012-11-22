@@ -11,12 +11,11 @@ primary_column user_id => {
 
 unique_column name => { 
   data_type => 'VARCHAR',
-  size => 'MAX',
+  size => 255,
 };
 
 column full => {
-  data_type => 'VARCHAR',
-  size => 'MAX',
+  data_type => 'TEXT',
 };
 
 column password => {
