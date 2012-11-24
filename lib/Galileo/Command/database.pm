@@ -10,12 +10,20 @@ use Mojo::JSON;
 my $json = Mojo::JSON->new();
 
 use DBIx::Class::DeploymentHandler;
+use File::ShareDir qw/dist_dir/;
+use File::Spec;
+
+my $dev_dir = 'lib/Galileo/files/sql';
+my $script_dir = -e $dev_dir ? $dev_dir : File::Spec->catdir( dist_dir('Galileo'), 'sql' );
 
 sub run {
   my ($self) = @_;
 
   my $schema = $self->app->schema;
-  my $dh = DBIx::Class::DeploymentHandler->new({schema => $schema});
+  my $dh = DBIx::Class::DeploymentHandler->new({
+    schema => $schema,
+    script_dir => $script_dir,
+  });
 
   my $available = $schema->schema_version;
 
