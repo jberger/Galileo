@@ -9,6 +9,7 @@ my $json = Mojo::JSON->new();
 use DBIx::Class::DeploymentHandler;
 use File::ShareDir qw/dist_dir/;
 use File::Spec;
+use File::Temp ();
 
 my $dev_dir = File::Spec->catdir( qw/ lib Galileo files sql / );
 
@@ -20,22 +21,18 @@ has 'schema' => sub {
   $app->schema;
 };
 
-has 'script_dir' => sub {
+has 'script_directory' => sub {
   -e $dev_dir ? $dev_dir : File::Spec->catdir( dist_dir('Galileo'), 'sql' )
 };
 
-has 'force_overwrite' => 1;
-
 has 'dh' => sub {
   my $self = shift;
-  my $schema = $self->schema;
-
-  my $script_dir = $self->script_dir;
 
   DBIx::Class::DeploymentHandler->new({
-    schema => $schema,
-    script_dir => $script_dir,
-    force_overwrite => $self->force_overwrite,
+    schema => $self->schema,
+    script_directory => $self->script_directory,
+    ignore_ddl => 1,
+    databases => [],
   });
 
 };
@@ -64,9 +61,6 @@ sub setup_unversioned {
 sub deploy {
   my $self = shift;
   my $dh = $self->dh;
-
-  local $SIG{__WARN__} = sub { warn @_ unless $_[0] =~ /Overwriting existing DDL/ }
-    if $self->force_overwrite;
 
   $dh->prepare_deploy;
   $dh->deploy;
@@ -175,8 +169,14 @@ sub create_test_object {
   require Galileo::DB::Schema;
 
   my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
+  my $ddl_dir = File::Temp->newdir;
 
-  my $dh = __PACKAGE__->new( schema => $db );
+  my $dh = __PACKAGE__->new( 
+    schema => $db,
+    databases => [],
+    ignore_ddl => 1,
+    script_directory => "$ddl_dir",
+  );
   $dh->deploy;
   $dh->inject_sample_data('admin', 'pass', 'Joe Admin');
 

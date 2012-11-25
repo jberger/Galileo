@@ -19,12 +19,16 @@ sub generate_install_scripts {
   my $schema = $self->app->schema;
   my $dh = DBIx::Class::DeploymentHandler->new({
     schema => $schema,
+    databases => [],
+    ignore_ddl => 1,
     script_directory => 'lib/Galileo/files/sql',
   });
   my $version = $schema->schema_version;
 
   say "generating deployment script";
   $dh->prepare_install;
+
+  return;
  
   if ( $version > 1 ) {
     say "generating upgrade script";
