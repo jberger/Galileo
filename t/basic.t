@@ -1,9 +1,7 @@
 use strict;
 use warnings;
 
-use Galileo;
-use Galileo::DB::Schema;
-use Galileo::Command::setup;
+use Galileo::DB::Deploy;
 
 use Mojo::JSON;
 my $json = Mojo::JSON->new;
@@ -11,11 +9,7 @@ my $json = Mojo::JSON->new;
 use Test::More;
 use Test::Mojo;
 
-my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
-Galileo::Command::setup->inject_sample_data('admin', 'pass', 'Joe Admin', $db);
-ok( $db->resultset('User')->single({name => 'admin'})->check_password('pass'), 'DB user checks out' );
-
-my $t = Test::Mojo->new(Galileo->new(db => $db));
+my $t = Galileo::DB::Deploy->create_test_object({test => 1});
 $t->ua->max_redirects(2);
 
 subtest 'Anonymous User' => sub {

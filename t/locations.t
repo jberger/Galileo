@@ -6,9 +6,7 @@ use File::Temp;
 my $home = File::Temp->newdir;
 $ENV{GALILEO_HOME} = "$home";
 
-use Galileo;
-use Galileo::DB::Schema;
-use Galileo::Command::setup;
+use Galileo::DB::Deploy;
 
 use Test::More;
 use Test::Mojo;
@@ -36,11 +34,7 @@ END
 
 chdir $orig or die "Could not chdir back to $orig";
 
-my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
-Galileo::Command::setup->inject_sample_data('admin', 'pass', 'Joe Admin', $db);
-ok( $db->resultset('User')->single({name => 'admin'})->check_password('pass'), 'DB user checks out' );
-
-my $t = Test::Mojo->new(Galileo->new(db => $db));
+my $t = Galileo::DB::Deploy->create_test_object({ test => 1 });
 my $app = $t->app;
 
 is( $app->home, $home, 'home dir detected from GALILEO_HOME' );
