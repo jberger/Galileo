@@ -30,7 +30,6 @@ has 'dh' => sub {
 
   my $schema = $self->schema;
   my $db_type = $schema->storage->sqlt_type;
-  warn "Using $db_type";
 
   DBIx::Class::DeploymentHandler->new({
     schema => $schema,

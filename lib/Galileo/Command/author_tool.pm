@@ -27,25 +27,6 @@ sub generate_install_scripts {
   say "generating deployment script";
   $dh->prepare_install;
 
-  return;
- 
-  if ( $version > 1 ) {
-    say "generating upgrade script";
-    $dh->prepare_upgrade( {
-      from_version => $version - 1,
-      to_version   => $version,
-      version_set  => [ $version - 1, $version ],
-    } );
- 
-    say "generating downgrade script";
-    $dh->prepare_downgrade( {
-      from_version => $version,
-      to_version   => $version - 1,
-      version_set  => [ $version, $version - 1 ],
-    } );
-
-  }
-
 }
 
 1;
