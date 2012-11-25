@@ -28,11 +28,15 @@ has 'script_directory' => sub {
 has 'dh' => sub {
   my $self = shift;
 
+  my $schema = $self->schema;
+  my $db_type = $schema->storage->sqlt_type;
+  warn "Using $db_type";
+
   DBIx::Class::DeploymentHandler->new({
-    schema => $self->schema,
+    schema => $schema,
     script_directory => $self->script_directory,
-    ignore_ddl => 1,
-    databases => [],
+    force_overwrite => 1,
+    databases => [$db_type],
   });
 
 };

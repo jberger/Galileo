@@ -20,7 +20,6 @@ sub generate_install_scripts {
   my $dh = DBIx::Class::DeploymentHandler->new({
     schema => $schema,
     databases => [],
-    ignore_ddl => 1,
     script_directory => 'lib/Galileo/files/sql',
   });
   my $version = $schema->schema_version;
