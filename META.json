@@ -30,6 +30,7 @@
             "DBD::SQLite" : "0",
             "DBIx::Class" : "0",
             "DBIx::Class::Candy" : "0",
+            "DBIx::Class::DeploymentHandler" : "0",
             "DBIx::Class::EncodedColumn" : "0",
             "File::ShareDir" : "1.00",
             "Mojolicious" : "3.0",
@@ -52,13 +53,21 @@
          "file" : "lib/Galileo/Command/config.pm",
          "version" : 0
       },
+      "Galileo::Command::database" : {
+         "file" : "lib/Galileo/Command/database.pm",
+         "version" : 0
+      },
       "Galileo::Command::setup" : {
          "file" : "lib/Galileo/Command/setup.pm",
          "version" : 0
       },
+      "Galileo::DB::Deploy" : {
+         "file" : "lib/Galileo/DB/Deploy.pm",
+         "version" : 0
+      },
       "Galileo::DB::Schema" : {
          "file" : "lib/Galileo/DB/Schema.pm",
-         "version" : 0
+         "version" : "1"
       },
       "Galileo::DB::Schema::Result::Menu" : {
          "file" : "lib/Galileo/DB/Schema/Result/Menu.pm",

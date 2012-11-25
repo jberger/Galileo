@@ -6,6 +6,7 @@ lib/Galileo/Admin.pm
 lib/Galileo/Command/config.pm
 lib/Galileo/Command/database.pm
 lib/Galileo/Command/setup.pm
+lib/Galileo/DB/Deploy.pm
 lib/Galileo/DB/Schema.pm
 lib/Galileo/DB/Schema/Result/Menu.pm
 lib/Galileo/DB/Schema/Result/Page.pm
@@ -30,12 +31,6 @@ lib/Galileo/files/public/galileo-modal.js
 lib/Galileo/files/public/portrait.jpg
 lib/Galileo/files/sql/_source/deploy/1/001-auto-__VERSION.yml
 lib/Galileo/files/sql/_source/deploy/1/001-auto.yml
-lib/Galileo/files/sql/MySQL/deploy/1/001-auto-__VERSION.sql
-lib/Galileo/files/sql/MySQL/deploy/1/001-auto.sql
-lib/Galileo/files/sql/PostgreSQL/deploy/1/001-auto-__VERSION.sql
-lib/Galileo/files/sql/PostgreSQL/deploy/1/001-auto.sql
-lib/Galileo/files/sql/SQLite/deploy/1/001-auto-__VERSION.sql
-lib/Galileo/files/sql/SQLite/deploy/1/001-auto.sql
 lib/Galileo/files/templates/admin/pages.html.ep
 lib/Galileo/files/templates/admin/user.html.ep
 lib/Galileo/files/templates/admin/users.html.ep
