@@ -18,7 +18,7 @@ has 'app';
 has 'schema' => sub {
   my $self = shift;
   my $app = $self->app or die "Need either 'app' or 'schema'\n"; 
-  $app->schema;
+  $app->db;
 };
 
 has 'script_directory' => sub {
