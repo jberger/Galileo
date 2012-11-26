@@ -13,13 +13,7 @@ use File::Temp ();
 
 my $dev_dir = File::Spec->catdir( qw/ lib Galileo files sql / );
 
-has 'app';
-
-has 'schema' => sub {
-  my $self = shift;
-  my $app = $self->app or die "Need either 'app' or 'schema'\n"; 
-  $app->db;
-};
+has 'schema';
 
 has 'script_directory' => sub {
   -e $dev_dir ? $dev_dir : File::Spec->catdir( dist_dir('Galileo'), 'sql' )
@@ -28,7 +22,7 @@ has 'script_directory' => sub {
 has 'dh' => sub {
   my $self = shift;
 
-  my $schema = $self->schema;
+  my $schema = $self->schema or die "Need schema attribute";
   my $db_type = $schema->storage->sqlt_type;
 
   DBIx::Class::DeploymentHandler->new({
