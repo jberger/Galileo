@@ -13,13 +13,7 @@ use File::Temp ();
 
 my $dev_dir = File::Spec->catdir( qw/ lib Galileo files sql / );
 
-has 'app';
-
-has 'schema' => sub {
-  my $self = shift;
-  my $app = $self->app or die "Need either 'app' or 'schema'\n"; 
-  $app->schema;
-};
+has 'schema';
 
 has 'script_directory' => sub {
   -e $dev_dir ? $dev_dir : File::Spec->catdir( dist_dir('Galileo'), 'sql' )
@@ -28,7 +22,7 @@ has 'script_directory' => sub {
 has 'dh' => sub {
   my $self = shift;
 
-  my $schema = $self->schema;
+  my $schema = $self->schema or die "Need schema attribute";
   my $db_type = $schema->storage->sqlt_type;
 
   DBIx::Class::DeploymentHandler->new({
@@ -174,14 +168,21 @@ sub create_test_object {
   my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
   my $ddl_dir = File::Temp->newdir;
 
-  my $dh = __PACKAGE__->new( 
+  
+  my $dh = DBIx::Class::DeploymentHandler->new( 
     schema => $db,
     databases => [],
     ignore_ddl => 1,
     script_directory => "$ddl_dir",
   );
-  $dh->deploy;
-  $dh->inject_sample_data('admin', 'pass', 'Joe Admin');
+  my $gdh = __PACKAGE__->new(
+    dh => $dh,
+    schema => $db,
+    script_directory => "$ddl_dir",
+  );
+  $gdh->deploy;
+  $gdh->inject_sample_data('admin', 'pass', 'Joe Admin');
+  
 
   if ($opts->{test}) {
     require Test::More;
@@ -194,7 +195,7 @@ sub create_test_object {
   require Test::Mojo;
   my $t = Test::Mojo->new(Galileo->new(db => $db));
 
-  return wantarray ? ($t, $dh) : $t;
+  return wantarray ? ($t, $gdh) : $t;
 }
 
 1;

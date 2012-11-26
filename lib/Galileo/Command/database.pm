@@ -10,7 +10,7 @@ use Galileo::DB::Deploy;
 
 has 'dh' => sub {
   my $self = shift;
-  Galileo::DB::Deploy->new( app => $self->app );
+  Galileo::DB::Deploy->new( schema => $self->app->db );
 };
 
 sub run {
