@@ -63,7 +63,7 @@ This step is required. Run C<galileo setup> to setup a database. It will use the
 
  $ galileo daemon
 
-After the database is has been setup, you can run C<galileo daemon> to start the server. 
+After the database has been setup, you can run C<galileo daemon> to start the server. 
 
 You may also use L<morbo> (Mojolicious' development server) or L<hypnotoad> (Mojolicious' production server). You may even use any other server that Mojolicious supports, however for full functionality it must support websockets. When doing so you will need to know the full path to the C<galileo> application. A useful recipe might be
 
@@ -78,6 +78,10 @@ Logging in L<Galileo> is the same as in L<Mojolicious|Mojolicious::Lite/Logging>
 =head2 Static files folder
 
 If Galileo detects a folder named F<static> inside the C<GALILEO_HOME> path, that path is added to the list of folders for serving static files. The name of this folder may be changed in the configuration file via the key C<files>.
+
+=head1 CUSTOMIZING
+
+L<Galileo> doesn't have too much in the way of theming or customization as yet, however the L</config> keys C<extra_css> and C<extra_js> take array references pointing to CSS or Javascript files (respectively) within a L<static directory|/"Static files folder">.
 
 =head1 TECHNOLOGIES USED
 
