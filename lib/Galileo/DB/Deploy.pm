@@ -174,14 +174,21 @@ sub create_test_object {
   my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
   my $ddl_dir = File::Temp->newdir;
 
-  my $dh = __PACKAGE__->new( 
+  
+  my $dh = DBIx::Class::DeploymentHandler->new( 
     schema => $db,
     databases => [],
     ignore_ddl => 1,
     script_directory => "$ddl_dir",
   );
-  $dh->deploy;
-  $dh->inject_sample_data('admin', 'pass', 'Joe Admin');
+  my $gdh = __PACKAGE__->new(
+    dh => $dh,
+    schema => $db,
+    script_directory => "$ddl_dir",
+  );
+  $gdh->deploy;
+  $gdh->inject_sample_data('admin', 'pass', 'Joe Admin');
+  
 
   if ($opts->{test}) {
     require Test::More;
@@ -194,7 +201,7 @@ sub create_test_object {
   require Test::Mojo;
   my $t = Test::Mojo->new(Galileo->new(db => $db));
 
-  return wantarray ? ($t, $dh) : $t;
+  return wantarray ? ($t, $gdh) : $t;
 }
 
 1;
