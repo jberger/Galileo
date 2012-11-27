@@ -8,30 +8,28 @@ has usage       => "usage: $0 setup\n";
 
 use Galileo::DB::Deploy;
 
-has 'dh' => sub {
-  my $self = shift;
-  Galileo::DB::Deploy->new( schema => $self->app->db );
-};
-
 sub run {
   my ($self) = @_;
 
-  $self->deploy_or_upgrade_schema;
+  my $dh = Galileo::DB::Deploy->new( schema => $self->schema );
+  $self->deploy_or_upgrade_schema( $dh );
 
   say "Run 'galileo daemon' to start the server.";
 }
 
+sub schema { shift->app->db }
+
 sub deploy_or_upgrade_schema {
   my $self = shift;
-  my $dh = $self->dh;
-  my $schema = $dh->schema;
+  my $dh = shift;
+  my $schema = $self->schema;
 
   my $available = $schema->schema_version;
 
   # Nothing installed
   unless ( eval { $schema->resultset('User')->first } ) {
     say "Install database version: $available";
-    $self->install_schema;
+    $self->install_schema( $dh );
     return;
   }
 
@@ -46,16 +44,16 @@ sub deploy_or_upgrade_schema {
 
   say "Upgrade database $installed -> $available";
 
-  $dh->upgrade;
+  $dh->do_upgrade;
 }
 
 sub install_schema {
   my $self = shift;
-  my $dh = $self->dh;
+  my $dh = shift;
 
   my ($user, $full, $pass) = $self->prompt_for_user_info;
 
-  $dh->deploy;
+  $dh->do_deploy;
   $dh->inject_sample_data($user, $pass, $full);
 }
 

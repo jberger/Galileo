@@ -1,74 +1,74 @@
 package Galileo::DB::Deploy;
-use Mojo::Base -base;
+use Moose;
+BEGIN{ extends 'DBIx::Class::DeploymentHandler' }
 
 # A wrapper class for DBICDH for use with Galileo
 
 use Mojo::JSON;
 my $json = Mojo::JSON->new();
 
-use DBIx::Class::DeploymentHandler;
 use File::ShareDir qw/dist_dir/;
 use File::Spec;
 use File::Temp ();
 
 my $dev_dir = File::Spec->catdir( qw/ lib Galileo files sql / );
 
-has 'schema';
+has '+schema' => (
+  weak_ref => 1,
+);
 
-has 'script_directory' => sub {
+has 'script_directory' => (
+  is => 'rw',
+  lazy => 1,
+  builder => '_build_script_directory',
+);
+
+sub _build_script_directory {
   -e $dev_dir ? $dev_dir : File::Spec->catdir( dist_dir('Galileo'), 'sql' )
-};
+}
 
-has 'dh' => sub {
+has 'databases' => (
+  is => 'rw',
+  lazy => 1,
+  builder => '_build_databases',
+);
+
+sub _build_databases { [ shift->schema->storage->sqlt_type ] }
+
+has '+force_overwrite' => (
+  default => 1,
+);
+
+sub installed_version {
   my $self = shift;
-
-  my $schema = $self->schema or die "Need schema attribute";
-  my $db_type = $schema->storage->sqlt_type;
-
-  DBIx::Class::DeploymentHandler->new({
-    schema => $schema,
-    script_directory => $self->script_directory,
-    force_overwrite => 1,
-    databases => [$db_type],
-  });
-
-};
-
-has 'installed_version' => sub {
-  my $self = shift;
-  my $dh = $self->dh;
-  eval{ $dh->database_version }
-};
+  return eval{ $self->database_version }
+}
 
 sub setup_unversioned {
   my $self = shift;
-  my $dh = $self->dh;
 
-  unless ( $dh->version_storage_is_installed ) {
-    $dh->prepare_version_storage_install;
-    $dh->install_version_storage;
+  unless ( $self->version_storage_is_installed ) {
+    $self->prepare_version_storage_install;
+    $self->install_version_storage;
   }
 
-  $dh->add_database_version({ version => 1 });
+  $self->add_database_version({ version => 1 });
 
-  $self->installed_version( 1 );
   return 1;
 }
 
-sub deploy {
+sub do_deploy {
   my $self = shift;
-  my $dh = $self->dh;
 
-  $dh->prepare_deploy;
-  $dh->deploy;
+  $self->prepare_deploy;
+  $self->deploy;
 }
 
-sub upgrade {
+sub do_upgrade {
   my $self = shift;
-  my $dh = $self->dh;
 
-  $dh->prepare_upgrade;
-  $dh->upgrade;
+  $self->prepare_upgrade;
+  $self->upgrade;
 }
 
 sub inject_sample_data {
@@ -168,20 +168,14 @@ sub create_test_object {
   my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
   my $ddl_dir = File::Temp->newdir;
 
-  
-  my $dh = DBIx::Class::DeploymentHandler->new( 
-    schema => $db,
+  my $dh = __PACKAGE__->new(
     databases => [],
     ignore_ddl => 1,
-    script_directory => "$ddl_dir",
-  );
-  my $gdh = __PACKAGE__->new(
-    dh => $dh,
     schema => $db,
     script_directory => "$ddl_dir",
   );
-  $gdh->deploy;
-  $gdh->inject_sample_data('admin', 'pass', 'Joe Admin');
+  $dh->do_deploy;
+  $dh->inject_sample_data('admin', 'pass', 'Joe Admin');
   
 
   if ($opts->{test}) {
@@ -195,7 +189,7 @@ sub create_test_object {
   require Test::Mojo;
   my $t = Test::Mojo->new(Galileo->new(db => $db));
 
-  return wantarray ? ($t, $gdh) : $t;
+  return wantarray ? ($t, $dh) : $t;
 }
 
 1;
