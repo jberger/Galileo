@@ -57,11 +57,11 @@ sub setup_unversioned {
   return 1;
 }
 
-sub do_deploy {
+sub do_install {
   my $self = shift;
 
-  $self->prepare_deploy;
-  $self->deploy;
+  $self->prepare_install;
+  $self->install;
 }
 
 sub do_upgrade {
@@ -174,7 +174,7 @@ sub create_test_object {
     schema => $db,
     script_directory => "$ddl_dir",
   );
-  $dh->do_deploy;
+  $dh->do_install;
   $dh->inject_sample_data('admin', 'pass', 'Joe Admin');
   
 

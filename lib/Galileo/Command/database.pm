@@ -53,7 +53,7 @@ sub install_schema {
 
   my ($user, $full, $pass) = $self->prompt_for_user_info;
 
-  $dh->do_deploy;
+  $dh->do_install;
   $dh->inject_sample_data($user, $pass, $full);
 }
 
