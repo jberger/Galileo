@@ -11,18 +11,16 @@ use Galileo::DB::Deploy;
 sub run {
   my ($self) = @_;
 
-  my $dh = Galileo::DB::Deploy->new( schema => $self->schema );
+  my $dh = Galileo::DB::Deploy->new( schema => $self->app->schema );
   $self->deploy_or_upgrade_schema( $dh );
 
   say "Run 'galileo daemon' to start the server.";
 }
 
-sub schema { shift->app->db }
-
 sub deploy_or_upgrade_schema {
   my $self = shift;
   my $dh = shift;
-  my $schema = $self->schema;
+  my $schema = $dh->schema;
 
   my $available = $schema->schema_version;
 
