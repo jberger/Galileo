@@ -39,6 +39,10 @@ has '+force_overwrite' => (
   default => 1,
 );
 
+has '+ignore_ddl' => (
+  default => 1,
+);
+
 sub installed_version {
   my $self = shift;
   return eval{ $self->database_version }
@@ -60,7 +64,7 @@ sub setup_unversioned {
 sub do_install {
   my $self = shift;
 
-  $self->prepare_install;
+  #$self->prepare_install;
   $self->install;
 }
 
@@ -170,7 +174,6 @@ sub create_test_object {
 
   my $dh = __PACKAGE__->new(
     databases => [],
-    ignore_ddl => 1,
     schema => $db,
     script_directory => "$ddl_dir",
   );
