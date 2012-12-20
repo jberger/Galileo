@@ -11,7 +11,6 @@ my $json = Mojo::JSON->new();
 
 sub run {
   my ($self) = @_;
-
   my $user = prompt('x', 'Admin Username: ', '', '');
   my $full = prompt('x', 'Admin Full Name: ', '', '');
   my $pass1 = prompt('p', 'Admin Password: ', '', '');
@@ -39,7 +38,13 @@ sub inject_sample_data {
   my $pass = shift or die "Must provide a password for $user";
   my $full = shift || "Administrator";
 
-  $schema->deploy;
+  $schema->deploy();
+  #$schema->deploy({ add_drop_table => 1});
+	
+	if(exists $self->app->config->{db_type} && $self->app->config->{db_type} eq 'Pg'){
+  	$schema->storage->sql_maker->quote_char([ qw/" "/] );
+  	$schema->storage->sql_maker->name_sep('.');
+	}
 
   my $admin = $schema->resultset('User')->create({
     name => $user,
