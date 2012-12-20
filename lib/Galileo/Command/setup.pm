@@ -41,7 +41,7 @@ sub inject_sample_data {
   $schema->deploy();
   #$schema->deploy({ add_drop_table => 1});
 	
-	if($self->app->config->{db_type} eq 'Pg'){
+	if(exists $self->app->config->{db_type} && $self->app->config->{db_type} eq 'Pg'){
   	$schema->storage->sql_maker->quote_char([ qw/" "/] );
   	$schema->storage->sql_maker->name_sep('.');
 	}
