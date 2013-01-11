@@ -80,7 +80,7 @@ subtest 'Edit Page' => sub {
     ->element_exists( '#wmd-preview' );
 
   # save page
-  my $text = 'I changed this text';
+  my $text = 'I changed this text ☃';
   my $data = $json->encode({
     name  => 'home',
     title => 'New Home',
@@ -88,7 +88,7 @@ subtest 'Edit Page' => sub {
     md    => $text,
   });
   $t->websocket_ok( '/store/page' )
-    ->send_ok( $data )
+    ->send_ok( { text => $data } )
     ->message_is( 'Changes saved' )
     ->finish_ok;
 
@@ -96,7 +96,7 @@ subtest 'Edit Page' => sub {
   $t->get_ok('/page/home')
     ->status_is(200)
     ->text_is( h1 => 'New Home' )
-    ->text_like( p => qr/$text/ );
+    ->text_like( p => qr/$text/u );
 
   # author request non-existant page => create new page
   $t->get_ok('/page/doesntexist')
