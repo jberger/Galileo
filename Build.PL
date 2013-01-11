@@ -11,7 +11,7 @@ my $builder = Module::Build->new(
   
   requires => {
     'perl' => '5.8.0',
-    'Mojolicious' => '3.69',  # need Mojo::Base --> utf8
+    'Mojolicious' => '3.77',  # need j and json_message_content_is
     'DBD::SQLite' => 0,
     'DBIx::Class' => 0,
     'DBIx::Class::Candy' => 0,

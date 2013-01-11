@@ -88,8 +88,8 @@ subtest 'Edit Page' => sub {
     md    => $text,
   });
   $t->websocket_ok( '/store/page' )
-    ->send_ok( { text => $data } )
-    ->message_is( 'Changes saved' )
+    ->send_ok({ text => $data })
+    ->json_message_content_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   # see that the changes are reflected
@@ -106,8 +106,8 @@ subtest 'Edit Page' => sub {
     md    => 'Hmmm no title',
   });
   $t->websocket_ok( '/store/page' )
-    ->send_ok( $data_notitle )
-    ->message_is( 'Not saved! A title is required!' )
+    ->send_ok({ text => $data_notitle })
+    ->json_message_content_is({ success => 0, message => 'Not saved! A title is required!' })
     ->finish_ok;
 
 };
@@ -129,8 +129,8 @@ subtest 'New Page' => sub {
     md    => $text,
   });
   $t->websocket_ok( '/store/page' )
-    ->send_ok( { text => $data } )
-    ->message_is( 'Changes saved' )
+    ->send_ok({ text => $data })
+    ->json_message_content_is({ success => 1, message => 'Changes saved' })
     ->finish_ok;
 
   # see that the changes are reflected
@@ -156,8 +156,8 @@ subtest 'Edit Main Navigation Menu' => sub {
     list => [],
   });
   $t->websocket_ok('/store/menu')
-    ->send_ok( $data )
-    ->message_is( 'Changes saved' )
+    ->send_ok({ text => $data })
+    ->json_message_content_is({ success => 1, message => 'Changes saved' })
     ->finish_ok;
 
   # check that item is removed
@@ -172,8 +172,8 @@ subtest 'Edit Main Navigation Menu' => sub {
     list => ['pages-2'],
   });
   $t->websocket_ok('/store/menu')
-    ->send_ok( $data )
-    ->message_is( 'Changes saved' )
+    ->send_ok({ text => $data })
+    ->json_message_content_is({ success => 1, message => 'Changes saved' })
     ->finish_ok;
 
   # check about page is back in nav (same as first test block)
@@ -205,19 +205,19 @@ subtest 'Administrative Overview: All Pages' => sub {
   # attempt to remove home page
   $t->websocket_ok('/remove/page')
     ->send_ok('1')
-    ->message_like( qr'Cannot remove home page' )
+    ->json_message_content_is({ success => 0, message => 'Cannot remove home page' })
     ->finish_ok;
 
   # attempt to remove invalid page
   $t->websocket_ok('/remove/page')
     ->send_ok('5')
-    ->message_like( qr'Could not access page' )
+    ->json_message_content_is( { success => 0, message => 'Could not access page' } )
     ->finish_ok;
 
   # remove page
   $t->websocket_ok('/remove/page')
     ->send_ok('2')
-    ->message_like( qr'Page removed' )
+    ->json_message_content_is( { success => 1, message => 'Page removed' } )
     ->finish_ok;
 
 };
@@ -240,8 +240,8 @@ subtest 'Administer Users' => sub {
   });
 
   $t->websocket_ok('/store/user')
-    ->send_ok( $data )
-    ->message_like( qr'Changes saved' )
+    ->send_ok({ text => $data })
+    ->json_message_content_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   # check that the name change is reflected
@@ -260,8 +260,8 @@ subtest 'Administer Users' => sub {
     is_admin => 1,
   });
   $t->websocket_ok('/store/user')
-    ->send_ok( $data )
-    ->message_like( qr'Not saved! Passwords do not match' )
+    ->send_ok({ text => $data })
+    ->json_message_content_is( { success => 0, message => 'Not saved! Passwords do not match' } )
     ->finish_ok;
 
   ok( $t->app->get_user('admin')->check_password('pass'), 'Password not changed on non-matching passwords');
@@ -276,8 +276,8 @@ subtest 'Administer Users' => sub {
     is_admin => 1,
   });
   $t->websocket_ok('/store/user')
-    ->send_ok( $data )
-    ->message_like( qr'Changes saved' )
+    ->send_ok({ text => $data })
+    ->json_message_content_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   ok( $t->app->get_user('admin')->check_password('newpass'), 'New password checks out');
@@ -289,34 +289,34 @@ subtest 'Create New User' => sub {
   # attempt to create a user without providing a password (fails)
   my $data = $json->encode({
     name => "someone",
-    full => "Jane Dow",
+    full => "Jane ☃ Dow",
     is_author => 1,
     is_admin => 0,
   });
   $t->websocket_ok('/store/user')
-    ->send_ok( $data )
-    ->message_like( qr'Cannot create user without a password' )
+    ->send_ok({ text => $data })
+    ->json_message_content_is({ success => 0, message => 'Cannot create user without a password' })
     ->finish_ok;
 
   # create a user
   $data = $json->encode({
     name => "someone",
-    full => "Jane Doe",
+    full => "Jane ☃ Doe",
     pass1 => 'mypass',
     pass2 => 'mypass',
     is_author => 1,
     is_admin => 0,
   });
   $t->websocket_ok('/store/user')
-    ->send_ok( $data )
-    ->message_like( qr'Changes saved' )
+    ->send_ok({ text => $data })
+    ->json_message_content_is({ success => 1, message => 'Changes saved' })
     ->finish_ok;
 
   # check the new user
   $t->get_ok('/admin/user/someone')
     ->status_is(200)
     ->element_exists( 'input#name[placeholder=someone]' )
-    ->element_exists( 'input#full[value="Jane Doe"]' )
+    ->element_exists( 'input#full[value="Jane ☃ Doe"]' )
     ->element_exists( 'input#is_author:checked' )
     ->element_exists( 'input#is_admin:not(:checked)' );
 
