@@ -39,9 +39,9 @@ has '+force_overwrite' => (
   default => 1,
 );
 
-has '+ignore_ddl' => (
-  default => 1,
-);
+#has '+ignore_ddl' => (
+#  default => 1,
+#);
 
 sub installed_version {
   my $self = shift;
