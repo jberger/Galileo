@@ -215,9 +215,10 @@ subtest 'Administer Users' => sub {
     is_author => 1,
     is_admin => 1,
   });
+
   $t->websocket_ok('/store/user')
     ->send_ok( $data )
-    ->message_is( 'Changes saved' )
+    ->message_like( qr'Changes saved' )
     ->finish_ok;
 
   # check that the name change is reflected
@@ -237,7 +238,7 @@ subtest 'Administer Users' => sub {
   });
   $t->websocket_ok('/store/user')
     ->send_ok( $data )
-    ->message_is( 'Not saved! Passwords do not match' )
+    ->message_like( qr'Not saved! Passwords do not match' )
     ->finish_ok;
 
   ok( $t->app->get_user('admin')->check_password('pass'), 'Password not changed on non-matching passwords');
@@ -253,7 +254,7 @@ subtest 'Administer Users' => sub {
   });
   $t->websocket_ok('/store/user')
     ->send_ok( $data )
-    ->message_is( 'Changes saved' )
+    ->message_like( qr'Changes saved' )
     ->finish_ok;
 
   ok( $t->app->get_user('admin')->check_password('newpass'), 'New password checks out');
@@ -271,7 +272,7 @@ subtest 'Create New User' => sub {
   });
   $t->websocket_ok('/store/user')
     ->send_ok( $data )
-    ->message_is( 'Cannot create user without a password' )
+    ->message_like( qr'Cannot create user without a password' )
     ->finish_ok;
 
   # create a user
@@ -285,7 +286,7 @@ subtest 'Create New User' => sub {
   });
   $t->websocket_ok('/store/user')
     ->send_ok( $data )
-    ->message_is( 'Changes saved' )
+    ->message_like( qr'Changes saved' )
     ->finish_ok;
 
   # check the new user
