@@ -98,12 +98,6 @@ subtest 'Edit Page' => sub {
     ->text_is( h1 => 'New Home' )
     ->text_like( p => qr/$text/u );
 
-  # author request non-existant page => create new page
-  $t->get_ok('/page/doesntexist')
-    ->status_is(200)
-    ->text_like( '#wmd-input' => qr/Hello World/ )
-    ->element_exists( '#wmd-preview' );
-
   # save page without title (error)
   my $data_notitle = $json->encode({
     name  => 'notitle',
@@ -115,6 +109,35 @@ subtest 'Edit Page' => sub {
     ->send_ok( $data_notitle )
     ->message_is( 'Not saved! A title is required!' )
     ->finish_ok;
+
+};
+
+subtest 'New Page' => sub {
+
+  # author request non-existant page => create new page
+  $t->get_ok('/page/doesntexist')
+    ->status_is(200)
+    ->text_like( '#wmd-input' => qr/Hello World/ )
+    ->element_exists( '#wmd-preview' );
+
+  # save page
+  my $text = 'Today it snowed so ☃ gets a new home';
+  my $data = $json->encode({
+    name  => 'snow❄flake',
+    title => 'New Home for ☃',
+    html  => "<p>$text</p>",
+    md    => $text,
+  });
+  $t->websocket_ok( '/store/page' )
+    ->send_ok( { text => $data } )
+    ->message_is( 'Changes saved' )
+    ->finish_ok;
+
+  # see that the changes are reflected
+  $t->get_ok('/page/snow❄flake')
+    ->status_is(200)
+    ->text_is( h1 => 'New Home for ☃' )
+    ->text_like( p => qr/$text/u );
 
 };
 
