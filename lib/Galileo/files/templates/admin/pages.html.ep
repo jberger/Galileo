@@ -43,17 +43,10 @@ function confirm_delete(id, name) {
 }
 
 function delete_page(id) {
-  ws = new WebSocket( '<%= url_for("removepage")->to_abs %>' );
-  ws.onmessage = function (evt) {
-    var data = JSON.parse(evt.data);
-    //console.log( data );
-    humane.log( data.message );
-    if ( data.success ) {
-      $( '#row-' + id ).remove();
-    }
-  };
-  ws.onopen = function () {
-    ws.send( id );
-  };
+  sendViaWS( 
+    '<%= url_for("removepage")->to_abs %>', 
+    id, 
+    function(){ $( '#row-' + id ).remove(); }
+  );
 }
 %= end
