@@ -7,7 +7,7 @@ sub run {
   my ($self) = @_;
 
   shift @ARGV;
-  my $command = shift @ARGV;
+  my $command = shift @ARGV || 'generate_install_scripts';
   my $method = $self->can($command) or die "No command: $command\n";
 
   $self->$method();
