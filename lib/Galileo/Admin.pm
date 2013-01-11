@@ -51,7 +51,8 @@ sub remove_page {
   my $self = shift;
 
   $self->on( message => sub {
-    my ($self, $id) = @_;
+    my ($self, $message) = @_;
+    my $id = j($message)->{id};
 
     if ($id == 1) {
       $self->send({ text => j({
@@ -66,7 +67,7 @@ sub remove_page {
     unless ( $page ) {
       $self->send({ text => j({
         success => \0,
-        message => 'Could not access page',
+        message => "Could not access page (id $id)",
       }) });
       return;
     }

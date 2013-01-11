@@ -5,7 +5,7 @@ use Galileo;
 use Galileo::DB::Schema;
 use Galileo::Command::setup;
 
-use Mojo::JSON;
+use Mojo::JSON 'j';
 my $json = Mojo::JSON->new;
 
 use Test::More;
@@ -204,19 +204,19 @@ subtest 'Administrative Overview: All Pages' => sub {
 
   # attempt to remove home page
   $t->websocket_ok('/remove/page')
-    ->send_ok('1')
+    ->send_ok({ text => j({id => 1}) })
     ->json_message_content_is({ success => 0, message => 'Cannot remove home page' })
     ->finish_ok;
 
   # attempt to remove invalid page
   $t->websocket_ok('/remove/page')
-    ->send_ok('5')
-    ->json_message_content_is( { success => 0, message => 'Could not access page' } )
+    ->send_ok({ text => j({id => 5}) })
+    ->json_message_content_is( { success => 0, message => 'Could not access page (id 5)' } )
     ->finish_ok;
 
   # remove page
   $t->websocket_ok('/remove/page')
-    ->send_ok('2')
+    ->send_ok({ text => j({id => 2}) })
     ->json_message_content_is( { success => 1, message => 'Page removed' } )
     ->finish_ok;
 
