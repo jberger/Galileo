@@ -28,7 +28,7 @@ sub edit_page {
 
 sub store_page {
   my $self = shift;
-  $self->on(message => sub {
+  $self->on( text => sub {
     my ($self, $message) = @_;
     my $data = j( $message );
 
@@ -86,7 +86,7 @@ sub edit_menu {
 
 sub store_menu {
   my $self = shift;
-  $self->on( message => sub {
+  $self->on( text => sub {
     my ($self, $message) = @_;
     my $data = j($message);
     my $name = $data->{name};

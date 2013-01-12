@@ -5,11 +5,12 @@ use Galileo;
 use Galileo::DB::Schema;
 use Galileo::Command::setup;
 
-use Mojo::JSON 'j';
-my $json = Mojo::JSON->new;
-
 use Test::More;
 use Test::Mojo;
+
+use Mojo::JSON 'j';
+use Mojo::Util 'decode';
+sub _send_text { +{ text => decode 'UTF-8', j( $_[0] ) } }
 
 my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
 Galileo::Command::setup->inject_sample_data('admin', 'pass', 'Joe Admin', $db);
@@ -81,14 +82,14 @@ subtest 'Edit Page' => sub {
 
   # save page
   my $text = 'I changed this text ☃';
-  my $data = $json->encode({
+  my $data = {
     name  => 'home',
     title => 'New Home',
     html  => "<p>$text</p>",
     md    => $text,
-  });
+  };
   $t->websocket_ok( '/store/page' )
-    ->send_ok({ text => $data })
+    ->send_ok( _send_text $data )
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
@@ -99,14 +100,14 @@ subtest 'Edit Page' => sub {
     ->text_like( p => qr/$text/u );
 
   # save page without title (error)
-  my $data_notitle = $json->encode({
+  my $data_notitle = {
     name  => 'notitle',
     title => '',
     html  => '<p>Hmmm no title</p>',
     md    => 'Hmmm no title',
-  });
+  };
   $t->websocket_ok( '/store/page' )
-    ->send_ok({ text => $data_notitle })
+    ->send_ok( _send_text $data_notitle )
     ->json_message_is( '/' => { success => 0, message => 'Not saved! A title is required!' })
     ->finish_ok;
 
@@ -122,14 +123,14 @@ subtest 'New Page' => sub {
 
   # save page
   my $text = 'Today it snowed so ☃ gets a new home';
-  my $data = $json->encode({
+  my $data = {
     name  => 'snow❄flake',
     title => 'New Home for ☃',
     html  => "<p>$text</p>",
     md    => $text,
-  });
+  };
   $t->websocket_ok( '/store/page' )
-    ->send_ok({ text => $data })
+    ->send_ok( _send_text $data )
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' })
     ->finish_ok;
 
@@ -151,12 +152,12 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
   # remove about page from list
-  my $data = $json->encode({
+  my $data = {
     name => 'main',
     list => [],
-  });
+  };
   $t->websocket_ok('/store/menu')
-    ->send_ok({ text => $data })
+    ->send_ok( _send_text $data )
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' })
     ->finish_ok;
 
@@ -167,12 +168,12 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->text_is( '#list-inactive-pages > #pages-2 > span' => $title );
 
   # put about page back
-  $data = $json->encode({
+  $data = {
     name => 'main',
     list => ['pages-2'],
-  });
+  };
   $t->websocket_ok('/store/menu')
-    ->send_ok({ text => $data })
+    ->send_ok( _send_text $data )
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' })
     ->finish_ok;
 
@@ -204,19 +205,19 @@ subtest 'Administrative Overview: All Pages' => sub {
 
   # attempt to remove home page
   $t->websocket_ok('/remove/page')
-    ->send_ok({ text => j({id => 1}) })
+    ->send_ok( _send_text {id => 1} )
     ->json_message_is( '/' => { success => 0, message => 'Cannot remove home page' })
     ->finish_ok;
 
   # attempt to remove invalid page
   $t->websocket_ok('/remove/page')
-    ->send_ok({ text => j({id => 5}) })
+    ->send_ok( _send_text {id => 5} )
     ->json_message_is( '/' => { success => 0, message => 'Could not access page (id 5)' } )
     ->finish_ok;
 
   # remove page
   $t->websocket_ok('/remove/page')
-    ->send_ok({ text => j({id => 2}) })
+    ->send_ok( _send_text {id => 2} )
     ->json_message_is( '/' => { success => 1, message => 'Page removed' } )
     ->finish_ok;
 
@@ -232,15 +233,14 @@ subtest 'Administer Users' => sub {
     ->element_exists( 'input#is_admin[checked=1]' );
 
   # change name
-  my $data = $json->encode({
+  my $data = {
     name => "admin",
     full => "New Name",
     is_author => 1,
     is_admin => 1,
-  });
-
+  };
   $t->websocket_ok('/store/user')
-    ->send_ok({ text => $data })
+    ->send_ok( _send_text $data )
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
@@ -251,32 +251,32 @@ subtest 'Administer Users' => sub {
     ->element_exists( 'input#full[value="New Name"]' );
 
   # attempt to change password, incorrectly
-  $data = $json->encode({
+  $data = {
     name => "admin",
     full => "New Name",
     pass1 => 'newpass',
     pass2 => 'wrongpass',
     is_author => 1,
     is_admin => 1,
-  });
+  };
   $t->websocket_ok('/store/user')
-    ->send_ok({ text => $data })
+    ->send_ok( _send_text $data )
     ->json_message_is( '/' => { success => 0, message => 'Not saved! Passwords do not match' } )
     ->finish_ok;
 
   ok( $t->app->get_user('admin')->check_password('pass'), 'Password not changed on non-matching passwords');
 
   # change password, correctly
-  $data = $json->encode({
+  $data = {
     name => "admin",
     full => "New Name",
     pass1 => 'newpass',
     pass2 => 'newpass',
     is_author => 1,
     is_admin => 1,
-  });
+  };
   $t->websocket_ok('/store/user')
-    ->send_ok({ text => $data })
+    ->send_ok( _send_text $data )
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
@@ -287,28 +287,28 @@ subtest 'Administer Users' => sub {
 subtest 'Create New User' => sub {
 
   # attempt to create a user without providing a password (fails)
-  my $data = $json->encode({
+  my $data = {
     name => "someone",
     full => "Jane ☃ Dow",
     is_author => 1,
     is_admin => 0,
-  });
+  };
   $t->websocket_ok('/store/user')
-    ->send_ok({ text => $data })
+    ->send_ok( _send_text $data )
     ->json_message_is( '/' => { success => 0, message => 'Cannot create user without a password' })
     ->finish_ok;
 
   # create a user
-  $data = $json->encode({
+  $data = {
     name => "someone",
     full => "Jane ☃ Doe",
     pass1 => 'mypass',
     pass2 => 'mypass',
     is_author => 1,
     is_admin => 0,
-  });
+  };
   $t->websocket_ok('/store/user')
-    ->send_ok({ text => $data })
+    ->send_ok( _send_text $data )
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' })
     ->finish_ok;
 

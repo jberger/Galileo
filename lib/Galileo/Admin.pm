@@ -8,7 +8,7 @@ sub user { shift->render }
 
 sub store_user {
   my $self = shift;
-  $self->on( message => sub {
+  $self->on( text => sub {
     my ($self, $message) = @_;
 
     my $data = j($message);
@@ -50,7 +50,7 @@ sub store_user {
 sub remove_page {
   my $self = shift;
 
-  $self->on( message => sub {
+  $self->on( text => sub {
     my ($self, $message) = @_;
     my $id = j($message)->{id};
 
