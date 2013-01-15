@@ -1,5 +1,4 @@
-use strict;
-use warnings;
+use Mojo::Base -strict;
 
 use Galileo;
 use Galileo::DB::Schema;
@@ -10,9 +9,9 @@ use Test::Mojo;
 
 use Mojo::JSON 'j';
 use Mojo::Util 'decode';
-sub _send_text { +{ text => decode 'UTF-8', j( $_[0] ) } }
+sub _send_text { +{ text => j( $_[0] ) } }
 
-my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
+my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:','','',{sqlite_unicode => 1});
 Galileo::Command::setup->inject_sample_data('admin', 'pass', 'Joe Admin', $db);
 ok( $db->resultset('User')->single({name => 'admin'})->check_password('pass'), 'DB user checks out' );
 
