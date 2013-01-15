@@ -1,6 +1,15 @@
 Revision history for Perl module Galileo.
 
-0.011  October 21, 2012
+0.012  January 15, 2013
+	- Use cross-database table/column types
+	- Use versioned schemas
+	- Added database upgrade layer (Galileo::DB::Deploy)
+	- Added option for ConsoleLogger
+	- Improved unicode handling
+	- Websockets now send/receive structured data
+	- Websocket handling now has callbacks for success/failure actions
+
+0.011  October 31, 2012
 	- Added extra_css and extra_js config options
 
 0.010  October 28, 2012
