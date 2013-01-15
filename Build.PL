@@ -21,6 +21,7 @@ my $builder = Module::Build->new(
     'SQL::Translator' => 0,
     'Term::Prompt' => 0,
     'File::ShareDir' => 0,
+    'File::Copy::Recursive' => 0,
   },
   configure_requires => {
     'Module::Build' => 0.38,
