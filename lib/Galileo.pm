@@ -12,7 +12,7 @@ use Cwd;
 has db => sub {
   my $self = shift;
   my $schema_class = $self->config->{db_schema} or die "Unknown DB Schema Class";
-  eval "require $schema_class" or die "Could not load Schema Class ($schema_class)";
+  eval "require $schema_class" or die "Could not load Schema Class ($schema_class). $@\n";
 
   my $db_connect = $self->config->{db_connect} or die "No DBI connection string provided";
   my @db_connect = ref $db_connect ? @$db_connect : ( $db_connect );
