@@ -38,7 +38,10 @@ my $t = Galileo::DB::Deploy->create_test_object({ test => 1 });
 my $app = $t->app;
 
 is( $app->home, $home, 'home dir detected from GALILEO_HOME' );
-ok( grep { $_ eq $static } @{ $app->static->paths }, "'static' directory is encluded in static paths" );
+{
+  my $found = grep { $_ eq $static } @{ $app->static->paths };
+  ok( $found, "'static' directory ($static) is encluded in static paths" );
+}
 
 $t->get_ok('/test.html')
   ->status_is(200)
