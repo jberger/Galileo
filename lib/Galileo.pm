@@ -1,7 +1,7 @@
 package Galileo;
 use Mojo::Base 'Mojolicious';
 
-our $VERSION = 0.011;
+our $VERSION = 0.012;
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
@@ -262,7 +262,11 @@ The C<--force> option may be passed to overwrite any configuration file in the c
 
  $ galileo setup
 
-This step is required. Run C<galileo setup> to setup a database. It will use the default DBI settings (SQLite) or whatever is setup in the C<GALILEO_CONFIG> configuration file.
+This step is required after both installation and upgrading Galileo. Running C<galileo setup> will deploy or upgrade the database used by your Galileo site. It will use the default DBI settings (SQLite) or whatever is setup in the C<GALILEO_CONFIG> configuration file.
+
+Warning: As usual, proper care should be taken when upgrading a database. This mechanism is rather new and while it should be safe, the author makes no promises about anything yet! Backup all files before upgrading!
+
+Note that the database deployment tools may emit debugging information unexpectedly, especially messages about "overwriting" and some internal "peek" information. These message are harmless, but as yet cannot be suppressed. 
 
 =head1 RUNNING THE APPLICATION
 

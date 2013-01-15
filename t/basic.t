@@ -83,6 +83,7 @@ subtest 'Edit Page' => sub {
   };
   $t->websocket_ok( '/store/page' )
     ->send_ok( _send_text $data )
+    ->message_ok
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
@@ -101,6 +102,7 @@ subtest 'Edit Page' => sub {
   };
   $t->websocket_ok( '/store/page' )
     ->send_ok( _send_text $data_notitle )
+    ->message_ok
     ->json_message_is( '/' => { success => 0, message => 'Not saved! A title is required!' })
     ->finish_ok;
 
@@ -124,6 +126,7 @@ subtest 'New Page' => sub {
   };
   $t->websocket_ok( '/store/page' )
     ->send_ok( _send_text $data )
+    ->message_ok
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' })
     ->finish_ok;
 
@@ -151,6 +154,7 @@ subtest 'Edit Main Navigation Menu' => sub {
   };
   $t->websocket_ok('/store/menu')
     ->send_ok( _send_text $data )
+    ->message_ok
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' })
     ->finish_ok;
 
@@ -167,6 +171,7 @@ subtest 'Edit Main Navigation Menu' => sub {
   };
   $t->websocket_ok('/store/menu')
     ->send_ok( _send_text $data )
+    ->message_ok
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' })
     ->finish_ok;
 
@@ -199,18 +204,21 @@ subtest 'Administrative Overview: All Pages' => sub {
   # attempt to remove home page
   $t->websocket_ok('/remove/page')
     ->send_ok( _send_text {id => 1} )
+    ->message_ok
     ->json_message_is( '/' => { success => 0, message => 'Cannot remove home page' })
     ->finish_ok;
 
   # attempt to remove invalid page
   $t->websocket_ok('/remove/page')
     ->send_ok( _send_text {id => 5} )
+    ->message_ok
     ->json_message_is( '/' => { success => 0, message => 'Could not access page (id 5)' } )
     ->finish_ok;
 
   # remove page
   $t->websocket_ok('/remove/page')
     ->send_ok( _send_text {id => 2} )
+    ->message_ok
     ->json_message_is( '/' => { success => 1, message => 'Page removed' } )
     ->finish_ok;
 
@@ -234,6 +242,7 @@ subtest 'Administer Users' => sub {
   };
   $t->websocket_ok('/store/user')
     ->send_ok( _send_text $data )
+    ->message_ok
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
@@ -254,6 +263,7 @@ subtest 'Administer Users' => sub {
   };
   $t->websocket_ok('/store/user')
     ->send_ok( _send_text $data )
+    ->message_ok
     ->json_message_is( '/' => { success => 0, message => 'Not saved! Passwords do not match' } )
     ->finish_ok;
 
@@ -270,6 +280,7 @@ subtest 'Administer Users' => sub {
   };
   $t->websocket_ok('/store/user')
     ->send_ok( _send_text $data )
+    ->message_ok
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
@@ -288,6 +299,7 @@ subtest 'Create New User' => sub {
   };
   $t->websocket_ok('/store/user')
     ->send_ok( _send_text $data )
+    ->message_ok
     ->json_message_is( '/' => { success => 0, message => 'Cannot create user without a password' })
     ->finish_ok;
 
@@ -302,6 +314,7 @@ subtest 'Create New User' => sub {
   };
   $t->websocket_ok('/store/user')
     ->send_ok( _send_text $data )
+    ->message_ok
     ->json_message_is( '/' => { success => 1, message => 'Changes saved' })
     ->finish_ok;
 
