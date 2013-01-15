@@ -249,7 +249,7 @@ translator:
           schema: *1
           source_name: __VERSION
       storage: !!perl/hash:DBIx::Class::Storage::DBI::SQLite
-        _conn_pid: 2493
+        _conn_pid: 8010
         _connect_info:
           - dbi:SQLite:dbname=/home/joel/Programs/Dist/Galileo/galileo.db
           - ~
@@ -257,9 +257,7 @@ translator:
           - sqlite_unicode: 1
         _dbh: !!perl/hash:DBI::db {}
         _dbh_autocommit: 1
-        _dbh_details:
-          _datatype_map_cache:
-            integer: 4
+        _dbh_details: {}
         _dbh_gen: 0
         _dbi_connect_info:
           - dbi:SQLite:dbname=/home/joel/Programs/Dist/Galileo/galileo.db

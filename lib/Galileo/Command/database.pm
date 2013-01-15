@@ -26,7 +26,7 @@ sub deploy_or_upgrade_schema {
 
   # Nothing installed
   unless ( eval { $schema->resultset('User')->first } ) {
-    say "Install database version: $available";
+    say "Installing database version: $available";
     $self->install_schema( $dh );
     return;
   }

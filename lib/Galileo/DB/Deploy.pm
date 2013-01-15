@@ -13,9 +13,9 @@ use File::Temp ();
 
 my $dev_dir = File::Spec->catdir( qw/ lib Galileo files sql / );
 
-has '+schema' => (
-  weak_ref => 1,
-);
+#has '+schema' => (
+#  weak_ref => 1,
+#);
 
 has 'script_directory' => (
   is => 'rw',
@@ -169,12 +169,12 @@ sub create_test_object {
   require Galileo;
   require Galileo::DB::Schema;
 
-  my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
+  my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:','','',{sqlite_unicode=>1});
   my $ddl_dir = File::Temp->newdir;
 
   my $dh = __PACKAGE__->new(
     databases => [],
-    #ignore_ddl => 1,
+    ignore_ddl => 1,
     schema => $db,
     script_directory => "$ddl_dir",
   );
@@ -188,6 +188,7 @@ sub create_test_object {
       $db->resultset('User')->single({name => 'admin'})->check_password('pass'), 
       'DB user checks out'
     );
+    Test::More::ok( $dh->installed_version, 'Found version information' );
   }
 
   require Test::Mojo;
