@@ -8,6 +8,9 @@ Revision history for Perl module Galileo.
 	- Improved unicode handling
 	- Websockets now send/receive structured data
 	- Websocket handling now has callbacks for success/failure actions
+	- Increase minimum dependencies on:
+		- Perl to 5.10.1
+		- Mojolicious to 3.80
 
 0.011  October 31, 2012
 	- Added extra_css and extra_js config options
