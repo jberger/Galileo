@@ -13,10 +13,6 @@ use File::Temp ();
 
 my $dev_dir = File::Spec->catdir( qw/ lib Galileo files sql / );
 
-#has '+schema' => (
-#  weak_ref => 1,
-#);
-
 has 'script_directory' => (
   is => 'rw',
   lazy => 1,
@@ -39,9 +35,9 @@ has '+force_overwrite' => (
   default => 1,
 );
 
-#has '+ignore_ddl' => (
-#  default => 1,
-#);
+has '+ignore_ddl' => (
+  default => 1,
+);
 
 sub installed_version {
   my $self = shift;
