@@ -38,11 +38,11 @@ my $t = Galileo::DB::Deploy->create_test_object({ test => 1 });
 my $app = $t->app;
 
 is( $app->home, $home, 'home dir detected from GALILEO_HOME' );
-diag "$static should be in @{ $app->static->paths }";
 
 $t->get_ok('/test.html')
   ->status_is(200)
-  ->text_is('body' => 'test text');
+  ->text_is('body' => 'test text')
+  ->or( sub { diag "$static should be in @{ $app->static->paths }" } );
 
 done_testing();
 
