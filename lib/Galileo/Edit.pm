@@ -1,10 +1,7 @@
 package Galileo::Edit;
 use Mojo::Base 'Mojolicious::Controller';
 
-use Mojo::JSON;
-my $json = Mojo::JSON->new;
-
-use Encode qw( encode_utf8 );
+use Mojo::JSON 'j';
 
 sub edit_page {
   my $self = shift;
@@ -24,21 +21,24 @@ sub edit_page {
     $self->stash( input => "Hello World" );
   }
 
-  $self->stash( sanitize => $self->config->{sanitize} // 1 );
+  $self->stash( sanitize => $self->config->{sanitize} // 1 );   #/# highlight fix
 
   $self->render;
 }
 
 sub store_page {
   my $self = shift;
-  $self->on(message => sub {
+  $self->on( text => sub {
     my ($self, $message) = @_;
-    my $data = $json->decode( encode_utf8($message) );
+    my $data = j( $message );
 
     my $schema = $self->schema;
 
     unless($data->{title}) {
-      $self->send('Not saved! A title is required!');
+      $self->send({ text => j({
+        message => 'Not saved! A title is required!',
+        success => \0,
+      }) });
       return;
     }
     my $author = $schema->resultset('User')->single({name=>$self->session->{username}});
@@ -47,7 +47,10 @@ sub store_page {
       $data, {key => 'pages_name'},
     );
     $self->expire('main');
-    $self->send('Changes saved');
+    $self->send({ text => j({
+      message => 'Changes saved',
+      success => \1,
+    }) });
   });
 }
 
@@ -58,9 +61,9 @@ sub edit_menu {
 
   my %active = 
     map { $_ => 1 } 
-    @{ $json->decode(
+    @{ j(
       $schema->resultset('Menu')->single({name => $name})->list
-    )};
+    ) };
   
   my ($active, $inactive) = ( '', '' );
   my @pages = $schema->resultset('Page')->all;
@@ -83,9 +86,9 @@ sub edit_menu {
 
 sub store_menu {
   my $self = shift;
-  $self->on( message => sub {
+  $self->on( text => sub {
     my ($self, $message) = @_;
-    my $data = $json->decode($message);
+    my $data = j($message);
     my $name = $data->{name};
     my $list = $data->{list};
 
@@ -98,13 +101,16 @@ sub store_menu {
 
     $schema->resultset('Menu')->update(
       {
-        list => $json->encode(\@pages),
+        list => j(\@pages),
       },
       { key => $name }
     );
 
     $self->expire($name);
-    $self->send('Changes saved');
+    $self->send({ text => j({
+      message => 'Changes saved',
+      success => \1,
+    }) });
   });
 }
 

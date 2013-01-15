@@ -1,5 +1,4 @@
-use strict;
-use warnings;
+use Mojo::Base -strict;
 
 use Cwd;
 use File::Temp;
@@ -33,6 +32,7 @@ END
 }
 
 chdir $orig or die "Could not chdir back to $orig";
+
 
 my $t = Galileo::DB::Deploy->create_test_object({ test => 1 });
 my $app = $t->app;
