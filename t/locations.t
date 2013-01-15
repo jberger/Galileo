@@ -1,5 +1,4 @@
-use strict;
-use warnings;
+use Mojo::Base -strict;
 
 use Cwd;
 use File::Temp;
@@ -36,7 +35,7 @@ END
 
 chdir $orig or die "Could not chdir back to $orig";
 
-my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
+my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:','','',{sqlite_unicode => 1});
 Galileo::Command::setup->inject_sample_data('admin', 'pass', 'Joe Admin', $db);
 ok( $db->resultset('User')->single({name => 'admin'})->check_password('pass'), 'DB user checks out' );
 
