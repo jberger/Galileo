@@ -9,11 +9,12 @@ primary_column menu_id => {
 };
 
 unique_column name => { 
-  data_type => 'VARCHAR'
+  data_type => 'VARCHAR',
+  size => 255,
 };
 
 column list => { 
-  data_type => 'VARCHAR'
+  data_type => 'TEXT',
 };
 
 1;

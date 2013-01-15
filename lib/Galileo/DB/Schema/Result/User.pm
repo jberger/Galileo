@@ -11,16 +11,19 @@ primary_column user_id => {
 
 unique_column name => { 
   data_type => 'VARCHAR',
+  size => 255,
 };
 
 column full => {
-  data_type => 'VARCHAR',
+  data_type => 'TEXT',
 };
 
 column password => {
-    data_type => 'VARCHAR',
+    data_type => 'CHAR',
+    size      => 59,
     encode_column => 1,
     encode_class  => 'Crypt::Eksblowfish::Bcrypt',
+    encode_args   => { key_nul => 0, cost => 8 },
     encode_check_method => 'check_password',
 };
 
