@@ -96,7 +96,7 @@ sub startup {
   $app->helper( 'auth_fail' => sub {
     my $self = shift;
     my $message = shift || "Not Authorized";
-    $self->flash( onload_message => $message );
+    $self->humane_flash( $message );
     $self->redirect_to( $self->home_page );
     return 0;
   });
@@ -192,6 +192,7 @@ sub startup {
   $if_admin->websocket( '/remove/page' )->to('admin#remove_page');
 
   ## Additional Plugins ##
+  $app->plugin('Humane', auto => 0);
   $app->plugin('ConsoleLogger') if $ENV{GALILEO_CONSOLE_LOGGER};
 }
 
