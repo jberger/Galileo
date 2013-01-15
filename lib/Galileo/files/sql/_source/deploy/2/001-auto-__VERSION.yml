@@ -1,0 +1,290 @@
+---
+schema:
+  procedures: {}
+  tables:
+    dbix_class_deploymenthandler_versions:
+      constraints:
+        - deferrable: 1
+          expression: ''
+          fields:
+            - id
+          match_type: ''
+          name: ''
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: PRIMARY KEY
+        - deferrable: 1
+          expression: ''
+          fields:
+            - version
+          match_type: ''
+          name: dbix_class_deploymenthandler_versions_version
+          on_delete: ''
+          on_update: ''
+          options: []
+          reference_fields: []
+          reference_table: ''
+          type: UNIQUE
+      fields:
+        ddl:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: ddl
+          order: 3
+          size:
+            - 0
+        id:
+          data_type: int
+          default_value: ~
+          is_auto_increment: 1
+          is_nullable: 0
+          is_primary_key: 1
+          is_unique: 0
+          name: id
+          order: 1
+          size:
+            - 0
+        upgrade_sql:
+          data_type: text
+          default_value: ~
+          is_nullable: 1
+          is_primary_key: 0
+          is_unique: 0
+          name: upgrade_sql
+          order: 4
+          size:
+            - 0
+        version:
+          data_type: varchar
+          default_value: ~
+          is_nullable: 0
+          is_primary_key: 0
+          is_unique: 1
+          name: version
+          order: 2
+          size:
+            - 50
+      indices: []
+      name: dbix_class_deploymenthandler_versions
+      options: []
+      order: 1
+  triggers: {}
+  views: {}
+translator:
+  add_drop_table: 0
+  filename: ~
+  no_comments: 0
+  parser_args:
+    DBIx::Class::Schema: ~
+    DBIx::Schema: ~
+    package: &1 !!perl/hash:Galileo::DB::Schema
+      class_mappings:
+        DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult: __VERSION
+        Galileo::DB::Schema::Result::Menu: Menu
+        Galileo::DB::Schema::Result::Page: Page
+        Galileo::DB::Schema::Result::User: User
+      source_registrations:
+        Menu: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            list:
+              data_type: TEXT
+            menu_id:
+              data_type: INT
+              is_auto_increment: 1
+            name:
+              data_type: VARCHAR
+              size: 255
+          _columns_info_loaded: 0
+          _ordered_columns:
+            - menu_id
+            - name
+            - list
+          _primaries: &2
+            - menu_id
+          _relationships: {}
+          _unique_constraints:
+            menus_name:
+              - name
+            primary: *2
+          name: menus
+          result_class: Galileo::DB::Schema::Result::Menu
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *1
+          source_name: Menu
+        Page: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            author_id:
+              data_type: INT
+            html:
+              data_type: TEXT
+            md:
+              data_type: TEXT
+            name:
+              data_type: VARCHAR
+              size: 255
+            page_id:
+              data_type: INT
+              is_auto_increment: 1
+            title:
+              data_type: TEXT
+          _columns_info_loaded: 0
+          _ordered_columns:
+            - page_id
+            - author_id
+            - name
+            - title
+            - html
+            - md
+          _primaries: &3
+            - page_id
+          _relationships:
+            author:
+              attrs:
+                accessor: single
+                fk_columns:
+                  author_id: 1
+                is_foreign_key_constraint: 1
+                undef_on_null_fk: 1
+              class: Galileo::DB::Schema::Result::User
+              cond:
+                foreign.user_id: self.author_id
+              source: Galileo::DB::Schema::Result::User
+          _unique_constraints:
+            pages_name:
+              - name
+            primary: *3
+          name: pages
+          result_class: Galileo::DB::Schema::Result::Page
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *1
+          source_name: Page
+        User: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            full:
+              data_type: TEXT
+            is_admin:
+              data_type: BOOL
+              default_value: 0
+            is_author:
+              data_type: BOOL
+              default_value: 0
+            name:
+              data_type: VARCHAR
+              size: 255
+            password:
+              data_type: CHAR
+              encode_args:
+                cost: 8
+                key_nul: 0
+              encode_check_method: check_password
+              encode_class: Crypt::Eksblowfish::Bcrypt
+              encode_column: 1
+              size: 59
+            user_id:
+              data_type: INT
+              is_auto_increment: 1
+          _columns_info_loaded: 0
+          _ordered_columns:
+            - user_id
+            - name
+            - full
+            - password
+            - is_author
+            - is_admin
+          _primaries: &4
+            - user_id
+          _relationships:
+            pages:
+              attrs:
+                accessor: multi
+                cascade_copy: 1
+                cascade_delete: 1
+                join_type: LEFT
+              class: Galileo::DB::Schema::Result::Page
+              cond:
+                foreign.author_id: self.user_id
+              source: Galileo::DB::Schema::Result::Page
+          _unique_constraints:
+            primary: *4
+            users_name:
+              - name
+          name: users
+          result_class: Galileo::DB::Schema::Result::User
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *1
+          source_name: User
+        __VERSION: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            ddl:
+              data_type: text
+              is_nullable: 1
+            id:
+              data_type: int
+              is_auto_increment: 1
+            upgrade_sql:
+              data_type: text
+              is_nullable: 1
+            version:
+              data_type: varchar
+              size: 50
+          _columns_info_loaded: 0
+          _ordered_columns:
+            - id
+            - version
+            - ddl
+            - upgrade_sql
+          _primaries: &5
+            - id
+          _relationships: {}
+          _unique_constraints:
+            dbix_class_deploymenthandler_versions_version:
+              - version
+            primary: *5
+          name: dbix_class_deploymenthandler_versions
+          result_class: DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResult
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::DeploymentHandler::VersionStorage::Standard::VersionResultSet
+          schema: *1
+          source_name: __VERSION
+      storage: !!perl/hash:DBIx::Class::Storage::DBI
+        _connect_info:
+          - dbi:SQLite:dbname=/home/joel/Programs/Dist/Galileo/galileo.db
+          - ~
+          - ~
+          - sqlite_unicode: 1
+        _dbh_details: {}
+        _dbh_gen: 0
+        _dbi_connect_info:
+          - dbi:SQLite:dbname=/home/joel/Programs/Dist/Galileo/galileo.db
+          - ~
+          - ~
+          - &6
+            AutoCommit: 1
+            PrintError: 0
+            RaiseError: 1
+            ShowErrorStatement: 1
+            sqlite_unicode: 1
+        _dbic_connect_attributes: *6
+        _in_do_block: 0
+        _sql_maker: ~
+        _sql_maker_opts: {}
+        savepoints: []
+        schema: *1
+        transaction_depth: 0
+    sources:
+      - __VERSION
+  parser_type: SQL::Translator::Parser::DBIx::Class
+  producer_args: {}
+  producer_type: SQL::Translator::Producer::YAML
+  show_warnings: 0
+  trace: 0
+  version: 0.11012
