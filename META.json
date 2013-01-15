@@ -4,7 +4,7 @@
       "Joel Berger"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120630",
    "license" : [
       "perl_5"
    ],
@@ -32,6 +32,7 @@
             "DBIx::Class::Candy" : "0",
             "DBIx::Class::DeploymentHandler" : "0",
             "DBIx::Class::EncodedColumn" : "0",
+            "File::Copy::Recursive" : "0",
             "File::ShareDir" : "1.00",
             "Mojolicious" : "3.80",
             "SQL::Translator" : "0",
@@ -43,7 +44,7 @@
    "provides" : {
       "Galileo" : {
          "file" : "lib/Galileo.pm",
-         "version" : "0.012"
+         "version" : "0.013"
       },
       "Galileo::Admin" : {
          "file" : "lib/Galileo/Admin.pm",
@@ -102,5 +103,5 @@
          "url" : "http://github.com/jberger/Galileo"
       }
    },
-   "version" : "0.012"
+   "version" : "0.013"
 }

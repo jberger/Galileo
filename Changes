@@ -1,5 +1,11 @@
 Revision history for Perl module Galileo.
 
+0.013  January 15, 2013
+	- User-side DBIC::DH work happens in temporary directories
+		- Fixes permission errors when using as non-root
+	- Improve test that seems to fail on win/mac
+	- Output load error message if Galileo::DB::Schema fails to load
+
 0.012  January 15, 2013
 	- Use cross-database table/column types
 	- Use versioned schemas
