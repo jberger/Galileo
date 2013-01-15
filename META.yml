@@ -36,7 +36,7 @@ provides:
     version: 0
   Galileo::DB::Schema:
     file: lib/Galileo/DB/Schema.pm
-    version: 1
+    version: 2
   Galileo::DB::Schema::Result::Menu:
     file: lib/Galileo/DB/Schema/Result/Menu.pm
     version: 0
@@ -63,7 +63,7 @@ requires:
   DBIx::Class::DeploymentHandler: 0
   DBIx::Class::EncodedColumn: 0
   File::ShareDir: 1.00
-  Mojolicious: 3.0
+  Mojolicious: 3.77
   SQL::Translator: 0
   Term::Prompt: 0
   perl: v5.8.0

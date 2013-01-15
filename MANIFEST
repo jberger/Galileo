@@ -31,6 +31,8 @@ lib/Galileo/files/public/galileo-modal.js
 lib/Galileo/files/public/portrait.jpg
 lib/Galileo/files/sql/_source/deploy/1/001-auto-__VERSION.yml
 lib/Galileo/files/sql/_source/deploy/1/001-auto.yml
+lib/Galileo/files/sql/_source/deploy/2/001-auto-__VERSION.yml
+lib/Galileo/files/sql/_source/deploy/2/001-auto.yml
 lib/Galileo/files/templates/admin/pages.html.ep
 lib/Galileo/files/templates/admin/user.html.ep
 lib/Galileo/files/templates/admin/users.html.ep
