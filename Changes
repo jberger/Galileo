@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.014  January 16, 2013
+	- Remove unicode regexp flag (/u) preventing install on <5.14
+
 0.013  January 15, 2013
 	- User-side DBIC::DH work happens in temporary directories
 		- Fixes permission errors when using as non-root
