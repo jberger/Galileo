@@ -61,7 +61,7 @@ sub startup {
       extra_js => [],
       files => 'static',
       sanitize => 1,
-      secret => 'MySecret',
+      secret => '', # default to null (unset) in case I implement an iterative config helper
     },
   });
 
@@ -85,7 +85,9 @@ sub startup {
   # use commands from Galileo::Command namespace
   push @{$app->commands->namespaces}, 'Galileo::Command';
 
-  $app->secret( $app->config->{secret} );
+  if ( my $secret = $app->config->{secret} ) {
+    $app->secret( $secret );
+  }
 
   ## Helpers ##
 
