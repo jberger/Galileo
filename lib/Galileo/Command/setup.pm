@@ -11,29 +11,6 @@ use Galileo::DB::Deploy;
 sub run {
   my ($self) = @_;
 
-  my $dh = Galileo::DB::Deploy->new( schema => $self->app->schema );
-  $self->deploy_or_upgrade_schema( $dh );
-
-  print <<'END';
-
-##############
-#  Complete  #
-##############
-
-All necessary actions have finished.
-Please run 'galileo daemon' to start the server.
-
-
-END
-}
-
-sub deploy_or_upgrade_schema {
-  my $self = shift;
-  my $dh = shift;
-  my $schema = $dh->schema;
-
-  my $available = $schema->schema_version;
-
   print <<'END';
 
 #############
@@ -50,11 +27,12 @@ environment variables:
 
     The full path to a directory which will contain any configuration
     files, the SQLite database (if applicable) and any static content.
+    The default is the current working directory.
 
   GALILEO_CONFIG
 
     The name of the configuration file controlling the rest of Galileo's
-    functionality.
+    functionality. The default is 'galileo.conf'.
 
 The remaining behaviors, including the database connection can be controlled by using 
 this configuration file. To create this file, please abort this script and run 
@@ -80,6 +58,29 @@ been filed where necessary. Thanks for your understanding.
 ########################
 
 END
+
+  my $dh = Galileo::DB::Deploy->new( schema => $self->app->schema );
+  $self->deploy_or_upgrade_schema( $dh );
+
+  print <<'END';
+
+##############
+#  Complete  #
+##############
+
+All necessary actions have finished.
+Please run 'galileo daemon' to start the server.
+
+
+END
+}
+
+sub deploy_or_upgrade_schema {
+  my $self = shift;
+  my $dh = shift;
+  my $schema = $dh->schema;
+
+  my $available = $schema->schema_version;
 
   # Nothing installed
   unless ( eval { $schema->resultset('User')->first } ) {
