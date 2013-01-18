@@ -1,5 +1,9 @@
 Revision history for Perl module Galileo.
 
+0.015  
+	- Don't set a default secret so mojo will warn
+	- Warn when browser doesn't support WebSockets (rather than fail silently)
+
 0.014  January 16, 2013
 	- Remove unicode regexp flag (/u) preventing install on <5.14
 
