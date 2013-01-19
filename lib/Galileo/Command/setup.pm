@@ -43,7 +43,7 @@ this configuration file. To create this file, please abort this script and run
 ############
 
 Finally, while you do not NEED a configuration file, one more thing that it does is set
-the "Secret" for you website. This helps to keep you site secure, you really should
+the "Secret" for you website. This helps to keep your site secure, you really should
 set it. Mojolicious will warn you until you do.
 
 END
