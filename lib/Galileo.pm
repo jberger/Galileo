@@ -1,3 +1,5 @@
+# Foo!
+
 package Galileo;
 use Mojo::Base 'Mojolicious';
 
