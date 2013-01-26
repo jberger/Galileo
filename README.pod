@@ -91,6 +91,17 @@ If Galileo detects a folder named F<static> inside the C<GALILEO_HOME> path, tha
 
 L<Galileo> doesn't have too much in the way of theming or customization as yet, however the L</config> keys C<extra_css> and C<extra_js> take array references pointing to CSS or Javascript files (respectively) within a L<static directory|/"Static files folder">.
 
+=head1 ADDITIONAL COMMANDS
+
+The C<galileo> command-line tool also provides all of the commands that Mojolicious' L<mojo> tool does. This includes C<daemon> which has already been introduced. It also provides several Galileo specific commands. In addition to L<config> and L<setup> which have already been discussed, there are:
+
+=head2 dump
+
+ $ galileo dump
+ $ galileo dump --directory pages -t 
+
+This tool dumps all the pages in your galileo site as markdown files. The directory for exporting to may be specifed with the C<--directory> or C<-d> flag, by default it exports to the current working directory. The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article).
+
 =head1 TECHNOLOGIES USED
 
 =over
