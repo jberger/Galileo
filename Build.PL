@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use 5.8.0;
+use 5.10.1;
 use Module::Build;
 
 my $builder = Module::Build->new(
