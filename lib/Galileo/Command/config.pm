@@ -11,7 +11,6 @@ has usage       => "usage: $0 config\n";
 sub run {
   my $self = shift;
 
-  Getopt::Long::Configure( 'default' );
   GetOptionsFromArray( \@_,
    'force' => \(my $force = 0)
   );

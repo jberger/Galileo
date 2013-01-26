@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.017  
+	- Getopt::Long bugfix (requires Mojolicious 3.83, sri++)
+
 0.016  January 26, 2013
 	- Added dump command (vervain)
 
