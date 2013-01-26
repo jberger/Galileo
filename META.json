@@ -44,7 +44,7 @@
    "provides" : {
       "Galileo" : {
          "file" : "lib/Galileo.pm",
-         "version" : "0.015"
+         "version" : "0.016"
       },
       "Galileo::Admin" : {
          "file" : "lib/Galileo/Admin.pm",
@@ -52,6 +52,10 @@
       },
       "Galileo::Command::config" : {
          "file" : "lib/Galileo/Command/config.pm",
+         "version" : 0
+      },
+      "Galileo::Command::dump" : {
+         "file" : "lib/Galileo/Command/dump.pm",
          "version" : 0
       },
       "Galileo::Command::setup" : {
@@ -103,5 +107,5 @@
          "url" : "http://github.com/jberger/Galileo"
       }
    },
-   "version" : "0.015"
+   "version" : "0.016"
 }

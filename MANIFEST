@@ -4,6 +4,7 @@ Changes
 lib/Galileo.pm
 lib/Galileo/Admin.pm
 lib/Galileo/Command/config.pm
+lib/Galileo/Command/dump.pm
 lib/Galileo/Command/setup.pm
 lib/Galileo/DB/Deploy.pm
 lib/Galileo/DB/Schema.pm
@@ -45,8 +46,8 @@ lib/Galileo/files/templates/user_menu.html.ep
 lib/Galileo/Page.pm
 lib/Galileo/User.pm
 MANIFEST			This list of files
+META.json
+META.yml
 README.pod
 t/basic.t
 t/locations.t
-META.yml
-META.json

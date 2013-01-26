@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.016  January 26, 2013
+	- Added dump command (vervain)
+
 0.015  January 18, 2013
 	- Don't set a default secret so mojo will warn
 	- Warn when browser doesn't support WebSockets (rather than fail silently)
