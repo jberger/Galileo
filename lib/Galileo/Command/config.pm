@@ -3,18 +3,18 @@ use Mojo::Base 'Mojolicious::Command';
 
 use Data::Dumper;
 use Term::Prompt qw/prompt/;
-use Getopt::Long;
+use Getopt::Long qw/GetOptionsFromArray/;
 
 has description => "Write an optional configuration file for your Galileo CMS application.\n";
 has usage       => "usage: $0 config\n";
 
 sub run {
-
   my $self = shift;
-  local @ARGV = @_;
 
-  my $force = 0;
-  GetOptions( "force" => \$force );
+  Getopt::Long::Configure( 'default' );
+  GetOptionsFromArray( \@_,
+   'force' => \(my $force = 0)
+  );
 
   my $file = $self->app->config_file;
 

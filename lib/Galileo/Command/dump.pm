@@ -23,9 +23,10 @@ END
 sub run {
   my $self = shift;
 
+  Getopt::Long::Configure( 'default' );
   GetOptionsFromArray( \@_,
-    'directory|d=s' => \my $dir,
-    'title|t:s'     => \(my $title = '<!-- %s -->'),
+    'directory=s' => \my $dir,
+    'title:s'     => \(my $title = '<!-- %s -->'),
   );
 
   $title = '# %s' unless $title;
