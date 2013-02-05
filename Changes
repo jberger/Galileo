@@ -1,7 +1,10 @@
 Revision history for Perl module Galileo.
 
-0.017  
+0.017  February 4, 2013
 	- Getopt::Long bugfix (requires Mojolicious 3.83, sri++)
+	- Upgrade jQuery:
+		- jQuery to 1.9.1
+		- JQueryUI to 1.10.0
 
 0.016  January 26, 2013
 	- Added dump command (vervain)
