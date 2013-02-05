@@ -1,0 +1,12 @@
+body > .container {
+  background: white;
+  padding: 20pt;
+  padding-bottom: 100pt;
+  border: 1pt solid darkGray;
+  position: relative;
+  top: 5pt;
+}
+
+body {
+  background: lightgray;
+}
