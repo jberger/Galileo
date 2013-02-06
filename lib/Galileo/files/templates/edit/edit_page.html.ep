@@ -25,6 +25,7 @@ $(function () {
 
 <div class="wmd-panel">
   <div class="well form-inline">
+    <label class="nav-header">Page Title</label>
     <input 
       type="text" 
       id="page-title" 
