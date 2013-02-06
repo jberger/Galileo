@@ -3,6 +3,7 @@ Revision history for Perl module Galileo.
 0.020  
 	- Improved styling
 		- Show and Edit page styles are alike
+		- Use a simple font stack
 
 0.019  February 5, 2013
 	- Improved documentation (should have been in previous release)

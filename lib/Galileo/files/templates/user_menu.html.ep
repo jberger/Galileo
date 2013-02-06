@@ -8,7 +8,7 @@
       <li><a href="#" onclick="add_user()">Add New Page</a></li>
       <li><a href="<%= $url %>">Edit This Page</a></li>
     % }
-    <li><a href="/admin/menu">Setup Nav Menu</a></li>
+    <li><a href="/admin/menu">Edit Nav Menu</a></li>
     <li><a href="/logout">Log Out</a></li>
     % if ( is_admin $user ) {
       <li class="nav-header">Administration</li>
