@@ -9,6 +9,8 @@ body > .container {
 
 body {
   background: lightgray;
+  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+  /*font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;*/
 }
 
 .page-contents img {
