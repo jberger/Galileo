@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.019  February 5, 2013
+	- Improved documentation (should have been in previous release)
+
 0.018  February 5, 2013
 	- Added some "theme" css
 
