@@ -10,3 +10,10 @@ body > .container {
 body {
   background: lightgray;
 }
+
+.page-contents img {
+  margin: 0px auto;
+  display: block;
+}
+
+

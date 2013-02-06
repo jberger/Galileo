@@ -1,7 +1,7 @@
 % layout 'standard';
 % my $sanitize = stash('sanitize') // 1 ? 'true' : 'false';
 % content_for header => begin
-  %= stylesheet '/assets/pagedown/demo.css'
+  %= stylesheet '/assets/pagedown/pagedown.css'
   %= javascript '/assets/pagedown/Markdown.Converter.js'
   %= javascript '/assets/pagedown/Markdown.Sanitizer.js'
   %= javascript '/assets/pagedown/Markdown.Editor.js'
@@ -37,6 +37,6 @@ $(function () {
   </div>
   <div id="wmd-button-bar"></div>
   <textarea class="wmd-input" id="wmd-input"><%= $input %></textarea>
-  <div id="wmd-preview" class="wmd-preview well"></div>
+  <div id="wmd-preview" class="page-contents"></div>
 </div>
 
