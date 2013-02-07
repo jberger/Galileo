@@ -2,9 +2,12 @@
 % my $sanitize = stash('sanitize') // 1 ? 'true' : 'false';
 % content_for header => begin
   %= stylesheet '/assets/pagedown/pagedown.css'
+  %= stylesheet '/assets/jquery-ui-1.10.0.custom.css'
   %= javascript '/assets/pagedown/Markdown.Converter.js'
   %= javascript '/assets/pagedown/Markdown.Sanitizer.js'
   %= javascript '/assets/pagedown/Markdown.Editor.js'
+  %= javascript '/assets/jquery-ui-1.10.0.full.min.js'
+  %= javascript '/assets/jquery.ajaxfileupload.js'
   %= javascript '/galileo-edit.js'
 % end
 
@@ -41,3 +44,10 @@ $(function () {
   <div id="wmd-preview" class="page-contents"></div>
 </div>
 
+<div id="insertImageDialog" title="Insert Image">
+  <h5>from the web:</h5>
+    <p><input type="text" placeholder="Enter url e.g. http://anysite.com/image.jpg" /></p>
+  <h5>from your computer:</h5>
+    <span class="loading-icon"></span>
+    <input type="file" name="file" id="file" data-action="/image_upload" />
+</div>

@@ -18,4 +18,13 @@ body {
   display: block;
 }
 
+.loading-icon {
+  width: 32px;
+  height: 32px;
+  background: url('/loading32.gif') no-repeat;
+  display: inline-block;
+}
 
+#insertImageDialog { display:none; }
+#insertImageDialog input[type=text] { width: 260px; }
+#insertImageDialog .loading-icon { display:none; float: left; padding-right: 5px; }

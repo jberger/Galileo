@@ -5,6 +5,7 @@ BEGIN{ extends 'DBIx::Class::DeploymentHandler' }
 # A wrapper class for DBICDH for use with Galileo
 
 use Mojo::JSON;
+use Mojo::Util 'slurp'; 
 my $json = Mojo::JSON->new();
 
 use File::ShareDir qw/dist_dir/;
@@ -111,6 +112,15 @@ sub inject_sample_data {
     is_admin  => 1,
   });
 
+  my $pub_dir = File::Spec->catdir( qw/ lib Galileo files public / );
+  $pub_dir = File::Spec->catdir( dist_dir('Galileo'), 'public' ) unless -d $pub_dir;
+  $schema->resultset('Image')->create({
+    name      => 'galileo-portrait.jpg',
+    data      => slurp(File::Spec->catfile($pub_dir, "portrait.jpg")),
+    format    => 'jpg',
+    author_id => $admin->user_id,
+  });
+
   $schema->resultset('Page')->create({
     name      => 'home',
     title     => 'Galileo CMS',
@@ -125,7 +135,7 @@ sub inject_sample_data {
 
 <p>Like the great scientist it is named for, Galileo CMS is not afraid to be very modern. Learn more about it on the <a href="/page/about">about</a> page.</p>
 
-<p><img src="/portrait.jpg" alt="Portrait of Galileo Galilei" title="" /></p>
+<p><img src="/image/galileo-portrait.jpg" alt="Portrait of Galileo Galilei" title="" /></p>
 HTML
     md        => <<'MARKDOWN',
 ##Welcome to your Galileo CMS site!
@@ -136,7 +146,7 @@ When he first turned the telescope to face Jupiter, he used modern technology to
 
 Like the great scientist it is named for, Galileo CMS is not afraid to be very modern. Learn more about it on the [about](/page/about) page.
 
-![Portrait of Galileo Galilei](/portrait.jpg)
+![Portrait of Galileo Galilei](/image/galileo-portrait.jpg)
 MARKDOWN
     author_id => $admin->user_id,
   });
