@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.021  
+	- Use Mojolicious::Plugin::Humane (version 0.03)
+
 0.020  February 11, 2013
 	- Improved styling
 		- Show and Edit page styles are alike
