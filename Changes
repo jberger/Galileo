@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.022  February 16, 2013
+	- Bump ::Humane version to 0.04
+
 0.021  February 16, 2013
 	- Use Mojolicious::Plugin::Humane (version 0.03)
 	- Fix deprecation warnings
