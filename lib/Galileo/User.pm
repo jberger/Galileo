@@ -11,11 +11,11 @@ sub login {
 
   my $user = $schema->resultset('User')->single({name => $name});
   if ($user and $user->check_password($pass)) {
-    $self->humane_flash( "Welcome Back!" );
+    $self->humane_flash( 'Welcome Back!' );
     $self->session->{id} = $user->user_id;
     $self->session->{username} = $name;
   } else {
-    $self->humane_flash( "Sorry try again" );
+    $self->humane_flash( 'Sorry try again' );
   }
   $self->redirect_to( $from );
 }
@@ -23,6 +23,7 @@ sub login {
 sub logout {
   my $self = shift;
   $self->session( expires => 1 );
+  $self->humane_flash( 'Goodbye' );
   $self->redirect_to( $self->home_page );
 }
 
