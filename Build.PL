@@ -11,7 +11,7 @@ my $builder = Module::Build->new(
   
   requires => {
     'perl' => '5.10.1',
-    'Mojolicious' => '3.83',  # Getopt::Long fix
+    'Mojolicious' => '3.85',  # ->post_ok( ... => form => {} )
     'Mojolicious::Plugin::Humane' => '0.03',
     'DBD::SQLite' => 0,
     'DBIx::Class' => 0,

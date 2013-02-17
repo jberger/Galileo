@@ -46,19 +46,19 @@ subtest 'Anonymous User' => sub {
 subtest 'Do Login' => sub {
 
   # fail username
-  $t->post_form_ok( '/login' => {from => '/page/home', username => 'wronguser', password => 'pass' } )
+  $t->post_ok( '/login' => form => {from => '/page/home', username => 'wronguser', password => 'pass' } )
     ->status_is(200)
     ->content_like( qr/Sorry try again/ )
     ->element_exists( 'form' );
 
   # fail password
-  $t->post_form_ok( '/login' => {from => '/page/home', username => 'admin', password => 'wrongpass' } )
+  $t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', password => 'wrongpass' } )
     ->status_is(200)
     ->content_like( qr/Sorry try again/ )
     ->element_exists( 'form' );
 
   # successfully login
-  $t->post_form_ok( '/login' => {from => '/page/home', username => 'admin', password => 'pass' } )
+  $t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', password => 'pass' } )
     ->status_is(200)
     ->content_like( qr/Welcome Back/ )
     ->text_like( '#user-menu li' => qr/Hello admin/ );
