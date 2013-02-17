@@ -4,6 +4,7 @@ Changes
 lib/Galileo.pm
 lib/Galileo/Admin.pm
 lib/Galileo/Command/config.pm
+lib/Galileo/Command/dump.pm
 lib/Galileo/Command/setup.pm
 lib/Galileo/DB/Deploy.pm
 lib/Galileo/DB/Schema.pm
@@ -18,16 +19,17 @@ lib/Galileo/files/public/assets/bootstrap/img/glyphicons-halflings.png
 lib/Galileo/files/public/assets/bootstrap/js/bootstrap.min.js
 lib/Galileo/files/public/assets/humane/humane.min.js
 lib/Galileo/files/public/assets/humane/libnotify.css
-lib/Galileo/files/public/assets/jquery-1.7.2.min.js
-lib/Galileo/files/public/assets/jquery-ui-1.8.21.custom.min.js
-lib/Galileo/files/public/assets/pagedown/demo.css
+lib/Galileo/files/public/assets/jquery-1.9.1.min.js
+lib/Galileo/files/public/assets/jquery-ui-1.10.0.custom.min.js
 lib/Galileo/files/public/assets/pagedown/Markdown.Converter.js
 lib/Galileo/files/public/assets/pagedown/Markdown.Editor.js
 lib/Galileo/files/public/assets/pagedown/Markdown.Sanitizer.js
+lib/Galileo/files/public/assets/pagedown/pagedown.css
 lib/Galileo/files/public/assets/pagedown/wmd-buttons.png
 lib/Galileo/files/public/galileo-edit.js
 lib/Galileo/files/public/galileo-modal.js
 lib/Galileo/files/public/portrait.jpg
+lib/Galileo/files/public/themes/standard.css
 lib/Galileo/files/sql/_source/deploy/1/001-auto-__VERSION.yml
 lib/Galileo/files/sql/_source/deploy/1/001-auto.yml
 lib/Galileo/files/sql/_source/deploy/2/001-auto-__VERSION.yml
@@ -45,8 +47,8 @@ lib/Galileo/files/templates/user_menu.html.ep
 lib/Galileo/Page.pm
 lib/Galileo/User.pm
 MANIFEST			This list of files
+META.json
+META.yml
 README.pod
 t/basic.t
 t/locations.t
-META.yml
-META.json

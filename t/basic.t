@@ -91,7 +91,7 @@ subtest 'Edit Page' => sub {
   $t->get_ok('/page/home')
     ->status_is(200)
     ->text_is( h1 => 'New Home' )
-    ->text_like( p => qr/$text/u );
+    ->text_like( p => qr/$text/ );
 
   # save page without title (error)
   my $data_notitle = {
@@ -134,7 +134,7 @@ subtest 'New Page' => sub {
   $t->get_ok('/page/snow❄flake')
     ->status_is(200)
     ->text_is( h1 => 'New Home for ☃' )
-    ->text_like( p => qr/$text/u );
+    ->text_like( p => qr/$text/ );
 
 };
 

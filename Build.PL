@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use 5.8.0;
+use 5.10.1;
 use Module::Build;
 
 my $builder = Module::Build->new(
@@ -11,7 +11,7 @@ my $builder = Module::Build->new(
   
   requires => {
     'perl' => '5.10.1',
-    'Mojolicious' => '3.80',  # need j and json_message_content_is and message_ok
+    'Mojolicious' => '3.83',  # Getopt::Long fix
     'DBD::SQLite' => 0,
     'DBIx::Class' => 0,
     'DBIx::Class::Candy' => 0,
@@ -21,6 +21,7 @@ my $builder = Module::Build->new(
     'SQL::Translator' => 0,
     'Term::Prompt' => 0,
     'File::ShareDir' => 0,
+    'File::Copy::Recursive' => 0,
   },
   configure_requires => {
     'Module::Build' => 0.38,

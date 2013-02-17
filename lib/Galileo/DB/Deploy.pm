@@ -10,12 +10,28 @@ my $json = Mojo::JSON->new();
 use File::ShareDir qw/dist_dir/;
 use File::Spec;
 use File::Temp ();
+use File::Copy::Recursive 'dircopy';
 
-my $dev_dir = File::Spec->catdir( qw/ lib Galileo files sql / );
+has 'temp_script_dir' => (
+  is => 'rw',
+  lazy => 1,
+  builder => '_build_temp_script_dir',
+);
 
-#has '+schema' => (
-#  weak_ref => 1,
-#);
+sub _build_temp_script_dir {
+  File::Temp->newdir( $ENV{KEEP_TEMP_DIR} ? (CLEANUP => 0) : () );
+}
+
+has 'real_script_dir' => (
+  is => 'rw',
+  lazy => 1,
+  builder => '_build_real_script_dir',
+);
+
+sub _build_real_script_dir {
+  my $dev_dir = File::Spec->catdir( qw/ lib Galileo files sql / );
+  -e $dev_dir ? $dev_dir : File::Spec->catdir( dist_dir('Galileo'), 'sql' );
+}
 
 has 'script_directory' => (
   is => 'rw',
@@ -24,7 +40,11 @@ has 'script_directory' => (
 );
 
 sub _build_script_directory {
-  -e $dev_dir ? $dev_dir : File::Spec->catdir( dist_dir('Galileo'), 'sql' )
+  my $self = shift;
+  my $dir  = $self->real_script_dir;
+  my $temp = $self->temp_script_dir;
+  dircopy $dir, $temp or die "Cannot copy from $dir to $temp";
+  return "$temp";
 }
 
 has 'databases' => (
@@ -39,9 +59,9 @@ has '+force_overwrite' => (
   default => 1,
 );
 
-#has '+ignore_ddl' => (
-#  default => 1,
-#);
+has '+ignore_ddl' => (
+  default => 1,
+);
 
 sub installed_version {
   my $self = shift;
@@ -170,13 +190,10 @@ sub create_test_object {
   require Galileo::DB::Schema;
 
   my $db = Galileo::DB::Schema->connect('dbi:SQLite:dbname=:memory:','','',{sqlite_unicode=>1});
-  my $ddl_dir = File::Temp->newdir;
 
   my $dh = __PACKAGE__->new(
     databases => [],
-    ignore_ddl => 1,
     schema => $db,
-    script_directory => "$ddl_dir",
   );
   $dh->do_install;
   $dh->inject_sample_data('admin', 'pass', 'Joe Admin');

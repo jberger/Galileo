@@ -1,6 +1,6 @@
 % layout 'standard';
 % content_for header => begin
-  %= javascript '/assets/jquery-ui-1.8.21.custom.min.js'
+  %= javascript '/assets/jquery-ui-1.10.0.custom.min.js'
   %= javascript '/galileo-edit.js'
 % end
 

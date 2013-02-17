@@ -1,12 +1,5 @@
-body 
-{ 
-	background-color: White;
-    font-family: sans-serif;
-}
-
 .wmd-panel
 {
-	width: 50%;
 	min-width: 500px;
 }
 
@@ -21,11 +14,6 @@ body
 	width: 100%;
 	background-color: Gainsboro;
 	border: 1px solid DarkGray;
-}
-
-.wmd-preview 
-{ 
-        border: 1px solid DarkGray;
 }
 
 .wmd-button-row 

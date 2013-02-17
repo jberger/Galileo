@@ -1,7 +1,7 @@
 package Galileo;
 use Mojo::Base 'Mojolicious';
 
-our $VERSION = 0.012;
+our $VERSION = '0.020';
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
@@ -12,7 +12,7 @@ use Cwd;
 has db => sub {
   my $self = shift;
   my $schema_class = $self->config->{db_schema} or die "Unknown DB Schema Class";
-  eval "require $schema_class" or die "Could not load Schema Class ($schema_class)";
+  eval "require $schema_class" or die "Could not load Schema Class ($schema_class). $@\n";
 
   my $db_connect = $self->config->{db_connect} or die "No DBI connection string provided";
   my @db_connect = ref $db_connect ? @$db_connect : ( $db_connect );
@@ -57,11 +57,11 @@ sub startup {
         undef,
         { sqlite_unicode => 1 },
       ],
-      extra_css => [],
+      extra_css => [ '/themes/standard.css' ],
       extra_js => [],
       files => 'static',
       sanitize => 1,
-      secret => 'MySecret',
+      secret => '', # default to null (unset) in case I implement an iterative config helper
     },
   });
 
@@ -85,7 +85,9 @@ sub startup {
   # use commands from Galileo::Command namespace
   push @{$app->commands->namespaces}, 'Galileo::Command';
 
-  $app->secret( $app->config->{secret} );
+  if ( my $secret = $app->config->{secret} ) {
+    $app->secret( $secret );
+  }
 
   ## Helpers ##
 
@@ -291,7 +293,20 @@ If Galileo detects a folder named F<static> inside the C<GALILEO_HOME> path, tha
 
 =head1 CUSTOMIZING
 
-L<Galileo> doesn't have too much in the way of theming or customization as yet, however the L</config> keys C<extra_css> and C<extra_js> take array references pointing to CSS or Javascript files (respectively) within a L<static directory|/"Static files folder">.
+The L</config> keys C<extra_css> and C<extra_js> take array references pointing to CSS or Javascript files (respectively) within a L<static directory|/"Static files folder">. As an example, the default C<extra_css> key contains the path to a simple theme css file which adds a gray background and border to the main container.
+
+As yet there are no widgets/plugins as such, however a clever bit of javascript might be able to load something. 
+
+=head1 ADDITIONAL COMMANDS
+
+The C<galileo> command-line tool also provides all of the commands that Mojolicious' L<mojo> tool does. This includes C<daemon> which has already been introduced. It also provides several Galileo specific commands. In addition to L<config> and L<setup> which have already been discussed, there are:
+
+=head2 dump
+
+ $ galileo dump
+ $ galileo dump --directory pages -t 
+
+This tool dumps all the pages in your galileo site as markdown files. The directory for exporting to may be specifed with the C<--directory> or C<-d> flag, by default it exports to the current working directory. The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article).
 
 =head1 TECHNOLOGIES USED
 
@@ -343,7 +358,7 @@ Joel Berger, E<lt>joel.a.berger@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012 by Joel Berger
+Copyright (C) 2012-2013 by Joel Berger
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
