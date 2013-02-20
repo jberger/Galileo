@@ -165,6 +165,7 @@ sub startup {
   $r->any( '/page/:name' )->to('page#show');
   $r->post( '/login' )->to('user#login');
   $r->any( '/logout' )->to('user#logout');
+  $r->get( '/image/*name' )->to('image#show');
 
   my $if_author = $r->under( sub {
     my $self = shift;
@@ -178,6 +179,7 @@ sub startup {
   $if_author->any( '/edit/:name' )->to('edit#edit_page');
   $if_author->websocket( '/store/page' )->to('edit#store_page');
   $if_author->websocket( '/store/menu' )->to('edit#store_menu');
+  $if_author->post( '/image_upload' )->to('image#upload');
 
   my $if_admin = $r->under( sub {
     my $self = shift;
