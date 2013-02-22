@@ -1,5 +1,9 @@
 Revision history for Perl module Galileo.
 
+0.023  
+	- Page and Menu controllers are now properly distinct
+	- Added expires helper (from being a controller method)
+
 0.022  February 16, 2013
 	- Bump ::Humane version to 0.04
 
