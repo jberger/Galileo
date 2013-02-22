@@ -157,6 +157,11 @@ sub startup {
     }
   );
 
+  $app->helper( expire => sub {
+    my ($self, $name) = @_;
+    $self->flex_memorize->{$name}{expires} = 1;
+  });
+
   ## Routing ##
 
   my $r = $app->routes;
@@ -175,8 +180,8 @@ sub startup {
   });
 
   $if_author->any( '/admin/menu' )->to('edit#edit_menu');
-  $if_author->any( '/edit/:name' )->to('edit#edit_page');
-  $if_author->websocket( '/store/page' )->to('edit#store_page');
+  $if_author->any( '/edit/:name' )->to('page#edit');
+  $if_author->websocket( '/store/page' )->to('page#store');
   $if_author->websocket( '/store/menu' )->to('edit#store_menu');
 
   my $if_admin = $r->under( sub {
