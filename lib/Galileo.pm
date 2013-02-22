@@ -179,10 +179,10 @@ sub startup {
     return 1;
   });
 
-  $if_author->any( '/admin/menu' )->to('edit#edit_menu');
+  $if_author->any( '/admin/menu' )->to('menu#edit');
   $if_author->any( '/edit/:name' )->to('page#edit');
   $if_author->websocket( '/store/page' )->to('page#store');
-  $if_author->websocket( '/store/menu' )->to('edit#store_menu');
+  $if_author->websocket( '/store/menu' )->to('menu#store');
 
   my $if_admin = $r->under( sub {
     my $self = shift;

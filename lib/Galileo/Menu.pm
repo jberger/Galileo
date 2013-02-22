@@ -1,9 +1,9 @@
-package Galileo::Edit;
+package Galileo::Menu;
 use Mojo::Base 'Mojolicious::Controller';
 
 use Mojo::JSON 'j';
 
-sub edit_menu {
+sub edit {
   my $self = shift;
   my $name = 'main';
   my $schema = $self->schema;
@@ -33,7 +33,7 @@ sub edit_menu {
   );
 }
 
-sub store_menu {
+sub store {
   my $self = shift;
   $self->on( text => sub {
     my ($self, $message) = @_;
