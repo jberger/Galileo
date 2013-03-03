@@ -14,11 +14,18 @@ has db => sub {
   my $schema_class = $self->config->{db_schema} or die "Unknown DB Schema Class";
   eval "require $schema_class" or die "Could not load Schema Class ($schema_class). $@\n";
 
-  my $db_connect = $self->config->{db_connect} or die "No DBI connection string provided";
-  my @db_connect = ref $db_connect ? @$db_connect : ( $db_connect );
+  if ( my $db_connect = $self->config->{db_connect} ) {
+    warn "Configuration key db_connect is deprecated\n";
+    if ( ref $db_connect ) {
+      @{ $self->config }{ qw/db_dsn db_username db_password db_options/ } = @$db_connect;
+    } else {
+      $self->config->{db_dsn} = $db_connect;
+    }
+  }
 
-  my $schema = $schema_class->connect( @db_connect ) 
-    or die "Could not connect to $schema_class using $db_connect[0]";
+  my $schema = $schema_class->connect( 
+    @{ $self->config }{ qw/db_dsn db_username db_password db_options/ }
+  ) or die "Could not connect to $schema_class using DSN " . $self->config->{db_dsn};
 
   return $schema;
 };
@@ -51,12 +58,10 @@ sub startup {
     file => $app->config_file,
     default => {
       db_schema  => 'Galileo::DB::Schema',
-      db_connect => [
-        'dbi:SQLite:dbname=' . $app->home->rel_file( 'galileo.db' ),
-        undef,
-        undef,
-        { sqlite_unicode => 1 },
-      ],
+      db_dsn => 'dbi:SQLite:dbname=' . $app->home->rel_file( 'galileo.db' ),
+      db_username => undef,
+      db_password => undef,
+      db_options => { sqlite_unicode => 1 },
       extra_css => [ '/themes/standard.css' ],
       extra_js => [],
       files => 'static',
