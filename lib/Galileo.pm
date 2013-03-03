@@ -14,15 +14,6 @@ has db => sub {
   my $schema_class = $self->config->{db_schema} or die "Unknown DB Schema Class";
   eval "require $schema_class" or die "Could not load Schema Class ($schema_class). $@\n";
 
-  if ( my $db_connect = $self->config->{db_connect} ) {
-    warn "Configuration key db_connect is deprecated\n";
-    if ( ref $db_connect ) {
-      @{ $self->config }{ qw/db_dsn db_username db_password db_options/ } = @$db_connect;
-    } else {
-      $self->config->{db_dsn} = $db_connect;
-    }
-  }
-
   my $schema = $schema_class->connect( 
     @{ $self->config }{ qw/db_dsn db_username db_password db_options/ }
   ) or die "Could not connect to $schema_class using DSN " . $self->config->{db_dsn};
@@ -64,11 +55,30 @@ sub startup {
       db_options => { sqlite_unicode => 1 },
       extra_css => [ '/themes/standard.css' ],
       extra_js => [],
-      files => 'static',
+      files => ['static'],
       sanitize => 1,
       secret => '', # default to null (unset) in case I implement an iterative config helper
     },
   });
+
+  # handle deprecated db_connect
+  if ( my $db_connect = delete $app->config->{db_connect} ) {
+    warn "### Configuration key db_connect is deprecated ###\n";
+    if ( ref $db_connect ) {
+      @{ $app->config }{ qw/db_dsn db_username db_password db_options/ } = @$db_connect;
+    } else {
+      $app->config->{db_dsn} = $db_connect;
+    }
+  }
+
+  # upgrade deprecated string keys for files to an arrayref
+  {
+    my $value = $app->config->{files};
+    unless ( ref $value ) {
+      warn "### String value for 'files' config key is deprecated (use arrayref of strings) ###\n"; 
+      $app->config->{files} = [ $value ];
+    }
+  }
 
   {
     # use content from directories under lib/Galileo/files or using File::ShareDir
@@ -81,9 +91,12 @@ sub startup {
     $app->renderer->paths->[0] = -d $templates ? $templates : catdir(dist_dir('Galileo'), 'templates');
   }
 
-  {
-    # add the files directory to array of static content folders
-    my $dir = $app->home->rel_dir( $app->config->{files} );
+  # add the files directories to array of static content folders
+  foreach my $dir ( @{$app->config->{files}} ) {
+    # convert relative paths to relative one (to home dir)
+    unless ( File::Spec->file_name_is_absolute( $dir ) ) {
+      $dir = $app->home->rel_dir( $dir );
+    }
     push @{ $app->static->paths }, $dir if -d $dir;
   }
 
