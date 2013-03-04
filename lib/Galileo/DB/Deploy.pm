@@ -95,6 +95,11 @@ sub do_upgrade {
   $self->upgrade;
 }
 
+sub has_admin_user {
+  my $self = shift;
+  return eval { $self->schema->resultset('User')->first }
+}
+
 sub inject_sample_data {
   my $self = shift;
   my $schema = $self->schema;

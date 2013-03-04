@@ -97,7 +97,7 @@ sub deploy_or_upgrade_schema {
   my $available = $schema->schema_version;
 
   # Nothing installed
-  unless ( eval { $schema->resultset('User')->first } ) {
+  unless ( $dh->has_admin_user ) {
     say "Installing database version: $available";
     $self->install_schema( $dh );
     return;

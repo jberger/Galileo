@@ -5,11 +5,11 @@ use Mojolicious::Command::daemon;
 
 use Mojolicious::Routes;
 use Mojo::JSON 'j';
-use Data::Dumper;
+use Mojo::Util 'spurt';
 
 use Galileo::DB::Deploy;
 
-has description => "Configure your application via a web interface\n";
+has description => "Configure your Galileo CMS via a web interface\n";
 
 sub run {
   my ($self, @args) = @_;
@@ -67,15 +67,11 @@ sub run {
     }
 
     {
-      my $file = $self->app->config_file;
-      open my $fh, '>', $file
-        or die "Could not open file $file for writing: $!\n";
-
+      require Data::Dumper;
       local $Data::Dumper::Terse = 1;
       local $Data::Dumper::Sortkeys = 1;
 
-      print $fh Dumper \%params 
-        or die "Write to $file failed\n";
+      spurt Data::Dumper::Dumper(\%params), $self->app->config_file;
     }
   
     $self->app->load_config;
@@ -92,7 +88,7 @@ sub run {
     my $available = $schema->schema_version;
 
     # Nothing installed
-    unless ( eval { $schema->resultset('User')->first } ) {
+    unless ( $dh->has_admin_user ) {
       return $self->render( 'galileo_database_install' );
     }
 
@@ -101,13 +97,13 @@ sub run {
 
     # Do nothing if version is current
     if ( $installed == $available ) {
-      $self->humane_flash( 'Database schema is current' );
+      $self->flash( 'galileo.message' => 'Database schema is current' );
     } else {
-      $self->humane_flash( "Upgrade database $installed -> $available" );
+      $self->flash( 'galileo.message' => "Upgrade database $installed -> $available" );
       $dh->do_upgrade;
     }
 
-    $self->redirect_to('finished');
+    $self->redirect_to('finish');
   });
 
   $r->any( '/database_install' => sub {
@@ -126,11 +122,28 @@ sub run {
     $dh->do_install;
     $dh->inject_sample_data($user, $pw1, $full);
 
-    $self->humane_flash('Database setup');
+    $self->flash( 'galileo.message' => 'Database has been setup' );
     $self->redirect_to('finish');
   });
 
-  $r->any('/finish' => 'galileo_finish');
+  $r->any('/finish' => sub {
+    my $self = shift;
+    my $message = $self->flash( 'galileo.message' );
+
+    # check that an admin user exists
+    if ( $self->app->dh->has_admin_user ) {
+      $self->stash( 'galileo.success' => 1 );
+      $self->stash( 'galileo.message' => $message );
+    } else {
+      $self->stash( 'galileo.success' => 0 );
+      $self->stash( 
+        'galileo.message' =>
+        'It does not appear that your database is setup, please rerun the setup utility'
+      );
+    }
+
+    $self->render('galileo_finish');
+  });
 
   $r->any('/exit' => sub { exit });
 
@@ -166,24 +179,20 @@ __DATA__
 
 <ul>
   %= tag li => begin 
-    You may want to set some configuration parameters. If you do not first visit the configuration page, you will use the defaults, including using an SQLite database for the backend.
-    <ul><li>
-      %= link_to 'Configure your Galileo CMS' => 'configure'
-    </li></ul>
+    %= link_to 'Configure your Galileo CMS' => 'configure'
+    <p>Configuration is not necessary, defaults will be used. 
+    Configuring Galileo CMS should be done before installing the database.</p>
   % end
 
   %= tag li => begin
-    If this is a new installation you <b>must</b> to run the database setup utility.
-    <ul><li>
-      %= link_to 'Install or upgrade your database' => 'database'
-    </li></ul>
+    %= link_to 'Install or upgrade your database' => 'database'
+    <p>If this is a new installation you <b>must</b> to run the database setup utility.
+    If you have not configured Galileo (see above), you will use the defaults, including using an SQLite database for the backend.</p>
   % end
 
   %= tag li => begin
-    When you are ready stop this utility and run <pre>$ galileo daemon</pre>
-    <ul><li>
-      %= link_to 'Stop and exit' => 'finish'
-    </li></ul>
+    %= link_to 'Stop and exit' => 'finish'
+    <p>If your database is already installed, you may stop this utility and run <pre>$ galileo daemon</pre></p>
   % end
 
 </ul>
@@ -270,9 +279,13 @@ __DATA__
 % title 'Galileo Setup - Finished';
 % layout 'galileo_layout';
 
-<p>
-  Setup complete, run <pre>$ galileo daemon</pre>
-</p>
+% if ( my $message = stash 'galileo.message' ) {
+  <p><%= $message %></p>
+% }
+
+% if ( stash 'galileo.success' ) {
+  <p>Setup complete, run <pre>$ galileo daemon</pre></p>
+% }
 
 %= javascript begin
   $(function(){ $.get('<%= url_for 'exit' %>') });
