@@ -53,11 +53,11 @@ L<Galileo> installs a command line application, C<galileo>. It inherits from the
 
 This command starts the app in setup mode. It can write a configuration file, and setup or upgrade the database.
 
-L<Galileo> does not need to be configured, however it is recommended to do so to set your application's secret. The secret can be any string, however stronger is better. You do not need to memorize it or remember it. This secret protects the cookies employed by Galileo from being tampered with on the client side.
-
 This step is required after both installation and upgrading Galileo, because the database page will deploy or upgrade the database used by your Galileo site. It will use the default DBI settings (SQLite) or whatever is setup in the C<GALILEO_CONFIG> configuration file.
 
-Warning: As usual, proper care should be taken when upgrading a database. This mechanism is rather new and while it should be safe, the author makes no promises about anything yet! Backup all files before upgrading!
+Warning: As usual, proper care should be taken when upgrading a database. This mechanism is rather new and while it should be safe, the author makes no promises about anything yet! Backup files and database before upgrading!
+
+Although L<Galileo> does not need to be configured, it is recommended to do so to set your application's secret. The secret can be any string, however stronger is better. You do not need to memorize it or even remember it. This secret protects the cookies employed by Galileo from being tampered with on the client side.
 
 Note that the database deployment tools may emit debugging information unexpectedly to your terminal, especially messages about "overwriting" and some internal "peek" information. These message are harmless, but as yet cannot be suppressed. 
 
