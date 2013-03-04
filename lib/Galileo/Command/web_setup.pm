@@ -33,7 +33,8 @@ sub run {
     );
   });
 
-  $r->any( '/configuration' => 'galileo_config' );
+  $r->any( '/' => 'galileo_setup' );
+  $r->any( '/configure' => 'galileo_config' );
   $r->any( '/store_config' => sub {
     my $self = shift;
     my @params = sort $self->param;
@@ -79,68 +80,85 @@ sub run {
 
 __DATA__
 
-@@ galileo_config.html.ep
-
-% use Mojo::JSON 'j';
-% title 'Galileo Configuration';
+@@ layouts/galileo_layout.html.ep
 
 <!DOCTYPE html>
 <html>
-<head>
-  %= include 'header_common'
-</head>
+  <head>
+    %= include 'header_common';
+  </head>
 <body>
   <div class="container">
-  <h1><%= title %></h1>
-
-  %= form_for 'store' => method => 'POST', class => 'form-horizontal' => begin
-    % my $config = app->config;
-
-    <legend>Database Connection</legend>
-    %= control_group for => 'db_dsn', label => 'Connection String (DSN)' => begin
-      %= text_field 'db_dsn', value => $config->{db_dsn}
-    % end
-    %= control_group for => 'db_username', label => 'Username' => begin
-      %= text_field 'db_username', value => $config->{db_username}
-    % end
-    %= control_group for => 'db_password', label => 'Password' => begin
-      %= input_tag 'db_password', value => $config->{db_password}, type => 'password'
-    % end
-    %= control_group for => 'db_options', label => 'Options (JSON hash)' => begin
-      %= text_field 'db_options', value => j($config->{db_options})
-    % end
-    %= control_group for => 'db_schema', label => 'Schema Class' => begin
-      %= text_field 'db_schema', value => $config->{db_schema}
-    % end
-
-    <legend>Additional Files</legend>
-
-    %= control_group for => 'files', label => 'Static Files (JSON array)' => begin
-      %= text_field 'files', value => j($config->{files})
-    % end
-    %= control_group for => 'extra_js', label => 'Extra Javascript Files (JSON array)' => begin
-      %= text_field 'extra_js', value => j($config->{extra_js})
-    % end
-    %= control_group for => 'extra_css', label => 'Extra Stylesheet files (JSON array)' => begin
-      %= text_field 'extra_css', value => j($config->{extra_css})
-    % end
-
-    <legend>Other Options</legend>
-
-    %= control_group for => 'sanitize', label => 'Use Sanitizing Editor' => begin 
-      %= check_box 'sanitize', value => 1, checked => $config->{sanitize} ? 'checked' : ''
-    % end
-    %= control_group for => 'secret', label => 'Application Secret' => begin
-      %= text_field 'secret', value => $config->{secret}
-    % end
-
-    %= control_group for => 'submit-button', begin
-      <button class="btn" id="submit-button" type="submit">Save</button>
-    % end
-  % end
+    %= content
   </div>
 </body>
-</html>
+</head>
+
+@@ galileo_setup.html.ep
+
+% title 'Galileo Setup Home';
+% layout 'galileo_layout';
+
+<h1><%= title %></h1>
+
+<h2>Welcome to Galileo!</h2>
+
+<p>This utility help you setup your Galileo CMS. If its your first time you must to run the database setup. If you do not first visit the configuration page, you will use the defaults, including using an SQLite database for the backend.</p>
+
+%= link_to 'Configure your Galileo CMS' => 'configure'
+
+@@ galileo_config.html.ep
+
+% use Mojo::JSON 'j';
+% title 'Configure Galileo';
+% layout 'galileo_layout';
+
+<h1><%= title %></h1>
+
+%= form_for 'store_config' => method => 'POST', class => 'form-horizontal' => begin
+  % my $config = app->config;
+
+  <legend>Database Connection</legend>
+  %= control_group for => 'db_dsn', label => 'Connection String (DSN)' => begin
+    %= text_field 'db_dsn', value => $config->{db_dsn}
+  % end
+  %= control_group for => 'db_username', label => 'Username' => begin
+    %= text_field 'db_username', value => $config->{db_username}
+  % end
+  %= control_group for => 'db_password', label => 'Password' => begin
+    %= input_tag 'db_password', value => $config->{db_password}, type => 'password'
+  % end
+  %= control_group for => 'db_options', label => 'Options (JSON hash)' => begin
+    %= text_field 'db_options', value => j($config->{db_options})
+  % end
+  %= control_group for => 'db_schema', label => 'Schema Class' => begin
+    %= text_field 'db_schema', value => $config->{db_schema}
+  % end
+
+  <legend>Additional Files</legend>
+
+  %= control_group for => 'files', label => 'Static Files (JSON array)' => begin
+    %= text_field 'files', value => j($config->{files})
+  % end
+  %= control_group for => 'extra_js', label => 'Extra Javascript Files (JSON array)' => begin
+    %= text_field 'extra_js', value => j($config->{extra_js})
+  % end
+  %= control_group for => 'extra_css', label => 'Extra Stylesheet files (JSON array)' => begin
+    %= text_field 'extra_css', value => j($config->{extra_css})
+  % end
+
+  <legend>Other Options</legend>
+
+  %= control_group for => 'sanitize', label => 'Use Sanitizing Editor' => begin 
+    %= check_box 'sanitize', value => 1, checked => $config->{sanitize} ? 'checked' : ''
+  % end
+  %= control_group for => 'secret', label => 'Application Secret' => begin
+    %= text_field 'secret', value => $config->{secret}
+  % end
+    %= control_group for => 'submit-button', begin
+    <button class="btn" id="submit-button" type="submit">Save</button>
+  % end
+% end
 
 @@ control_group.html.ep
 

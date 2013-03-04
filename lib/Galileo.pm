@@ -30,20 +30,8 @@ has config_file => sub {
   return rel2abs( 'galileo.conf', $self->home_path );
 };
 
-sub startup {
+sub load_config {
   my $app = shift;
-
-  # set home folder
-  $app->home->parse( $app->home_path );
-
-  {
-    # setup logging path
-    # code stolen from Mojolicious.pm
-    my $mode = $app->mode;
-
-    $app->log->path($app->home->rel_file("log/$mode.log"))
-      if -w $app->home->rel_file('log');
-  }
 
   $app->plugin( Config => { 
     file => $app->config_file,
@@ -80,6 +68,38 @@ sub startup {
     }
   }
 
+  # add the files directories to array of static content folders
+  # TODO don't repeat
+  foreach my $dir ( @{$app->config->{files}} ) {
+    # convert relative paths to relative one (to home dir)
+    unless ( File::Spec->file_name_is_absolute( $dir ) ) {
+      $dir = $app->home->rel_dir( $dir );
+    }
+    push @{ $app->static->paths }, $dir if -d $dir;
+  }
+
+  if ( my $secret = $app->config->{secret} ) {
+    $app->secret( $secret );
+  }
+}
+
+sub startup {
+  my $app = shift;
+
+  # set home folder
+  $app->home->parse( $app->home_path );
+
+  {
+    # setup logging path
+    # code stolen from Mojolicious.pm
+    my $mode = $app->mode;
+
+    $app->log->path($app->home->rel_file("log/$mode.log"))
+      if -w $app->home->rel_file('log');
+  }
+
+  $app->load_config;
+
   {
     # use content from directories under lib/Galileo/files or using File::ShareDir
     my $lib_base = catdir(dirname(rel2abs(__FILE__)), 'Galileo', 'files');
@@ -91,21 +111,8 @@ sub startup {
     $app->renderer->paths->[0] = -d $templates ? $templates : catdir(dist_dir('Galileo'), 'templates');
   }
 
-  # add the files directories to array of static content folders
-  foreach my $dir ( @{$app->config->{files}} ) {
-    # convert relative paths to relative one (to home dir)
-    unless ( File::Spec->file_name_is_absolute( $dir ) ) {
-      $dir = $app->home->rel_dir( $dir );
-    }
-    push @{ $app->static->paths }, $dir if -d $dir;
-  }
-
   # use commands from Galileo::Command namespace
   push @{$app->commands->namespaces}, 'Galileo::Command';
-
-  if ( my $secret = $app->config->{secret} ) {
-    $app->secret( $secret );
-  }
 
   ## Helpers ##
 
