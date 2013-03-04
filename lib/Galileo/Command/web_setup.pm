@@ -7,6 +7,8 @@ use Mojolicious::Routes;
 use Mojo::JSON 'j';
 use Data::Dumper;
 
+use Galileo::DB::Deploy;
+
 has description => "Configure your application via a web interface\n";
 
 sub run {
@@ -18,6 +20,12 @@ sub run {
   $app->routes($r); # remove all routes
 
   push @{ $app->renderer->classes }, __PACKAGE__;
+
+  $app->helper( dh => sub {
+    my $self = shift;
+    state $dh = Galileo::DB::Deploy->new( schema => $self->app->schema );
+    $dh;
+  });
 
   $app->helper( 'control_group' => sub {
     my $self = shift;
@@ -58,19 +66,73 @@ sub run {
       $params{$key} = j($params{$key});
     }
 
-    my $file = $self->app->config_file;
-    open my $fh, '>', $file
-      or die "Could not open file $file for writing: $!\n";
+    {
+      my $file = $self->app->config_file;
+      open my $fh, '>', $file
+        or die "Could not open file $file for writing: $!\n";
 
-    local $Data::Dumper::Terse = 1;
-    local $Data::Dumper::Sortkeys = 1;
+      local $Data::Dumper::Terse = 1;
+      local $Data::Dumper::Sortkeys = 1;
 
-    print $fh Dumper \%params 
-      or die "Write to $file failed\n";
-
+      print $fh Dumper \%params 
+        or die "Write to $file failed\n";
+    }
+  
+    $self->app->load_config;
     $self->humane_flash( 'Configuration saved' );
     $self->redirect_to('/');
   });
+
+  $r->any( '/database' => sub {
+    my $self = shift;
+
+    my $dh = $self->dh;
+    my $schema = $dh->schema;
+
+    my $available = $schema->schema_version;
+
+    # Nothing installed
+    unless ( eval { $schema->resultset('User')->first } ) {
+      return $self->render( 'galileo_database_install' );
+    }
+
+    # Something is installed, check for a version
+    my $installed = $dh->installed_version || $dh->setup_unversioned;
+
+    # Do nothing if version is current
+    if ( $installed == $available ) {
+      $self->humane_flash( 'Database schema is current' );
+    } else {
+      $self->humane_flash( "Upgrade database $installed -> $available" );
+      $dh->do_upgrade;
+    }
+
+    $self->redirect_to('finished');
+  });
+
+  $r->any( '/database_install' => sub {
+    my $self = shift;
+    my $pw1 = $self->param('pw1');
+    my $pw2 = $self->param('pw2');
+    unless ( $pw1 eq $pw2 ) {
+      $self->humane_flash( q{Passwords don't match!} );
+      return $self->redirect_to('database');
+    }
+
+    my $dh = $self->dh;
+    my $user = $self->param('user');
+    my $full = $self->param('full');
+
+    $dh->do_install;
+    $dh->inject_sample_data($user, $pw1, $full);
+
+    $self->humane_flash('Database setup');
+    $self->redirect_to('finish');
+  });
+
+  $r->any('/finish' => 'galileo_finish');
+
+  $r->any('/exit' => sub { exit });
 
   $self->Mojolicious::Command::daemon::run(@args);
 }
@@ -87,33 +149,50 @@ __DATA__
   <head>
     %= include 'header_common';
   </head>
-<body>
-  <div class="container">
-    %= content
-  </div>
-</body>
+  <body>
+    <div class="container">
+      <h1><%= title %></h1>
+      %= content
+    </div>
+  </body>
 </head>
 
 @@ galileo_setup.html.ep
 
-% title 'Galileo Setup Home';
+% title 'Galileo Setup - Home';
 % layout 'galileo_layout';
 
-<h1><%= title %></h1>
+<p>Welcome to Galileo! This utility helps you setup your Galileo CMS.</p>
 
-<h2>Welcome to Galileo!</h2>
+<ul>
+  %= tag li => begin 
+    You may want to set some configuration parameters. If you do not first visit the configuration page, you will use the defaults, including using an SQLite database for the backend.
+    <ul><li>
+      %= link_to 'Configure your Galileo CMS' => 'configure'
+    </li></ul>
+  % end
 
-<p>This utility help you setup your Galileo CMS. If its your first time you must to run the database setup. If you do not first visit the configuration page, you will use the defaults, including using an SQLite database for the backend.</p>
+  %= tag li => begin
+    If this is a new installation you <b>must</b> to run the database setup utility.
+    <ul><li>
+      %= link_to 'Install or upgrade your database' => 'database'
+    </li></ul>
+  % end
 
-%= link_to 'Configure your Galileo CMS' => 'configure'
+  %= tag li => begin
+    When you are ready stop this utility and run <pre>$ galileo daemon</pre>
+    <ul><li>
+      %= link_to 'Stop and exit' => 'finish'
+    </li></ul>
+  % end
+
+</ul>
 
 @@ galileo_config.html.ep
 
 % use Mojo::JSON 'j';
-% title 'Configure Galileo';
+% title 'Galileo Setup - Configure';
 % layout 'galileo_layout';
-
-<h1><%= title %></h1>
 
 %= form_for 'store_config' => method => 'POST', class => 'form-horizontal' => begin
   % my $config = app->config;
@@ -155,9 +234,48 @@ __DATA__
   %= control_group for => 'secret', label => 'Application Secret' => begin
     %= text_field 'secret', value => $config->{secret}
   % end
-    %= control_group for => 'submit-button', begin
+  %= control_group for => 'submit-button', begin
     <button class="btn" id="submit-button" type="submit">Save</button>
+    %= link_to 'Cancel' => '/' => class => 'btn'
   % end
+% end
+
+@@ galileo_database_install.html.ep
+
+% title 'Galileo Setup - Database';
+% layout 'galileo_layout';
+
+%= form_for 'database_install' => method => 'POST', class => 'form-horizontal' => begin
+  %= control_group for => 'full', label => 'Admin Full Name' => begin
+    %= text_field 'full'
+  % end
+  %= control_group for => 'user', label => 'Admin Username' => begin
+    %= text_field 'user'
+  % end
+  %= control_group for => 'pw1', label => 'Password' => begin
+    %= input_tag 'pw1', type => 'password'
+  % end
+  %= control_group for => 'pw2', label => 'Password' => begin
+    %= input_tag 'pw2', type => 'password'
+  % end
+
+  %= control_group for => 'submit-button', begin
+    <button class="btn" id="submit-button" type="submit">Save</button>
+    %= link_to 'Cancel' => 'finish' => class => 'btn'
+  % end
+% end
+
+@@ galileo_finish.html.ep
+
+% title 'Galileo Setup - Finished';
+% layout 'galileo_layout';
+
+<p>
+  Setup complete, run <pre>$ galileo daemon</pre>
+</p>
+
+%= javascript begin
+  $(function(){ $.get('<%= url_for 'exit' %>') });
 % end
 
 @@ control_group.html.ep
