@@ -279,27 +279,28 @@ Use L<Mojolicious::Plugin::ConsoleLogger> to get additional state information an
 
 =head2 The F<galileo> command line application
 
-L<Galileo> installs a command line application, C<galileo>. It inherits from the L<mojo> command, but it provides extra functions specifically for use with Galileo.
-
-=head3 config
-
- $ galileo config [options]
-
-This command writes a configuration file in your C<GALILEO_HOME> path. It uses the preset defaults for all values, except that it prompts for a secret. This can be any string, however stronger is better. You do not need to memorize it or remember it. This secret protects the cookies employed by Galileo from being tampered with on the client side.
-
-L<Galileo> does not need to be configured, however it is recommended to do so to set your application's secret. 
-
-The C<--force> option may be passed to overwrite any configuration file in the current working directory. The default is to die if such a configuration file is found.
+L<Galileo> installs a command line application, C<galileo>. It inherits from the L<mojo> command and so provides all those commands, but it provides extra functions specifically for use with Galileo.
 
 =head3 setup
 
  $ galileo setup
 
-This step is required after both installation and upgrading Galileo. Running C<galileo setup> will deploy or upgrade the database used by your Galileo site. It will use the default DBI settings (SQLite) or whatever is setup in the C<GALILEO_CONFIG> configuration file.
+This command starts the app in setup mode. It can write a configuration file, and setup or upgrade the database.
+
+L<Galileo> does not need to be configured, however it is recommended to do so to set your application's secret. The secret can be any string, however stronger is better. You do not need to memorize it or remember it. This secret protects the cookies employed by Galileo from being tampered with on the client side.
+
+This step is required after both installation and upgrading Galileo, because the database page will deploy or upgrade the database used by your Galileo site. It will use the default DBI settings (SQLite) or whatever is setup in the C<GALILEO_CONFIG> configuration file.
 
 Warning: As usual, proper care should be taken when upgrading a database. This mechanism is rather new and while it should be safe, the author makes no promises about anything yet! Backup all files before upgrading!
 
-Note that the database deployment tools may emit debugging information unexpectedly, especially messages about "overwriting" and some internal "peek" information. These message are harmless, but as yet cannot be suppressed. 
+Note that the database deployment tools may emit debugging information unexpectedly to your terminal, especially messages about "overwriting" and some internal "peek" information. These message are harmless, but as yet cannot be suppressed. 
+
+=head3 dump
+
+ $ galileo dump
+ $ galileo dump --directory pages -t 
+
+This tool dumps all the pages in your galileo site as markdown files. The directory for exporting to may be specifed with the C<--directory> or C<-d> flag, by default it exports to the current working directory. The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article).
 
 =head1 RUNNING THE APPLICATION
 
@@ -326,17 +327,6 @@ If Galileo detects a folder named F<static> inside the C<GALILEO_HOME> path, tha
 The L</config> keys C<extra_css> and C<extra_js> take array references pointing to CSS or Javascript files (respectively) within a L<static directory|/"Static files folder">. As an example, the default C<extra_css> key contains the path to a simple theme css file which adds a gray background and border to the main container.
 
 As yet there are no widgets/plugins as such, however a clever bit of javascript might be able to load something. 
-
-=head1 ADDITIONAL COMMANDS
-
-The C<galileo> command-line tool also provides all of the commands that Mojolicious' L<mojo> tool does. This includes C<daemon> which has already been introduced. It also provides several Galileo specific commands. In addition to L<config> and L<setup> which have already been discussed, there are:
-
-=head2 dump
-
- $ galileo dump
- $ galileo dump --directory pages -t 
-
-This tool dumps all the pages in your galileo site as markdown files. The directory for exporting to may be specifed with the C<--directory> or C<-d> flag, by default it exports to the current working directory. The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article).
 
 =head1 TECHNOLOGIES USED
 
