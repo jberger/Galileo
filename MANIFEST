@@ -3,7 +3,6 @@ Build.PL
 Changes
 lib/Galileo.pm
 lib/Galileo/Admin.pm
-lib/Galileo/Command/config.pm
 lib/Galileo/Command/dump.pm
 lib/Galileo/Command/setup.pm
 lib/Galileo/DB/Deploy.pm
@@ -35,6 +34,7 @@ lib/Galileo/files/templates/admin/pages.html.ep
 lib/Galileo/files/templates/admin/user.html.ep
 lib/Galileo/files/templates/admin/users.html.ep
 lib/Galileo/files/templates/header_common.html.ep
+lib/Galileo/files/templates/layouts/basic.html.ep
 lib/Galileo/files/templates/layouts/standard.html.ep
 lib/Galileo/files/templates/menu/edit.html.ep
 lib/Galileo/files/templates/nav_menu.html.ep

@@ -6,7 +6,7 @@ build_requires: {}
 configure_requires:
   Module::Build: 0.38
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120630'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -18,12 +18,9 @@ no_index:
 provides:
   Galileo:
     file: lib/Galileo.pm
-    version: 0.022
+    version: 0.023
   Galileo::Admin:
     file: lib/Galileo/Admin.pm
-    version: 0
-  Galileo::Command::config:
-    file: lib/Galileo/Command/config.pm
     version: 0
   Galileo::Command::dump:
     file: lib/Galileo/Command/dump.pm
@@ -46,8 +43,8 @@ provides:
   Galileo::DB::Schema::Result::User:
     file: lib/Galileo/DB/Schema/Result/User.pm
     version: 0
-  Galileo::Edit:
-    file: lib/Galileo/Edit.pm
+  Galileo::Menu:
+    file: lib/Galileo/Menu.pm
     version: 0
   Galileo::Page:
     file: lib/Galileo/Page.pm
@@ -73,4 +70,4 @@ resources:
   bugtracker: http://github.com/jberger/Galileo/issues
   license: http://dev.perl.org/licenses/
   repository: http://github.com/jberger/Galileo
-version: 0.022
+version: 0.023

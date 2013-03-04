@@ -74,6 +74,7 @@
 
 # Avoid testing databases
 \bgalileo\.db
+\bgalileo\.conf
 
 # Don't add author_tool command
 \bauthor_tool\.pm$
