@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    %= include 'header_common';
+  </head>
+  <body>
+    <div class="container">
+      <h1><%= title %></h1>
+      %= content
+    </div>
+  </body>
+</head>
