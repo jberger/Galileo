@@ -194,31 +194,31 @@ __DATA__
 
   <legend>Database Connection</legend>
   %= control_group for => 'db_dsn', label => 'Connection String (DSN)' => begin
-    %= text_field 'db_dsn', value => $config->{db_dsn}
+    %= text_field 'db_dsn', value => $config->{db_dsn}, class => 'input-block-level'
   % end
   %= control_group for => 'db_username', label => 'Username' => begin
-    %= text_field 'db_username', value => $config->{db_username}
+    %= text_field 'db_username', value => $config->{db_username}, class => 'input-block-level'
   % end
   %= control_group for => 'db_password', label => 'Password' => begin
-    %= input_tag 'db_password', value => $config->{db_password}, type => 'password'
+    %= input_tag 'db_password', value => $config->{db_password}, type => 'password', class => 'input-block-level'
   % end
   %= control_group for => 'db_options', label => 'Options (JSON hash)' => begin
-    %= text_field 'db_options', value => j($config->{db_options})
+    %= text_field 'db_options', value => j($config->{db_options}), class => 'input-block-level'
   % end
   %= control_group for => 'db_schema', label => 'Schema Class' => begin
-    %= text_field 'db_schema', value => $config->{db_schema}
+    %= text_field 'db_schema', value => $config->{db_schema}, class => 'input-block-level'
   % end
 
   <legend>Additional Files</legend>
 
   %= control_group for => 'files', label => 'Static Files (JSON array)' => begin
-    %= text_field 'files', value => j($config->{files})
+    %= text_field 'files', value => j($config->{files}), class => 'input-block-level'
   % end
   %= control_group for => 'extra_js', label => 'Extra Javascript Files (JSON array)' => begin
-    %= text_field 'extra_js', value => j($config->{extra_js})
+    %= text_field 'extra_js', value => j($config->{extra_js}), class => 'input-block-level'
   % end
   %= control_group for => 'extra_css', label => 'Extra Stylesheet files (JSON array)' => begin
-    %= text_field 'extra_css', value => j($config->{extra_css})
+    %= text_field 'extra_css', value => j($config->{extra_css}), class => 'input-block-level'
   % end
 
   <legend>Other Options</legend>
@@ -227,7 +227,7 @@ __DATA__
     %= check_box 'sanitize', value => 1, checked => $config->{sanitize} ? 'checked' : ''
   % end
   %= control_group for => 'secret', label => 'Application Secret' => begin
-    %= text_field 'secret', value => $config->{secret}
+    %= text_field 'secret', value => $config->{secret}, class => 'input-block-level'
   % end
   %= control_group for => 'submit-button', begin
     <button class="btn" id="submit-button" type="submit">Save</button>
@@ -242,16 +242,16 @@ __DATA__
 
 %= form_for 'database_install' => method => 'POST', class => 'form-horizontal' => begin
   %= control_group for => 'full', label => 'Admin Full Name' => begin
-    %= text_field 'full'
+    %= text_field 'full', class => 'input-block-level'
   % end
   %= control_group for => 'user', label => 'Admin Username' => begin
-    %= text_field 'user'
+    %= text_field 'user', class => 'input-block-level'
   % end
   %= control_group for => 'pw1', label => 'Password' => begin
-    %= input_tag 'pw1', type => 'password'
+    %= input_tag 'pw1', type => 'password', class => 'input-block-level'
   % end
   %= control_group for => 'pw2', label => 'Password' => begin
-    %= input_tag 'pw2', type => 'password'
+    %= input_tag 'pw2', type => 'password', class => 'input-block-level'
   % end
 
   %= control_group for => 'submit-button', begin
