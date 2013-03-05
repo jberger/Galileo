@@ -66,13 +66,7 @@ sub run {
       $params{$key} = j($params{$key});
     }
 
-    {
-      require Data::Dumper;
-      local $Data::Dumper::Terse = 1;
-      local $Data::Dumper::Sortkeys = 1;
-
-      spurt Data::Dumper::Dumper(\%params), $self->app->config_file;
-    }
+    spurt $self->dumper(\%params), $self->app->config_file;
   
     $self->app->load_config;
     $self->humane_flash( 'Configuration saved' );
