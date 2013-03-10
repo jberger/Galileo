@@ -1,30 +1,34 @@
-package Galileo::FileList;
+package Galileo::File;
 use Mojo::Base 'Mojolicious::Controller';
 
 use Mojo::JSON 'j';
-use File::Next 'files';
+use File::Next;
+use File::Spec;
 
-sub send_list {
+sub list {
   my $self = shift;
   my $dir = $self->app->config->{files}[0];
 
-  unless ( -d $dir ) {
-    $self->send( text => j({files => [], finished => \1}) );
-    return;
+  my $iter;
+  if ( -d $dir ) {
+    $iter = File::Next::files( $dir );
   }
-
-  my $iter = files( $dir );
 
   $self->on( text => sub {
     my ($ws, $text) = @_;
     my $data = j $text;
-    my $list = $self->get_list( $iter, $data->{limit} );
-    $self->send( text => j( $list ) );
+    my $list = _get_list( $iter, $dir, $data->{limit} );
+    $ws->send({ text => j( $list ) });
   });
 }
 
-sub get_list {
-  my ($self, $iter, $limit) = @_;
+sub _get_list {
+  my ($iter, $dir, $limit) = @_;
+
+  unless ( defined $iter ) {
+    return {files => [], finished => \1};
+  }
+
   $limit ||= 20;
 
   my @files;

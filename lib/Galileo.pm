@@ -208,6 +208,7 @@ sub startup {
   $if_author->any( '/edit/:name' )->to('page#edit');
   $if_author->websocket( '/store/page' )->to('page#store');
   $if_author->websocket( '/store/menu' )->to('menu#store');
+  $if_author->websocket( '/files/list' )->to('file#list');
 
   my $if_admin = $r->under( sub {
     my $self = shift;
