@@ -83,6 +83,9 @@ sub run {
 
     # Nothing installed
     unless ( $dh->has_admin_user ) {
+      my $error = $self->flash( 'galileo.error' );
+      $self->stash( 'galileo.error' => $error );
+
       return $self->render( 'galileo_database_install' );
     }
 
@@ -113,7 +116,13 @@ sub run {
     my $user = $self->param('user');
     my $full = $self->param('full');
 
-    $dh->do_install;
+    eval {
+        $dh->do_install;
+    };
+    if ($@) {
+        $self->flash( 'galileo.error' => $@ );
+        return $self->redirect_to('database');
+    }
     $dh->inject_sample_data($user, $pw1, $full);
 
     $self->flash( 'galileo.message' => 'Database has been setup' );
