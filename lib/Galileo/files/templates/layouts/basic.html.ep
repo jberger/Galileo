@@ -3,6 +3,13 @@
   <head>
     %= include 'header_common';
   </head>
+  
+  % if ( my $error = stash 'galileo.error' ) {
+      <div class="alert alert-error">
+        %= $error
+      </div>
+  % }
+
   <body>
     <div class="container">
       <h1><%= title %></h1>
