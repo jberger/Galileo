@@ -72,15 +72,21 @@ sub load_config {
   # TODO don't repeat
   foreach my $dir ( @{$app->config->{files}} ) {
     # convert relative paths to relative one (to home dir)
-    unless ( File::Spec->file_name_is_absolute( $dir ) ) {
-      $dir = $app->home->rel_dir( $dir );
-    }
+    $dir = $app->_to_abs($dir);
     push @{ $app->static->paths }, $dir if -d $dir;
   }
 
   if ( my $secret = $app->config->{secret} ) {
     $app->secret( $secret );
   }
+}
+
+sub _to_abs {
+  my ($self, $dir) = @_;
+  unless ( File::Spec->file_name_is_absolute( $dir ) ) {
+    $dir = $self->home->rel_dir( $dir );
+  }
+  return $dir;
 }
 
 sub startup {
