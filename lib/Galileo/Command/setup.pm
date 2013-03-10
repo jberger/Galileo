@@ -113,8 +113,14 @@ sub run {
     my $user = $self->param('user');
     my $full = $self->param('full');
 
-    $dh->do_install;
-    $dh->inject_sample_data($user, $pw1, $full);
+    eval { $dh->do_install };
+    eval { $dh->inject_sample_data($user, $pw1, $full) };
+    if ($@) {
+      my $error = "$@";
+      chomp $error;
+      $self->humane_flash( $error );
+      return $self->redirect_to('database');
+    }
 
     $self->flash( 'galileo.message' => 'Database has been setup' );
     $self->redirect_to('finish');

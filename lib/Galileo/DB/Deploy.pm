@@ -104,8 +104,8 @@ sub inject_sample_data {
   my $self = shift;
   my $schema = $self->schema;
 
-  my $user = shift or die "Must provide an administrative username";
-  my $pass = shift or die "Must provide a password for $user";
+  my $user = shift or die "Must provide an admin username\n";
+  my $pass = shift or die "Must provide a password for admin user\n";
   my $full = shift || "Administrator";
 
   my $admin = $schema->resultset('User')->create({
