@@ -43,7 +43,7 @@ sub load_config {
       db_options => { sqlite_unicode => 1 },
       extra_css => [ '/themes/standard.css' ],
       extra_js => [],
-      files => ['static'],
+      extra_static_paths => ['static'],
       sanitize => 1,
       secret => '', # default to null (unset) in case I implement an iterative config helper
     },
@@ -325,9 +325,9 @@ where you may replace C<hypnotoad> with your server of choice.
 
 Logging in L<Galileo> is the same as in L<Mojolicious|Mojolicious::Lite/Logging>. Messages will be printed to C<STDERR> unless a directory named F<log> exists in the C<GALILEO_HOME> path, in which case messages will be logged to a file in that directory.
 
-=head2 Static files folders
+=head2 Extra Static Paths
 
-By default, if Galileo detects a folder named F<static> inside the C<GALILEO_HOME> path, that path is added to the list of folders for serving static files. The name of this folder may be changed in the configuration file via the key C<files>, which expects an array reference of strings representing paths. If the path is relative it will be relative to C<GALILEO_HOME>.
+By default, if Galileo detects a folder named F<static> inside the C<GALILEO_HOME> path, that path is added to the list of folders for serving static files. The name of this folder may be changed in the configuration file via the key C<extra_static_paths>, which expects an array reference of strings representing paths. If the path is relative it will be relative to C<GALILEO_HOME>.
 
 =head1 CUSTOMIZING
 
