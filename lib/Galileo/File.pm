@@ -7,7 +7,7 @@ use File::Spec;
 
 sub list {
   my $self = shift;
-  my $dir = $self->app->config->{files}[0];
+  my $dir = $self->upload_dir;
 
   my $iter;
   if ( -d $dir ) {
