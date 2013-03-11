@@ -28,5 +28,22 @@ $t->websocket_ok('/files/list')
   ->json_message_is( '/' => { files => [sort 'image1.jpg', 'img/image2.jpg'], finished => 1 })
   ->finish_ok;
 
+# test limited number of files found. note order is not guaranteed
+$t->websocket_ok('/files/list')
+  ->send_ok({ text => j({limit => 1}) })
+  ->message_ok
+  ->json_message_has(   '/files/0' )
+  ->json_message_hasnt( '/files/1' )
+  ->json_message_is( '/finished' => 0 )
+  ->send_ok({ text => j({limit => 1}) })
+  ->message_ok
+  ->json_message_has(   '/files/0' )
+  ->json_message_hasnt( '/files/1' )
+  ->json_message_is( '/finished' => 0 )
+  ->send_ok({ text => j({limit => 1}) })
+  ->message_ok
+  ->json_message_is( '/' => { files => [], finished => 1 } )
+  ->finish_ok;
+
 done_testing();
 

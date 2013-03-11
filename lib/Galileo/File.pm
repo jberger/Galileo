@@ -8,7 +8,6 @@ use File::Spec;
 sub list {
   my $self = shift;
   my $dir = $self->upload_path;
-  warn $dir;
 
   my $iter = -d $dir ? File::Next::files( $dir ) : undef;
 
@@ -41,7 +40,6 @@ sub _get_list {
       last;
     }
 
-    warn "found $file";
     push @files, File::Spec->abs2rel($file, $dir);
   }
 
