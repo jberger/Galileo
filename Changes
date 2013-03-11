@@ -1,5 +1,9 @@
 Revision history for Perl module Galileo.
 
+0.024  
+	- Deprecated files config key (use extra_static_paths)
+		- Deprecations will be removed by 0.1 release
+
 0.023  March 4, 2013
 	- Removed CLI config/setup commands
 	- Added web-based setup command
