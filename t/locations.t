@@ -25,7 +25,7 @@ $t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', pas
 $t->websocket_ok('/files/list')
   ->send_ok({ text => j({limit => 0}) })
   ->message_ok
-  ->json_message_is( '/' => { files => ['test.html'], finished => 1 })
+  ->json_message_is( '/' => { files => [sort 'image1.jpg', 'img/image2.jpg'], finished => 1 })
   ->finish_ok;
 
 done_testing();

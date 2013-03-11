@@ -7,23 +7,20 @@ use File::Spec;
 
 sub list {
   my $self = shift;
-  my $dir = $self->upload_dir;
+  my $dir = $self->upload_path;
 
-  my $iter;
-  if ( -d $dir ) {
-    $iter = File::Next::files( $dir );
-  }
+  my $iter = -d $dir ? File::Next::files( $dir ) : undef;
 
   $self->on( text => sub {
     my ($ws, $text) = @_;
     my $data = j $text;
-    my $list = _get_list( $iter, $dir, $data->{limit} );
+    my $list = $self->_get_list( $iter, $data->{limit} );
     $ws->send({ text => j( $list ) });
   });
 }
 
 sub _get_list {
-  my ($iter, $dir, $limit) = @_;
+  my ($self, $iter, $limit) = @_;
 
   unless ( defined $iter ) {
     return {files => [], finished => \1};
@@ -46,7 +43,7 @@ sub _get_list {
     push @files, $file;
   }
 
-  return { files => \@files, finished => $finished };
+  return { files => [sort @files], finished => $finished };
 }
 
 1;
