@@ -21,7 +21,10 @@ has db => sub {
   return $schema;
 };
 
-has home_path => sub { $ENV{GALILEO_HOME} || getcwd };
+has home_path => sub {
+  my $path = $ENV{GALILEO_HOME} || getcwd;
+  return File::Spec->rel2abs($path);
+};
 
 has config_file => sub {
   my $self = shift;

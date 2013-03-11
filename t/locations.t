@@ -7,7 +7,7 @@ use Galileo::DB::Deploy;
 use Test::More;
 use Test::Mojo;
 
-my $home = $ENV{GALILEO_HOME} = File::Spec->catdir( qw/ t locations / );
+my $home = $ENV{GALILEO_HOME} = File::Spec->rel2abs(File::Spec->catdir( qw/ t locations / ));
 
 my $t = Galileo::DB::Deploy->create_test_object({ test => 1 });
 my $app = $t->app;
@@ -22,15 +22,11 @@ $t->get_ok('/test.html')
 # login
 $t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', password => 'pass' } );
 
-TODO: {
-  local $TODO = 'New Controller Galileo::File';
-
-  $t->websocket_ok('/files/list')
-    ->send_ok({ text => j({limit => 0}) })
-    ->message_ok
-    ->json_message_is( '/' => { files => [sort 'image1.jpg', 'img/image2.jpg'], finished => 1 })
-    ->finish_ok;
-}
+$t->websocket_ok('/files/list')
+  ->send_ok({ text => j({limit => 0}) })
+  ->message_ok
+  ->json_message_is( '/' => { files => [sort 'image1.jpg', 'img/image2.jpg'], finished => 1 })
+  ->finish_ok;
 
 done_testing();
 

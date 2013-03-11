@@ -8,19 +8,20 @@ use File::Spec;
 sub list {
   my $self = shift;
   my $dir = $self->upload_path;
+  warn $dir;
 
   my $iter = -d $dir ? File::Next::files( $dir ) : undef;
 
   $self->on( text => sub {
     my ($ws, $text) = @_;
     my $data = j $text;
-    my $list = $self->_get_list( $iter, $data->{limit} );
+    my $list = $self->_get_list( $iter, $dir, $data->{limit} );
     $ws->send({ text => j( $list ) });
   });
 }
 
 sub _get_list {
-  my ($self, $iter, $limit) = @_;
+  my ($self, $iter, $dir, $limit) = @_;
 
   unless ( defined $iter ) {
     return {files => [], finished => \1};
@@ -40,7 +41,8 @@ sub _get_list {
       last;
     }
 
-    push @files, $file;
+    warn "found $file";
+    push @files, File::Spec->abs2rel($file, $dir);
   }
 
   return { files => [sort @files], finished => $finished };
