@@ -1,6 +1,7 @@
 Revision history for Perl module Galileo.
 
 0.024  
+	- Fix some setup bugs
 	- Deprecated files config key (use extra_static_paths)
 		- Deprecations will be removed by 0.1 release
 
