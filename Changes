@@ -3,7 +3,7 @@ Revision history for Perl module Galileo.
 0.024  
 	- Fix some setup bugs
 	- Deprecated files config key (use extra_static_paths)
-		- Deprecations will be removed by 0.1 release
+		- Deprecated functionality will be removed by 0.1 release
 
 0.023  March 4, 2013
 	- Removed CLI config/setup commands
@@ -13,7 +13,7 @@ Revision history for Perl module Galileo.
 	- Deprecated db_connect config key
 	- Added db_* keys (dsn, username, password, options)
 	- Deprecated string use of files config key (use arrayref)
-		- These deprecations will be removed by 0.1 release
+		- Deprecated functionality will be removed by 0.1 release
 
 0.022  February 16, 2013
 	- Bump ::Humane version to 0.04
