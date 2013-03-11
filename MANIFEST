@@ -10,6 +10,7 @@ lib/Galileo/DB/Schema.pm
 lib/Galileo/DB/Schema/Result/Menu.pm
 lib/Galileo/DB/Schema/Result/Page.pm
 lib/Galileo/DB/Schema/Result/User.pm
+lib/Galileo/File.pm
 lib/Galileo/files/public/assets/bootstrap/css/bootstrap-responsive.min.css
 lib/Galileo/files/public/assets/bootstrap/css/bootstrap.min.css
 lib/Galileo/files/public/assets/bootstrap/img/glyphicons-halflings-white.png
@@ -50,3 +51,6 @@ META.yml
 README.pod
 t/basic.t
 t/locations.t
+t/locations/static/test.html
+t/locations/uploads/image1.jpg
+t/locations/uploads/img/image2.jpg
