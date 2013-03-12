@@ -62,7 +62,7 @@ sub run {
 
     # map JSON keys to Perl data
     my %params = map { $_ => scalar $self->param($_) } @params;
-    foreach my $key ( qw/files extra_css extra_js db_options/ ) {
+    foreach my $key ( qw/extra_css extra_js extra_static_paths db_options/ ) {
       $params{$key} = j($params{$key});
     }
 
@@ -220,6 +220,9 @@ __DATA__
   %= control_group for => 'extra_css', label => 'Extra Stylesheet files (JSON array)' => begin
     %= text_field 'extra_css', value => j($config->{extra_css}), class => 'input-block-level'
   % end
+  %= control_group for => 'upload_path', label => 'Upload Path' => begin
+    %= text_field 'upload_path', value => $config->{upload_path}, class => 'input-block-level'
+  % end
 
   <legend>Other Options</legend>
 
@@ -250,7 +253,7 @@ __DATA__
   %= control_group for => 'pw1', label => 'Password' => begin
     %= input_tag 'pw1', type => 'password', class => 'input-block-level'
   % end
-  %= control_group for => 'pw2', label => 'Password' => begin
+  %= control_group for => 'pw2', label => 'Repeat Password' => begin
     %= input_tag 'pw2', type => 'password', class => 'input-block-level'
   % end
 
