@@ -347,6 +347,8 @@ By default, if Galileo detects a folder named F<static> inside the C<GALILEO_HOM
 
 By default, if Galileo detects a folder named F<uploads> inside the C<GALILEO_HOME> path, that path is used for uploads, specifically user-uploaded images. This path is added to the static files. The name of this folder may be changed in the configuration file via the key C<upload_path>, which expects a string representing the path. If the path is relative it will be relative to C<GALILEO_HOME>.
 
+NOTE: as for this writing, this option doesn't do anything but append to the static files paths. Eventually it will be where uploads go, but NOT YET!
+
 =head1 CUSTOMIZING
 
 The L</config> keys C<extra_css> and C<extra_js> take array references pointing to CSS or Javascript files (respectively) within a L<static directory|/"Static files folder">. As an example, the default C<extra_css> key contains the path to a simple theme css file which adds a gray background and border to the main container.

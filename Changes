@@ -4,6 +4,7 @@ Revision history for Perl module Galileo.
 	- Fix some setup bugs
 	- Deprecated files config key (use extra_static_paths)
 		- Deprecated functionality will be removed by 0.1 release
+	- Added mostly hidden/useless 'upload_path' system
 
 0.023  March 4, 2013
 	- Removed CLI config/setup commands
