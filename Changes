@@ -1,6 +1,6 @@
 Revision history for Perl module Galileo.
 
-0.026  March 14, 2013
+0.026  March 15, 2013
 	- Added File::Next to requires, was causing failing installation
 
 0.025  March 12, 2013
