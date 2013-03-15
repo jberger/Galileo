@@ -142,7 +142,15 @@ L<Contenticious> - File-based Markdown website application
 
 =head1 SOURCE REPOSITORY
 
-L<http://github.com/jberger/Galileo>
+L<http://github.com/jberger/Galileo> 
+
+=begin html
+
+<p>
+  <img src="https://travis-ci.org/jberger/Galileo.png?branch=master" alt="Travis CI build status">
+</p>
+
+=end html
 
 =head1 AUTHOR
 
