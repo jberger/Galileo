@@ -13,17 +13,17 @@ sub list {
 
   $self->on( text => sub {
     my ($ws, $text) = @_;
-    my $data = j $text;
-    my $list = $self->_get_list( $iter, $dir, $data->{limit} );
+    my $data = j($text);
+    my $list = _get_list( $iter, $dir, $data->{limit} );
     $ws->send({ text => j( $list ) });
   });
 }
 
 sub _get_list {
-  my ($self, $iter, $dir, $limit) = @_;
+  my ($iter, $dir, $limit) = @_;
 
   unless ( defined $iter ) {
-    return {files => [], finished => \1};
+    return +{files => [], finished => \1};
   }
 
   $limit ||= 20;
@@ -43,7 +43,7 @@ sub _get_list {
     push @files, File::Spec->abs2rel($file, $dir);
   }
 
-  return { files => [sort @files], finished => $finished };
+  return +{ files => [sort @files], finished => $finished };
 }
 
 1;
