@@ -23,6 +23,7 @@ my $builder = Module::Build->new(
     'Term::Prompt' => 0,
     'File::ShareDir' => 0,
     'File::Copy::Recursive' => 0,
+    'File::Next' => 0,
   },
   configure_requires => {
     'Module::Build' => 0.38,

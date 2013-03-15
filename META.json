@@ -4,7 +4,7 @@
       "Joel Berger"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120630",
    "license" : [
       "perl_5"
    ],
@@ -33,6 +33,7 @@
             "DBIx::Class::DeploymentHandler" : "0",
             "DBIx::Class::EncodedColumn" : "0",
             "File::Copy::Recursive" : "0",
+            "File::Next" : "0",
             "File::ShareDir" : "1.00",
             "Mojolicious" : "3.85",
             "Mojolicious::Plugin::Humane" : "0.04",
