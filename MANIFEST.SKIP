@@ -78,3 +78,6 @@
 
 # Don't add author_tool command
 \bauthor_tool\.pm$
+
+# Avoid travis config
+\.travis\.yml
