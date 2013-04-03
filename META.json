@@ -35,7 +35,7 @@
             "File::Copy::Recursive" : "0",
             "File::Next" : "0",
             "File::ShareDir" : "1.00",
-            "Mojolicious" : "3.85",
+            "Mojolicious" : "3.92",
             "Mojolicious::Plugin::Humane" : "0.04",
             "SQL::Translator" : "0",
             "Term::Prompt" : "0",
@@ -46,7 +46,7 @@
    "provides" : {
       "Galileo" : {
          "file" : "lib/Galileo.pm",
-         "version" : "0.026"
+         "version" : "0.027"
       },
       "Galileo::Admin" : {
          "file" : "lib/Galileo/Admin.pm",
@@ -109,5 +109,5 @@
          "url" : "http://github.com/jberger/Galileo"
       }
    },
-   "version" : "0.026"
+   "version" : "0.027"
 }

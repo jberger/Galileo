@@ -11,7 +11,7 @@ my $builder = Module::Build->new(
   
   requires => {
     'perl' => '5.10.1',
-    'Mojolicious' => '3.85',  # ->post_ok( ... => form => {} )
+    'Mojolicious' => '3.92',  # RFC 6901 compliant json pointers in tests
     'Mojolicious::Plugin::Humane' => '0.04',
     'DBD::SQLite' => 0,
     'DBIx::Class' => 0,
