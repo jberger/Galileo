@@ -1,6 +1,6 @@
 Revision history for Perl module Galileo.
 
-0.028
+0.028  May 14, 2013
 	- Fixed bugs in modals (Fatalnix++)
 	- Moved modal template to a plugin
 	- Moved memorization helpers to a plugin
