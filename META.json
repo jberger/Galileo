@@ -4,7 +4,7 @@
       "Joel Berger"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120630",
+   "generated_by" : "Module::Build version 0.4005, CPAN::Meta::Converter version 2.120630",
    "license" : [
       "perl_5"
    ],
@@ -90,6 +90,14 @@
       },
       "Galileo::Page" : {
          "file" : "lib/Galileo/Page.pm",
+         "version" : 0
+      },
+      "Galileo::Plugin::FlexMemorize" : {
+         "file" : "lib/Galileo/Plugin/FlexMemorize.pm",
+         "version" : 0
+      },
+      "Galileo::Plugin::Modal" : {
+         "file" : "lib/Galileo/Plugin/Modal.pm",
          "version" : 0
       },
       "Galileo::User" : {

@@ -20,7 +20,8 @@ subtest 'Anonymous User' => sub {
     ->text_is( h1 => 'Galileo CMS' )
     ->text_is( h2 => 'Welcome to your Galileo CMS site!' )
     ->content_like( qr/very modern/ )
-    ->element_exists( 'form' );
+    ->element_exists( 'form#login' )
+    ->element_exists_not( '#user-menu' );
 
   # attempt to get non-existant page
   $t->get_ok('/page/doesntexist')
@@ -49,19 +50,24 @@ subtest 'Do Login' => sub {
   $t->post_ok( '/login' => form => {from => '/page/home', username => 'wronguser', password => 'pass' } )
     ->status_is(200)
     ->content_like( qr/Sorry try again/ )
-    ->element_exists( 'form' );
+    ->element_exists( 'form#login' )
+    ->element_exists_not( '#user-menu' );
 
   # fail password
   $t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', password => 'wrongpass' } )
     ->status_is(200)
     ->content_like( qr/Sorry try again/ )
-    ->element_exists( 'form' );
+    ->element_exists( 'form#login' )
+    ->element_exists_not( '#user-menu' );
 
   # successfully login
   $t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', password => 'pass' } )
     ->status_is(200)
     ->content_like( qr/Welcome Back/ )
-    ->text_like( '#user-menu li' => qr/Hello admin/ );
+    ->element_exists_not( 'form#login' )
+    ->text_like( '#user-menu li' => qr/Hello admin/ )
+    ->element_exists( '#page-modal #new-page-link' )
+    ->element_exists( '#user-modal #new-username' );
 
 };
 
@@ -91,7 +97,7 @@ subtest 'Edit Page' => sub {
   $t->get_ok('/page/home')
     ->status_is(200)
     ->text_is( h1 => 'New Home' )
-    ->text_like( p => qr/$text/ );
+    ->text_like( '#content p' => qr/$text/ );
 
   # save page without title (error)
   my $data_notitle = {
@@ -134,7 +140,7 @@ subtest 'New Page' => sub {
   $t->get_ok('/page/snow❄flake')
     ->status_is(200)
     ->text_is( h1 => 'New Home for ☃' )
-    ->text_like( p => qr/$text/ );
+    ->text_like( '#content p' => qr/$text/ );
 
 };
 

@@ -24,7 +24,6 @@ lib/Galileo/files/public/assets/pagedown/Markdown.Sanitizer.js
 lib/Galileo/files/public/assets/pagedown/pagedown.css
 lib/Galileo/files/public/assets/pagedown/wmd-buttons.png
 lib/Galileo/files/public/galileo-edit.js
-lib/Galileo/files/public/galileo-modal.js
 lib/Galileo/files/public/portrait.jpg
 lib/Galileo/files/public/themes/standard.css
 lib/Galileo/files/sql/_source/deploy/1/001-auto-__VERSION.yml
@@ -44,6 +43,8 @@ lib/Galileo/files/templates/page/show.html.ep
 lib/Galileo/files/templates/user_menu.html.ep
 lib/Galileo/Menu.pm
 lib/Galileo/Page.pm
+lib/Galileo/Plugin/FlexMemorize.pm
+lib/Galileo/Plugin/Modal.pm
 lib/Galileo/User.pm
 MANIFEST			This list of files
 META.json

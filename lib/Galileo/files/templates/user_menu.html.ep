@@ -5,46 +5,46 @@
   <ul class="nav nav-list" id="user-menu">
     <li class="nav-header">Hello <%== $user %></li>
     % if ( is_author($user) and $url =~ s{/page/}{/edit/} ) {
-      <li><a href="#" onclick="add_user()">Add New Page</a></li>
+      <li><a href="#" onclick="add_page()">Add New Page</a></li>
       <li><a href="<%= $url %>">Edit This Page</a></li>
     % }
     <li><a href="/admin/menu">Edit Nav Menu</a></li>
     <li><a href="/logout">Log Out</a></li>
     % if ( is_admin $user ) {
       <li class="nav-header">Administration</li>
-      <li><a href="#" onclick="add_page()">Add New User</a></li>
+      <li><a href="#" onclick="add_user()">Add New User</a></li>
       <li><a href="/admin/users">All Users</a></li>
       <li><a href="/admin/pages">All Pages</a></li>
     % }
   </ul>
 </div>
 
-  %= modal 'user-modal' => begin
+  %= modal 'page-modal' => begin
     Create a page with link
     <div class="input-prepend">
       <span class="add-on">/page/</span>
-      <input type="text" id="new_page_link" placeholder="new page link">
+      <input type="text" id="new-page-link" placeholder="new page link">
     </div>
   % end
 
-  %= modal 'page-modal' => begin
+  %= modal 'user-modal' => begin
     Create a new user with username
     <div class="input-prepend">
       <span class="add-on">username:</span>
-      <input type="text" id="new_username" placeholder="new username"> 
+      <input type="text" id="new-username" placeholder="new username"> 
     </div>
   % end
 
   %= javascript begin
-    function show_modal(id, callback) {
-      var modal = $(id);
+    function show_modal(selector, callback) {
+      var modal = $(selector);
       modal.find('.btn-primary').click( callback );
       modal.modal();
     }
 
-    function add_user () {
-      show_modal( 'user-modal', function () { 
-        var link = $('#new_page_link').val();
+    function add_page () {
+      show_modal( '#page-modal', function () { 
+        var link = $('#new-page-link').val();
         if (link.length > 0) {
           window.location.href = '/edit/' + link;
         } else {
@@ -53,9 +53,9 @@
       });
     }
 
-    function add_page () {
-      show_modal( 'page-modal', function () { 
-        var username = $('#new_username').val();
+    function add_user () {
+      show_modal( '#user-modal', function () { 
+        var username = $('#new-username').val();
         if (username.length > 0) {
           window.location.href = '/admin/user/' + username;
         } else {

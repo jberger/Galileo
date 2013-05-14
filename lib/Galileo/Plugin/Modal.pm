@@ -29,7 +29,7 @@ __DATA__
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3>Confirm Action</h3>
   </div>
-  <div class="modal-body" id="modal-text">
+  <div class="modal-body">
     <p><%= stash 'galileo.modal.body' %></p>
   </div>
   <div class="modal-footer">

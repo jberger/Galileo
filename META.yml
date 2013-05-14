@@ -6,7 +6,7 @@ build_requires: {}
 configure_requires:
   Module::Build: 0.38
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120630'
+generated_by: 'Module::Build version 0.4005, CPAN::Meta::Converter version 2.120630'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -51,6 +51,12 @@ provides:
     version: 0
   Galileo::Page:
     file: lib/Galileo/Page.pm
+    version: 0
+  Galileo::Plugin::FlexMemorize:
+    file: lib/Galileo/Plugin/FlexMemorize.pm
+    version: 0
+  Galileo::Plugin::Modal:
+    file: lib/Galileo/Plugin/Modal.pm
     version: 0
   Galileo::User:
     file: lib/Galileo/User.pm
