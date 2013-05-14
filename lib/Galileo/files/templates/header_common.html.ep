@@ -3,7 +3,6 @@
 %= javascript '/assets/bootstrap/js/bootstrap.min.js'
 %= stylesheet '/assets/bootstrap/css/bootstrap.min.css'
 %= humane_include
-%= javascript '/galileo-modal.js'
 
 %= content_for 'header'
 

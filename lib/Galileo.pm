@@ -207,6 +207,8 @@ sub startup {
     $self->flex_memorize->{$name}{expires} = 1;
   });
 
+  $app->plugin( 'Galileo::Plugin::Modal' );
+
   ## Routing ##
 
   my $r = $app->routes;

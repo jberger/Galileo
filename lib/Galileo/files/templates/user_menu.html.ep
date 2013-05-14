@@ -19,15 +19,31 @@
   </ul>
 </div>
 
+  %= modal 'user-modal' => begin
+    Create a page with link
+    <div class="input-prepend">
+      <span class="add-on">/page/</span>
+      <input type="text" id="new_page_link" placeholder="new page link">
+    </div>
+  % end
+
+  %= modal 'page-modal' => begin
+    Create a new user with username
+    <div class="input-prepend">
+      <span class="add-on">username:</span>
+      <input type="text" id="new_username" placeholder="new username"> 
+    </div>
+  % end
+
   %= javascript begin
+    function show_modal(id, callback) {
+      var modal = $(id);
+      modal.find('.btn-primary').click( callback );
+      modal.modal();
+    }
+
     function add_user () {
-      var content = 
-        'Create a page with link' +
-        '<div class="input-prepend">' +
-        '  <span class="add-on">/page/</span>' +
-        '  <input type="text" id="new_page_link" placeholder="new page link">' + 
-        '</div>';
-      show_modal( content, function () { 
+      show_modal( 'user-modal', function () { 
         var link = $('#new_page_link').val();
         if (link.length > 0) {
           window.location.href = '/edit/' + link;
@@ -38,13 +54,7 @@
     }
 
     function add_page () {
-      var content = 
-        'Create a new user with username' +
-        '<div class="input-prepend">' +
-        '  <span class="add-on">username:</span>' +
-        '  <input type="text" id="new_username" placeholder="new username">' + 
-        '</div>';
-      show_modal( content, function () { 
+      show_modal( 'page-modal', function () { 
         var username = $('#new_username').val();
         if (username.length > 0) {
           window.location.href = '/admin/user/' + username;
@@ -57,7 +67,7 @@
   %= end
 
 % } else {
-<form class="well" method="post" action="/login">
+<form class="well" method="post" action="/login" id="login">
   <input type="hidden" name="from" value="<%= $url %>">
   <input type="text" class="input-small" placeholder="Username" name="username">
   <input type="password" class="input-small" placeholder="Password" name="password">
