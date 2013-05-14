@@ -1,5 +1,11 @@
 Revision history for Perl module Galileo.
 
+0.028
+	- Fixed bugs in modals (Fatalnix++)
+	- Moved modal template to a plugin
+	- Moved memorization helpers to a plugin
+	- Improved testing
+
 0.027  April 3, 2013
 	- Use RFC 6901 compliant JSON pointers in tests
 		- Bump Mojolicious to 3.92 
