@@ -7,6 +7,11 @@
 % end
 
 % my $pages = schema->resultset('Page')->search(undef, {order_by => { -asc => 'page_id' }, prefetch => 'author'});
+
+%= modal 'page-delete-modal' => begin
+  Are you sure that you want to delete the page?
+% end
+
 %= tag table => class => "table table-striped table-bordered table-condensed" => begin
   %= tag tr => begin
     %= tag th => "page_id"
@@ -42,7 +47,7 @@
 %= javascript begin
 function confirm_delete(id, name) {
   show_modal(
-    'Are you sure that you want to delete the page "' + name + '"',
+    '#page-delete-modal',
     function(){ delete_page(id) }
   );
 }
