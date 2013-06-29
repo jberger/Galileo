@@ -39,8 +39,10 @@
     function show_modal(selector, callback) {
       var modal = $(selector);
       var button = modal.find('.btn-primary');
-      button.unbind( 'click' ); // remove previous click handlers
-      button.click( callback );
+
+      button.on( 'click', callback );
+      modal.on( 'hide', function() { button.off('click') });
+
       modal.modal();
     }
 
