@@ -35,7 +35,7 @@
         <div class="btn-group">
           <a class="btn" href="<%= qq{/page/$name} %>"><i class="icon-eye-open"></i></a>
           <a class="btn" href="<%= qq{/edit/$name} %>"><i class="icon-pencil"></i></a>
-          <a class="btn" href="#" onclick="confirm_delete('<%= $id %>', '<%= $name %>')">
+          <a class="btn" href="#" onclick="confirm_delete('<%= $id %>')">
             <i class="icon-trash"></i>
           </a>
         </div>
@@ -45,7 +45,7 @@
 %= end
 
 %= javascript begin
-function confirm_delete(id, name) {
+function confirm_delete(id) {
   show_modal(
     '#page-delete-modal',
     function(){ delete_page(id) }
