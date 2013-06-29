@@ -1,5 +1,9 @@
 Revision history for Perl module Galileo.
 
+0.029  June 29, 2013
+	- Fixed page deletion bug introduced in 0.028 (chicoxyzzy++)
+	- Fixed model click handler bugs
+
 0.028  May 14, 2013
 	- Fixed bugs in modals (Fatalnix++)
 	- Moved modal template to a plugin
