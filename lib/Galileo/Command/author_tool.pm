@@ -4,7 +4,7 @@ use Mojo::Base 'Mojolicious::Command';
 use DBIx::Class::DeploymentHandler;
 
 sub run {
-  my ($self) = @_;
+  my $self = shift;
 
   my $command = shift || 'generate_install_scripts';
   my $method = $self->can($command) or die "No command: $command\n";
