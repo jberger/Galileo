@@ -1,8 +1,6 @@
 package Galileo::Page;
 use Mojo::Base 'Mojolicious::Controller';
 
-use Mojo::JSON 'j';
-
 sub show {
   my $self = shift;
   my $name = $self->param('name');
@@ -44,29 +42,29 @@ sub edit {
 
 sub store {
   my $self = shift;
-  $self->on( text => sub {
-    my ($self, $message) = @_;
-    my $data = j( $message );
+  $self->on( json => sub {
+    my ($self, $data) = @_;
 
     my $schema = $self->schema;
 
-    unless($data->{title}) {
-      $self->send({ text => j({
+    unless ( $data->{title} ) {
+      $self->send({ json => {
         message => 'Not saved! A title is required!',
         success => \0,
-      }) });
+      } });
       return;
     }
+
     my $author = $schema->resultset('User')->single({name=>$self->session->{username}});
     $data->{author_id} = $author->id;
     $schema->resultset('Page')->update_or_create(
       $data, {key => 'pages_name'},
     );
     $self->memorize->expire('main');
-    $self->send({ text => j({
+    $self->send({ json => {
       message => 'Changes saved',
       success => \1,
-    }) });
+    } });
   });
 }
 

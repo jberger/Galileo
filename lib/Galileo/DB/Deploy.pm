@@ -4,8 +4,7 @@ BEGIN{ extends 'DBIx::Class::DeploymentHandler' }
 
 # A wrapper class for DBICDH for use with Galileo
 
-use Mojo::JSON;
-my $json = Mojo::JSON->new();
+use Mojo::JSON 'j';;
 
 use File::ShareDir qw/dist_dir/;
 use File::Spec;
@@ -182,7 +181,7 @@ MARKDOWN
 
   $schema->resultset('Menu')->create({
     name => 'main',
-    list => $json->encode( [ $about->page_id ] ), 
+    list => j( [ $about->page_id ] ), 
   });
 
 }

@@ -1,7 +1,6 @@
 package Galileo::File;
 use Mojo::Base 'Mojolicious::Controller';
 
-use Mojo::JSON 'j';
 use File::Next;
 use File::Spec;
 
@@ -11,11 +10,10 @@ sub list {
 
   my $iter = -d $dir ? File::Next::files( $dir ) : undef;
 
-  $self->on( text => sub {
-    my ($ws, $text) = @_;
-    my $data = j($text);
+  $self->on( json => sub {
+    my ($ws, $data) = @_;
     my $list = _get_list( $iter, $dir, $data->{limit} );
-    $ws->send({ text => j( $list ) });
+    $ws->send({ json => $list });
   });
 }
 
