@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo.
 
+0.030  August 26, 2013
+	- Removed Galileo::Plugin::FlexMemorize in favor of Mojolicious::Plugin::Memorize
+
 0.029  June 29, 2013
 	- Fixed page deletion bug introduced in 0.028 (chicoxyzzy++)
 	- Fixed model click handler bugs

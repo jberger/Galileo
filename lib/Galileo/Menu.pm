@@ -55,7 +55,7 @@ sub store {
       { key => $name }
     );
 
-    $self->expire($name);
+    $self->memorize->expire($name);
     $self->send({ text => j({
       message => 'Changes saved',
       success => \1,

@@ -1,7 +1,7 @@
 package Galileo;
 use Mojo::Base 'Mojolicious';
 
-our $VERSION = '0.029';
+our $VERSION = '0.030';
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
@@ -170,7 +170,7 @@ sub startup {
     return $user->is_admin;
   });
 
-  $app->plugin( 'Galileo::Plugin::FlexMemorize' );
+  $app->plugin( 'Memorize' );
   $app->plugin( 'Galileo::Plugin::Modal' );
 
   ## Routing ##

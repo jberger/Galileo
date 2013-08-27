@@ -52,9 +52,6 @@ provides:
   Galileo::Page:
     file: lib/Galileo/Page.pm
     version: 0
-  Galileo::Plugin::FlexMemorize:
-    file: lib/Galileo/Plugin/FlexMemorize.pm
-    version: 0
   Galileo::Plugin::Modal:
     file: lib/Galileo/Plugin/Modal.pm
     version: 0
@@ -73,6 +70,7 @@ requires:
   File::ShareDir: 1.00
   Mojolicious: 3.92
   Mojolicious::Plugin::Humane: 0.04
+  Mojolicious::Plugin::Memorize: 0
   SQL::Translator: 0
   Term::Prompt: 0
   perl: v5.10.1

@@ -1,4 +1,4 @@
-%= flex_memorize main => begin 
+%= memorize main => begin 
   % my $menu = schema->resultset('Menu')->single({name => 'main'});
   % my @pages = @{ Mojo::JSON->new->decode($menu->list) };
   % my $rs = schema->resultset('Page');

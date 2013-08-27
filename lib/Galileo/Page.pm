@@ -62,7 +62,7 @@ sub store {
     $schema->resultset('Page')->update_or_create(
       $data, {key => 'pages_name'},
     );
-    $self->expire('main');
+    $self->memorize->expire('main');
     $self->send({ text => j({
       message => 'Changes saved',
       success => \1,
