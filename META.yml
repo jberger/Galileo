@@ -18,7 +18,7 @@ no_index:
 provides:
   Galileo:
     file: lib/Galileo.pm
-    version: 0.029
+    version: 0.030
   Galileo::Admin:
     file: lib/Galileo/Admin.pm
     version: 0
@@ -68,7 +68,7 @@ requires:
   File::Copy::Recursive: 0
   File::Next: 0
   File::ShareDir: 1.00
-  Mojolicious: 3.92
+  Mojolicious: 4.0
   Mojolicious::Plugin::Humane: 0.04
   Mojolicious::Plugin::Memorize: 0
   SQL::Translator: 0
@@ -78,4 +78,4 @@ resources:
   bugtracker: http://github.com/jberger/Galileo/issues
   license: http://dev.perl.org/licenses/
   repository: http://github.com/jberger/Galileo
-version: 0.029
+version: 0.030
