@@ -1,136 +1,138 @@
-Revision history for Perl module Galileo.
+Revision history for Perl module Galileo
 
-0.030  August 26, 2013
-	- Removed Galileo::Plugin::FlexMemorize in favor of Mojolicious::Plugin::Memorize
-	- Move to using some of the new features of Mojolicious 4.0
-		- Especially the improve Websocket JSON interaction
-		- Bump required Mojolicious version to 4.0
+0.030 2013-08-26
+    - Removed Galileo::Plugin::FlexMemorize
+      in favor of Mojolicious::Plugin::Memorize
+    - Move to using some of the new features of Mojolicious 4.0
+        - Especially the improve Websocket JSON interaction
+        - Bump required Mojolicious version to 4.0
 
-0.029  June 29, 2013
-	- Fixed page deletion bug introduced in 0.028 (chicoxyzzy++)
-	- Fixed model click handler bugs
+0.029 2013-06-29
+    - Fixed page deletion bug introduced in 0.028 (chicoxyzzy++)
+    - Fixed model click handler bugs
 
-0.028  May 14, 2013
-	- Fixed bugs in modals (Fatalnix++)
-	- Moved modal template to a plugin
-	- Moved memorization helpers to a plugin
-	- Improved testing
+0.028 2013-05-14
+    - Fixed bugs in modals (Fatalnix++)
+    - Moved modal template to a plugin
+    - Moved memorization helpers to a plugin
+    - Improved testing
 
-0.027  April 3, 2013
-	- Use RFC 6901 compliant JSON pointers in tests
-		- Bump Mojolicious to 3.92 
+0.027 2013-04-03
+    - Use RFC 6901 compliant JSON pointers in tests
+    - Bump Mojolicious to 3.92 
 
-0.026  March 15, 2013
-	- Added File::Next to requires, was causing failing installation
+0.026 2013-03-15
+    - Added File::Next to requires, was causing failing installation
 
-0.025  March 12, 2013
-	- Bug fixes (fix broken release 0.024 ooops)
+0.025 2013-03-12
+    - Bug fixes (fix broken release 0.024 ooops)
 
-0.024  March 12, 2013
-	- Fix some setup bugs
-	- Deprecated files config key (use extra_static_paths)
-		- Deprecated functionality will be removed by 0.1 release
-	- Added mostly hidden/useless 'upload_path' system
+0.024 2013-03-12
+    - Fix some setup bugs
+    - Deprecated files config key (use extra_static_paths)
+    - Deprecated functionality will be removed by 0.1 release
+    - Added mostly hidden/useless 'upload_path' system
 
-0.023  March 4, 2013
-	- Removed CLI config/setup commands
-	- Added web-based setup command
-	- Page and Menu controllers are now properly distinct
-	- Added expires helper (from being a controller method)
-	- Deprecated db_connect config key
-	- Added db_* keys (dsn, username, password, options)
-	- Deprecated string use of files config key (use arrayref)
-		- Deprecated functionality will be removed by 0.1 release
+0.023 2013-03-04
+    - Removed CLI config/setup commands
+    - Added web-based setup command
+    - Page and Menu controllers are now properly distinct
+    - Added expires helper (from being a controller method)
+    - Deprecated db_connect config key
+    - Added db_* keys (dsn, username, password, options)
+    - Deprecated string use of files config key (use arrayref)
+        - Deprecated functionality will be removed by 0.1 release
 
-0.022  February 16, 2013
-	- Bump ::Humane version to 0.04
+0.022 2013-02-16
+    - Bump ::Humane version to 0.04
 
-0.021  February 16, 2013
-	- Use Mojolicious::Plugin::Humane (version 0.03)
-	- Fix deprecation warnings
-		- Bump Mojolicious to 3.85
+0.021 2013-02-16
+    - Use Mojolicious::Plugin::Humane (version 0.03)
+    - Fix deprecation warnings
+    - Bump Mojolicious to 3.85
 
-0.020  February 11, 2013
-	- Improved styling
-		- Show and Edit page styles are alike
-		- Use a simple font stack
+0.020 2013-02-11
+    - Improved styling
+        - Show and Edit page styles are alike
+        - Use a simple font stack
 
-0.019  February 5, 2013
-	- Improved documentation (should have been in previous release)
+0.019 2013-02-05
+    - Improved documentation (should have been in previous release)
 
-0.018  February 5, 2013
-	- Added some "theme" css
+0.018 2013-02-05
+    - Added some "theme" css
 
-0.017  February 4, 2013
-	- Getopt::Long bugfix (requires Mojolicious 3.83, sri++)
-	- Upgrade jQuery:
-		- jQuery to 1.9.1
-		- JQueryUI to 1.10.0
+0.017 2013-02-04
+    - Getopt::Long bugfix (requires Mojolicious 3.83, sri++)
+    - Upgrade jQuery:
+        - jQuery to 1.9.1
+        - JQueryUI to 1.10.0
 
-0.016  January 26, 2013
-	- Added dump command (vervain)
+0.016 2013-01-26
+    - Added dump command (vervain)
 
-0.015  January 18, 2013
-	- Don't set a default secret so mojo will warn
-	- Warn when browser doesn't support WebSockets (rather than fail silently)
-	- More informative message from galileo setup
+0.015 2013-01-18
+    - Don't set a default secret so mojo will warn
+    - Warn when browser doesn't support WebSockets (rather than fail silently)
+    - More informative message from galileo setup
 
-0.014  January 16, 2013
-	- Remove unicode regexp flag (/u) preventing install on <5.14
+0.014 2013-01-16
+    - Remove unicode regexp flag (/u) preventing install on <5.14
 
-0.013  January 15, 2013
-	- User-side DBIC::DH work happens in temporary directories
-		- Fixes permission errors when using as non-root
-	- Improve test that seems to fail on win/mac
-	- Output load error message if Galileo::DB::Schema fails to load
+0.013 2013-01-15
+    - User-side DBIC::DH work happens in temporary directories
+        - Fixes permission errors when using as non-root
+    - Improve test that seems to fail on win/mac
+    - Output load error message if Galileo::DB::Schema fails to load
 
-0.012  January 15, 2013
-	- Use cross-database table/column types
-	- Use versioned schemas
-	- Added database upgrade layer (Galileo::DB::Deploy)
-	- Added option for ConsoleLogger
-	- Improved unicode handling
-	- Websockets now send/receive structured data
-	- Websocket handling now has callbacks for success/failure actions
-	- Increase minimum dependencies on:
-		- Perl to 5.10.1
-		- Mojolicious to 3.80
+0.012 2013-01-15
+    - Use cross-database table/column types
+    - Use versioned schemas
+    - Added database upgrade layer (Galileo::DB::Deploy)
+    - Added option for ConsoleLogger
+    - Improved unicode handling
+    - Websockets now send/receive structured data
+    - Websocket handling now has callbacks for success/failure actions
+    - Increase minimum dependencies on:
+        - Perl to 5.10.1
+        - Mojolicious to 3.80
 
-0.011  October 31, 2012
-	- Added extra_css and extra_js config options
+0.011 2012-10-31
+    - Added extra_css and extra_js config options
 
-0.010  October 28, 2012
-	- Forgot to include new test file in MANIFEST
+0.010 2012-10-28
+    - Forgot to include new test file in MANIFEST
 
-0.009  October 28, 2012
-	- Add a configurable static files folder
-	- Check GALILEO_HOME at object creation time
-	- Various bugfixes
+0.009 2012-10-28
+    - Add a configurable static files folder
+    - Check GALILEO_HOME at object creation time
+    - Various bugfixes
 
-0.008  October 27, 2012
-	- Sanitizing editor is now optional
+0.008 2012-10-27
+    - Sanitizing editor is now optional
 
-0.007  September 10, 2012
-	- Implement page deletion
+0.007 2012-09-10
+    - Implement page deletion
         - Page and User creation now available on menu
 
-0.006  August 9, 2012
-	- Improved configuration file detection
+0.006 2012-08-09
+    - Improved configuration file detection
 
-0.005  August 6, 2012
-	- Added config command
-	- Improved documentation
+0.005 2012-08-06
+    - Added config command
+    - Improved documentation
 
-0.004  July 31, 2012
-	- Allow unicode page name (Keedi Kim (keedi)++)
-	- Improve setup prompts (Steven Haryanto)
-	- Add popover about adding user/page (Ron Savage)
+0.004 2012-07-31
+    - Allow unicode page name (Keedi Kim (keedi)++)
+    - Improve setup prompts (Steven Haryanto)
+    - Add popover about adding user/page (Ron Savage)
 
-0.003  July 30, 2012
-	- Fixed a bad link
+0.003 2012-07-30
+    - Fixed a bad link
 
-0.002  July 30, 2012
-	- Fixed some issues from packaging
+0.002 2012-07-30
+    - Fixed some issues from packaging
 
-0.001  July 30, 2012
-	- Initial release
+0.001 2012-07-30
+    - Initial release
+
