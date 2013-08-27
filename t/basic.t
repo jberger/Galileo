@@ -5,10 +5,6 @@ use Galileo::DB::Deploy;
 use Test::More;
 use Test::Mojo;
 
-use Mojo::JSON 'j';
-
-sub _send_text { +{ text => j( $_[0] ) } }
-
 my $t = Galileo::DB::Deploy->create_test_object({test => 1});
 $t->ua->max_redirects(2);
 
@@ -88,9 +84,9 @@ subtest 'Edit Page' => sub {
     md    => $text,
   };
   $t->websocket_ok( '/store/page' )
-    ->send_ok( _send_text $data )
+    ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( '' => { success => 1, message => 'Changes saved' } )
+    ->json_message_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   # see that the changes are reflected
@@ -107,9 +103,9 @@ subtest 'Edit Page' => sub {
     md    => 'Hmmm no title',
   };
   $t->websocket_ok( '/store/page' )
-    ->send_ok( _send_text $data_notitle )
+    ->send_ok({ json => $data_notitle })
     ->message_ok
-    ->json_message_is( '' => { success => 0, message => 'Not saved! A title is required!' })
+    ->json_message_is( { success => 0, message => 'Not saved! A title is required!' } )
     ->finish_ok;
 
 };
@@ -131,9 +127,9 @@ subtest 'New Page' => sub {
     md    => $text,
   };
   $t->websocket_ok( '/store/page' )
-    ->send_ok( _send_text $data )
+    ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( '' => { success => 1, message => 'Changes saved' })
+    ->json_message_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   # see that the changes are reflected
@@ -159,9 +155,9 @@ subtest 'Edit Main Navigation Menu' => sub {
     list => [],
   };
   $t->websocket_ok('/store/menu')
-    ->send_ok( _send_text $data )
+    ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( '' => { success => 1, message => 'Changes saved' })
+    ->json_message_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   # check that item is removed
@@ -176,9 +172,9 @@ subtest 'Edit Main Navigation Menu' => sub {
     list => ['pages-2'],
   };
   $t->websocket_ok('/store/menu')
-    ->send_ok( _send_text $data )
+    ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( '' => { success => 1, message => 'Changes saved' })
+    ->json_message_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   # check about page is back in nav (same as first test block)
@@ -209,23 +205,23 @@ subtest 'Administrative Overview: All Pages' => sub {
 
   # attempt to remove home page
   $t->websocket_ok('/remove/page')
-    ->send_ok( _send_text {id => 1} )
+    ->send_ok({ json => {id => 1} })
     ->message_ok
-    ->json_message_is( '' => { success => 0, message => 'Cannot remove home page' })
+    ->json_message_is( { success => 0, message => 'Cannot remove home page' } )
     ->finish_ok;
 
   # attempt to remove invalid page
   $t->websocket_ok('/remove/page')
-    ->send_ok( _send_text {id => 5} )
+    ->send_ok({ json => {id => 5} })
     ->message_ok
-    ->json_message_is( '' => { success => 0, message => 'Could not access page (id 5)' } )
+    ->json_message_is( { success => 0, message => 'Could not access page (id 5)' } )
     ->finish_ok;
 
   # remove page
   $t->websocket_ok('/remove/page')
-    ->send_ok( _send_text {id => 2} )
+    ->send_ok({ json => {id => 2} })
     ->message_ok
-    ->json_message_is( '' => { success => 1, message => 'Page removed' } )
+    ->json_message_is( { success => 1, message => 'Page removed' } )
     ->finish_ok;
 
 };
@@ -247,9 +243,9 @@ subtest 'Administer Users' => sub {
     is_admin => 1,
   };
   $t->websocket_ok('/store/user')
-    ->send_ok( _send_text $data )
+    ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( '' => { success => 1, message => 'Changes saved' } )
+    ->json_message_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   # check that the name change is reflected
@@ -268,9 +264,9 @@ subtest 'Administer Users' => sub {
     is_admin => 1,
   };
   $t->websocket_ok('/store/user')
-    ->send_ok( _send_text $data )
+    ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( '' => { success => 0, message => 'Not saved! Passwords do not match' } )
+    ->json_message_is( { success => 0, message => 'Not saved! Passwords do not match' } )
     ->finish_ok;
 
   ok( $t->app->get_user('admin')->check_password('pass'), 'Password not changed on non-matching passwords');
@@ -285,9 +281,9 @@ subtest 'Administer Users' => sub {
     is_admin => 1,
   };
   $t->websocket_ok('/store/user')
-    ->send_ok( _send_text $data )
+    ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( '' => { success => 1, message => 'Changes saved' } )
+    ->json_message_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   ok( $t->app->get_user('admin')->check_password('newpass'), 'New password checks out');
@@ -304,9 +300,9 @@ subtest 'Create New User' => sub {
     is_admin => 0,
   };
   $t->websocket_ok('/store/user')
-    ->send_ok( _send_text $data )
+    ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( '' => { success => 0, message => 'Cannot create user without a password' })
+    ->json_message_is( { success => 0, message => 'Cannot create user without a password' } )
     ->finish_ok;
 
   # create a user
@@ -319,9 +315,9 @@ subtest 'Create New User' => sub {
     is_admin => 0,
   };
   $t->websocket_ok('/store/user')
-    ->send_ok( _send_text $data )
+    ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( '' => { success => 1, message => 'Changes saved' })
+    ->json_message_is( { success => 1, message => 'Changes saved' } )
     ->finish_ok;
 
   # check the new user
