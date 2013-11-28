@@ -4,7 +4,7 @@
       "Joel Berger"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Module::Build version 0.42",
    "license" : [
       "perl_5"
    ],
@@ -47,59 +47,47 @@
    "provides" : {
       "Galileo" : {
          "file" : "lib/Galileo.pm",
-         "version" : "0.030"
+         "version" : "0.031"
       },
       "Galileo::Admin" : {
-         "file" : "lib/Galileo/Admin.pm",
-         "version" : 0
+         "file" : "lib/Galileo/Admin.pm"
       },
       "Galileo::Command::dump" : {
-         "file" : "lib/Galileo/Command/dump.pm",
-         "version" : 0
+         "file" : "lib/Galileo/Command/dump.pm"
       },
       "Galileo::Command::setup" : {
-         "file" : "lib/Galileo/Command/setup.pm",
-         "version" : 0
+         "file" : "lib/Galileo/Command/setup.pm"
       },
       "Galileo::DB::Deploy" : {
-         "file" : "lib/Galileo/DB/Deploy.pm",
-         "version" : 0
+         "file" : "lib/Galileo/DB/Deploy.pm"
       },
       "Galileo::DB::Schema" : {
          "file" : "lib/Galileo/DB/Schema.pm",
          "version" : "2"
       },
       "Galileo::DB::Schema::Result::Menu" : {
-         "file" : "lib/Galileo/DB/Schema/Result/Menu.pm",
-         "version" : 0
+         "file" : "lib/Galileo/DB/Schema/Result/Menu.pm"
       },
       "Galileo::DB::Schema::Result::Page" : {
-         "file" : "lib/Galileo/DB/Schema/Result/Page.pm",
-         "version" : 0
+         "file" : "lib/Galileo/DB/Schema/Result/Page.pm"
       },
       "Galileo::DB::Schema::Result::User" : {
-         "file" : "lib/Galileo/DB/Schema/Result/User.pm",
-         "version" : 0
+         "file" : "lib/Galileo/DB/Schema/Result/User.pm"
       },
       "Galileo::File" : {
-         "file" : "lib/Galileo/File.pm",
-         "version" : 0
+         "file" : "lib/Galileo/File.pm"
       },
       "Galileo::Menu" : {
-         "file" : "lib/Galileo/Menu.pm",
-         "version" : 0
+         "file" : "lib/Galileo/Menu.pm"
       },
       "Galileo::Page" : {
-         "file" : "lib/Galileo/Page.pm",
-         "version" : 0
+         "file" : "lib/Galileo/Page.pm"
       },
       "Galileo::Plugin::Modal" : {
-         "file" : "lib/Galileo/Plugin/Modal.pm",
-         "version" : 0
+         "file" : "lib/Galileo/Plugin/Modal.pm"
       },
       "Galileo::User" : {
-         "file" : "lib/Galileo/User.pm",
-         "version" : 0
+         "file" : "lib/Galileo/User.pm"
       }
    },
    "release_status" : "stable",
@@ -114,5 +102,5 @@
          "url" : "http://github.com/jberger/Galileo"
       }
    },
-   "version" : "0.030"
+   "version" : "0.031"
 }

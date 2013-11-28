@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo
 
+0.031 2013-11-28
+    - Fixed a few long-standing bugs (hrupprecht++)
+
 0.030 2013-08-26
     - Removed Galileo::Plugin::FlexMemorize
       in favor of Mojolicious::Plugin::Memorize
