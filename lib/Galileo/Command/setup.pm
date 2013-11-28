@@ -113,6 +113,7 @@ sub run {
     my $user = $self->param('user');
     my $full = $self->param('full');
 
+    eval { $dh->schema->deploy };
     eval { $dh->do_install };
     eval { $dh->inject_sample_data($user, $pw1, $full) };
     if ($@) {
@@ -227,7 +228,12 @@ __DATA__
   <legend>Other Options</legend>
 
   %= control_group for => 'sanitize', label => 'Use Sanitizing Editor' => begin 
-    %= check_box 'sanitize', value => 1, checked => $config->{sanitize} ? 'checked' : ''
+    % if($config->{sanitize}){
+      %= check_box 'sanitize', value => 1, checked => 'checked'
+    % } else {
+      %= check_box 'sanitize', value => 1
+    % }
+    %= hidden_field 'sanitize' => 0
   % end
   %= control_group for => 'secret', label => 'Application Secret' => begin
     %= text_field 'secret', value => $config->{secret}, class => 'input-block-level'
