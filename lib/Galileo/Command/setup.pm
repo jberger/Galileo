@@ -113,6 +113,7 @@ sub run {
     my $user = $self->param('user');
     my $full = $self->param('full');
 
+    eval { $dh->schema->deploy };
     eval { $dh->do_install };
     eval { $dh->inject_sample_data($user, $pw1, $full) };
     if ($@) {
