@@ -103,6 +103,11 @@ sub inject_sample_data {
   my $self = shift;
   my $schema = $self->schema;
 
+  if(ref $schema->storage eq 'DBIx::Class::Storage::DBI::Pg'){
+    $schema->storage->sql_maker->quote_char([ qw/" "/] );
+    $schema->storage->sql_maker->name_sep('.');
+  }
+
   my $user = shift or die "Must provide an admin username\n";
   my $pass = shift or die "Must provide a password for admin user\n";
   my $full = shift || "Administrator";
@@ -134,7 +139,7 @@ HTML
     md        => <<'MARKDOWN',
 ##Welcome to your Galileo CMS site!
 
-> Galileo Galilei was "an Italian physicist, mathematician, astronomer, and philosopher who played a major role in the Scientific Revolution." -- [Wikipedia](https://en.wikipedia.org/wiki/Galileo_Galilei) 
+> Galileo Galilei was "an Italian physicist, mathematician, astronomer, and philosopher who played a major role in the Scientific Revolution." -- [Wikipedia](https://en.wikipedia.org/wiki/Galileo_Galilei)
 
 When he first turned the telescope to face Jupiter, he used modern technology to improve the world around him.
 
@@ -181,7 +186,7 @@ MARKDOWN
 
   $schema->resultset('Menu')->create({
     name => 'main',
-    list => j( [ $about->page_id ] ), 
+    list => j( [ $about->page_id ] ),
   });
 
 }
@@ -201,12 +206,12 @@ sub create_test_object {
   );
   $dh->do_install;
   $dh->inject_sample_data('admin', 'pass', 'Joe Admin');
-  
+
 
   if ($opts->{test}) {
     require Test::More;
-    Test::More::ok( 
-      $db->resultset('User')->single({name => 'admin'})->check_password('pass'), 
+    Test::More::ok(
+      $db->resultset('User')->single({name => 'admin'})->check_password('pass'),
       'DB user checks out'
     );
     Test::More::ok( $dh->installed_version, 'Found version information' );
