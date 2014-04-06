@@ -1,7 +1,7 @@
 package Galileo;
 use Mojo::Base 'Mojolicious';
 
-our $VERSION = '0.031';
+our $VERSION = '0.032';
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
@@ -48,7 +48,7 @@ sub load_config {
       extra_js => [],
       extra_static_paths => ['static'],
       sanitize => 1,
-      secret => '', # default to null (unset) in case I implement an iterative config helper
+      secrets => [],
       upload_path => 'uploads',
     },
   });
@@ -90,8 +90,12 @@ sub load_config {
     $app->helper( upload_path => sub { 0 } );
   }
 
-  if ( my $secret = $app->config->{secret} ) {
-    $app->secret( $secret );
+
+  if ( my $secrets = $app->config->{secrets} ) {
+    $app->secrets($secrets) if @$secrets;
+  } elsif ( my $secret = $app->config->{secret} ) {
+    warn "### 'secret' config key is deprecated, use 'secrets' instead ###\n";
+    $app->secrets([$secret]) if $secret;
   }
 }
 

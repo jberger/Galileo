@@ -1,5 +1,10 @@
 Revision history for Perl module Galileo
 
+0.032 2014-04-06
+    - Added 'secrets' configuration key
+        - Bump required Mojolicious version to 4.63
+    - Deprecated 'secret' configuration key
+
 0.031 2013-11-28
     - Fixed a few long-standing bugs (hrupprecht++)
 

@@ -47,22 +47,9 @@ sub run {
     my $self = shift;
     my @params = sort $self->param;
 
-    {
-      my @config = sort keys %{ $self->app->config };
-
-      # check that all keys are represented
-      die "Incorrect number of configuration keys"
-        unless @params == @config;
-
-      for my $i (0 .. $#params) {
-        die "Config key mismatch $config[$i] vs $params[$i]"
-          unless $config[$i] eq $params[$i];
-      }
-    }
-
     # map JSON keys to Perl data
     my %params = map { $_ => scalar $self->param($_) } @params;
-    foreach my $key ( qw/extra_css extra_js extra_static_paths db_options/ ) {
+    foreach my $key ( qw/extra_css extra_js extra_static_paths secrets db_options/ ) {
       $params{$key} = j($params{$key});
     }
 
@@ -235,8 +222,8 @@ __DATA__
     % }
     %= hidden_field 'sanitize' => 0
   % end
-  %= control_group for => 'secret', label => 'Application Secret' => begin
-    %= text_field 'secret', value => $config->{secret}, class => 'input-block-level'
+  %= control_group for => 'secrets', label => 'Application Secrets (JSON array)' => begin
+    %= text_field 'secrets', value => j($config->{secrets}), class => 'input-block-level'
   % end
   %= control_group for => 'submit-button', begin
     <button class="btn" id="submit-button" type="submit">Save</button>
