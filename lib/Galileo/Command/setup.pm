@@ -132,9 +132,8 @@ sub run {
 
     $self->humane_stash( 'Goodbye' );
     $self->render('galileo_finish');
+    $self->tx->on( finish => sub { exit } );
   });
-
-  $r->any('/exit' => sub { exit });
 
   $self->Mojolicious::Command::daemon::run(@args);
 }
@@ -268,10 +267,6 @@ __DATA__
 % if ( stash 'galileo.success' ) {
   <p>Setup complete, run <pre>$ galileo daemon</pre></p>
 % }
-
-%= javascript begin
-  $(function(){ $.get('<%= url_for 'exit' %>') });
-% end
 
 @@ control_group.html.ep
 
