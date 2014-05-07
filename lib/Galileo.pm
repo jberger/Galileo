@@ -66,7 +66,7 @@ sub load_config {
   # handle deprecated files key
   if (my $files = $app->config->{files}) {
     warn "### 'files' config key is deprecated, use extra_static_paths ###\n"; 
-    push @{ $app->config->{exta_static_paths} }, (ref $files ? @$files : $files);
+    push @{ $app->config->{extra_static_paths} }, (ref $files ? @$files : $files);
   }
 
   # add the files directories to array of static content folders
