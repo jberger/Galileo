@@ -18,7 +18,7 @@ no_index:
 provides:
   Galileo:
     file: lib/Galileo.pm
-    version: 0.032
+    version: 0.033
   Galileo::Admin:
     file: lib/Galileo/Admin.pm
   Galileo::Command::dump:
@@ -66,4 +66,4 @@ resources:
   bugtracker: http://github.com/jberger/Galileo/issues
   license: http://dev.perl.org/licenses/
   repository: http://github.com/jberger/Galileo
-version: 0.032
+version: 0.033

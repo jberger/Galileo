@@ -50,6 +50,7 @@ META.json
 META.yml
 README.pod
 t/basic.t
+t/commands.t
 t/locations.t
 t/locations/static/test.html
 t/locations/uploads/image1.jpg
