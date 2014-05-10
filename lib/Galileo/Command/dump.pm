@@ -1,5 +1,6 @@
 package Galileo::Command::dump;
 use Mojo::Base 'Mojolicious::Command';
+use Encode 'encode';
 use File::Spec;
 use Mojo::Util 'spurt';
 use Getopt::Long qw/GetOptionsFromArray/;
@@ -18,6 +19,11 @@ options:
   This option accepts an sprintf format for including the title.
   As a special case, if this flag is given without argument, an h1 
   title is created.
+
+--encoding,-e
+  An optional encoding type. By default its value is empty string
+  and it does nothing. Available type of encoding is same as Encode
+  module of Perl.
 END
 
 sub run {
@@ -26,6 +32,7 @@ sub run {
   GetOptionsFromArray( \@_,
     'directory=s' => \my $dir,
     'title:s'     => \(my $title = '<!-- %s -->'),
+    'encoding:s'  => \my $encoding,
   );
 
   $title = '# %s' unless $title;
@@ -40,6 +47,7 @@ sub run {
 
     my $content = sprintf "$title\n", $page->title;
     $content .= $page->md;
+    $content = encode($encoding, $content) if $encoding;
     spurt $content, $file;
   }
 
