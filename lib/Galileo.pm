@@ -292,7 +292,11 @@ Note that the database deployment tools may emit debugging information unexpecte
  $ galileo dump --directory pages -t 
  $ galileo dump --directory pages -t --encoding utf-8
 
-This tool dumps all the pages in your galileo site as markdown files. The directory for exporting to may be specifed with the C<--directory> or C<-d> flag, by default it exports to the current working directory. The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article). If encoding of the content does matter try to use C<--encoding> or C<-e> flag, by default its value is empty string and it does nothing. Available value of the C<--encoding> is same as L<Encode> module of Perl.
+This tool dumps all the pages in your galileo site as markdown files. The directory for exporting to may be specifed with the C<--directory> or C<-d> flag, by default it exports to the current working directory.
+
+The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article). 
+
+The document will be encoded as UTF-8 by default, if other encoding of the content is desired, use C<--encoding> or C<-e> flag. Available value of the C<--encoding> is same as L<Encode> module of Perl.
 
 =head1 RUNNING THE APPLICATION
 

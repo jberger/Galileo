@@ -7,7 +7,7 @@ use Test::More;
 use Test::Mojo;
 
 use Mojolicious::Commands;
-use Encode qw( encode decode );
+use Mojo::Util qw/ decode encode slurp /;
 use File::Spec;
 use File::Temp ();
 
@@ -42,9 +42,7 @@ subtest 'Dump' => sub {
     for my $name ( keys %pages ) {
       my $file = File::Spec->catfile( $dir, "$name.md" );
       ok -e $file, "sample data: $name - exists";
-      open my $fh, '<', $file or die "cannot open $file: $!";
-      my $content = do { local $/; <$fh> };
-      close $fh;
+      my $content = decode 'UTF-8', slurp $file;
       like $content, qr/\A<!-- $pages{$name}{title} -->/, "sample data: $name - title";
       like $content, $pages{$name}{content}, "sample data: $name - content";
     }
@@ -112,15 +110,12 @@ subtest 'Dump' => sub {
       },
     );
     for my $name ( keys %pages ) {
-      my $encoded_name = encode('utf-8', $name);
+      my $encoded_name = encode 'UTF-8', $name;
       my $file         = File::Spec->catfile( $dir, "$name.md" );
       ok -e $file, "sample data: $encoded_name - exists";
-      open my $fh, '<', $file or die "cannot open $file: $!";
-      my $content = do { local $/; <$fh> };
-      my $decoded_content = decode('utf-8', $content);
-      close $fh;
-      like $decoded_content, qr/\A<!-- $pages{$name}{title} -->/, "sample data: $encoded_name - title";
-      like $decoded_content, $pages{$name}{content}, "sample data: $encoded_name - content";
+      my $content = decode 'UTF-8', slurp $file;
+      like $content, qr/\A<!-- $pages{$name}{title} -->/, "sample data: $encoded_name - title";
+      like $content, $pages{$name}{content}, "sample data: $encoded_name - content";
     }
   }
 };

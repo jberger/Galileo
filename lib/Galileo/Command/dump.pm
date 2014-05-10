@@ -1,8 +1,7 @@
 package Galileo::Command::dump;
 use Mojo::Base 'Mojolicious::Command';
-use Encode 'encode';
 use File::Spec;
-use Mojo::Util 'spurt';
+use Mojo::Util qw/encode spurt/;
 use Getopt::Long qw/GetOptionsFromArray/;
 
 has description => "Dump all stored pages as markdown\n";
@@ -21,9 +20,8 @@ options:
   title is created.
 
 --encoding,-e
-  An optional encoding type. By default its value is empty string
-  and it does nothing. Available type of encoding is same as Encode
-  module of Perl.
+  An encoding type. Defaults to UTF-8. Available encodings are the
+  same as Encode module of Perl.
 END
 
 sub run {
@@ -32,7 +30,7 @@ sub run {
   GetOptionsFromArray( \@_,
     'directory=s' => \my $dir,
     'title:s'     => \(my $title = '<!-- %s -->'),
-    'encoding:s'  => \my $encoding,
+    'encoding:s'  => \(my $encoding = 'UTF-8'),
   );
 
   $title = '# %s' unless $title;

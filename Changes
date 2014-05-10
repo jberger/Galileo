@@ -1,5 +1,9 @@
 Revision history for Perl module Galileo
 
+0.033 2014-05-10
+    - Change dump command to accept encoding parameter (keedi++)
+    - dump command now emits UTF-8 by default
+
 0.032 2014-04-06
     - Added 'secrets' configuration key
         - Bump required Mojolicious version to 4.63
