@@ -5,6 +5,16 @@ use Galileo::DB::Deploy;
 use Test::More;
 use Test::Mojo;
 
+use Mojo::Util 'spurt';
+use File::Path 'mkpath';
+use File::Spec;
+use File::Temp ();
+
+my $dir = File::Temp->newdir( $ENV{KEEP_TEMP_DIR} ? (CLEANUP => 0) : () );
+$ENV{GALILEO_HOME} = $dir;
+mkpath "$dir/static" or die qq{Can't make directory "$dir/static": $!};
+spurt "<h1>hello world!</h1>", "$dir/static/helloworld.html";
+
 my $t = Galileo::DB::Deploy->create_test_object({test => 1});
 $t->ua->max_redirects(2);
 
@@ -338,6 +348,15 @@ subtest 'Extra CSS/JS' => sub {
     ->status_is(200)
     ->element_exists( 'link[href=mytest.css]' )
     ->element_exists( 'script[src=mytest.js]' );
+};
+
+subtest 'Extra Static Paths' => sub {
+  my $app = $t->app;
+  my $dir = File::Spec->catdir( $app->home_path, "static" );
+  ok -d $dir, "galileo extra static paths";
+  $t->get_ok('/helloworld.html')
+    ->status_is(200)
+    ->text_is( h1 => 'hello world!' );
 };
 
 subtest 'Logging Out' => sub {
