@@ -49,7 +49,7 @@ sub run {
 
     # map JSON keys to Perl data
     my %params = map { $_ => scalar $self->param($_) } @params;
-    foreach my $key ( qw/extra_css extra_js extra_static_paths secrets db_options/ ) {
+    foreach my $key ( qw/extra_css extra_js extra_static_paths extra_renderer_paths secrets db_options/ ) {
       $params{$key} = j($params{$key});
     }
 
@@ -200,6 +200,9 @@ __DATA__
 
   %= control_group for => 'files', label => 'Extra Static Paths (JSON array)' => begin
     %= text_field 'extra_static_paths', value => j($config->{extra_static_paths}), class => 'input-block-level'
+  % end
+  %= control_group for => 'files', label => 'Extra Renderer Paths (JSON array)' => begin
+    %= text_field 'extra_renderer_paths', value => j($config->{extra_renderer_paths}), class => 'input-block-level'
   % end
   %= control_group for => 'extra_js', label => 'Extra Javascript Files (JSON array)' => begin
     %= text_field 'extra_js', value => j($config->{extra_js}), class => 'input-block-level'
