@@ -49,7 +49,7 @@ sub run {
 
     # map JSON keys to Perl data
     my %params = map { $_ => scalar $self->param($_) } @params;
-    foreach my $key ( qw/extra_css extra_js extra_static_paths secrets db_options/ ) {
+    foreach my $key ( qw/extra_css extra_js extra_static_paths secrets db_options pagedown_extra_options/ ) {
       $params{$key} = j($params{$key});
     }
 
@@ -220,6 +220,9 @@ __DATA__
       %= check_box 'sanitize', value => 1
     % }
     %= hidden_field 'sanitize' => 0
+  % end
+  %= control_group for => 'files', label => 'Pagedown Extra Options (JSON hash)' => begin
+    %= text_field 'pagedown_extra_options', value => j($config->{pagedown_extra_options}), class => 'input-block-level'
   % end
   %= control_group for => 'secrets', label => 'Application Secrets (JSON array)' => begin
     %= text_field 'secrets', value => j($config->{secrets}), class => 'input-block-level'

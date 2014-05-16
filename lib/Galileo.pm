@@ -48,6 +48,20 @@ sub load_config {
       extra_js => [],
       extra_static_paths => ['static'],
       sanitize => 1,
+      pagedown_extra_options => {
+        highlighter => 'highlight',
+        table_class => 'table table-striped',
+        extensions  => [qw/
+          tables
+          fenced_code_gfm
+          def_list
+          attr_list
+          footnotes
+          smartypants
+          strikethrough
+          newlines
+        /],
+      },
       secrets => [],
       upload_path => 'uploads',
     },
