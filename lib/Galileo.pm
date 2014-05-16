@@ -362,6 +362,10 @@ L<PageDown|http://code.google.com/p/pagedown/> (Markdown engine) - the version o
 
 =item * 
 
+L<PageDown Extra|https://github.com/jmcmanus/pagedown-extra> - Markdown Extra Plugins for Pagedown
+
+=item * 
+
 L<Bootstrap|http://twitter.github.com/bootstrap> - the beautiful CSS/JS library from Twitter
 
 =item * 
