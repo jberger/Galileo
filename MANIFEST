@@ -18,6 +18,7 @@ lib/Galileo/files/public/assets/bootstrap/img/glyphicons-halflings.png
 lib/Galileo/files/public/assets/bootstrap/js/bootstrap.min.js
 lib/Galileo/files/public/assets/jquery-1.9.1.min.js
 lib/Galileo/files/public/assets/jquery-ui-1.10.0.custom.min.js
+lib/Galileo/files/public/assets/pagedown-extra/Markdown.Extra.js
 lib/Galileo/files/public/assets/pagedown/Markdown.Converter.js
 lib/Galileo/files/public/assets/pagedown/Markdown.Editor.js
 lib/Galileo/files/public/assets/pagedown/Markdown.Sanitizer.js
