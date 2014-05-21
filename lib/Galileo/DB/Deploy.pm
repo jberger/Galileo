@@ -378,7 +378,6 @@ Violets are blue</p>
 
 </ol>
 </div>
-</div>
 HTML
     md        => <<'MARKDOWN',
 ## Highlighting
