@@ -1,5 +1,10 @@
 Revision history for Perl module Galileo
 
+0.034 2014-05-31
+    - Improve compatibility with Mojolicious 5.0 (no bump required)
+        - Bump Mojolicious::Plugin::Humane to 0.07
+    - Fix typo in setup command (crab++)
+
 0.033 2014-05-10
     - Change dump command to accept encoding parameter (keedi++)
     - dump command now emits UTF-8 by default

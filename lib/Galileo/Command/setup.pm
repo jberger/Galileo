@@ -32,8 +32,7 @@ sub run {
     my $contents = pop;
     my %args = @_;
  
-    $self->render(
-      partial => 1,
+    $self->include( #TODO use render_to_string when Mojo 5.00 is required
       template => 'control_group',
       'control_group.contents' => ref $contents ? $contents->() : $contents,
       'control_group.label' => $args{label} || '',
@@ -159,7 +158,7 @@ __DATA__
 
   %= tag li => begin
     %= link_to 'Install or upgrade your database' => 'database'
-    <p>If this is a new installation you <b>must</b> to run the database setup utility.
+    <p>If this is a new installation you <b>must</b> run the database setup utility.
     If you have not configured Galileo (see above), you will use the defaults, including using an SQLite database for the backend.</p>
   % end
 

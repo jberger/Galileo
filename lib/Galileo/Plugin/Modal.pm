@@ -10,9 +10,8 @@ sub register {
   $app->helper( modal => sub {
     my ($self, $id, $body) = @_;
     $body = $body->() if ref $body;
-    return $self->render(
+    return $self->include( #TODO use render_to_string when Mojo 5.00 is required
       template => 'galileo_modal',
-      partial  => 1,
       'galileo.modal.id'   => $id,
       'galileo.modal.body' => $body,
     );

@@ -4,13 +4,13 @@ author:
   - 'Joel Berger'
 build_requires: {}
 configure_requires:
-  Module::Build: 0.38
+  Module::Build: '0.38'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4203, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Module::Build version 0.4205, CPAN::Meta::Converter version 2.140640'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: Galileo
 no_index:
   file:
@@ -18,7 +18,7 @@ no_index:
 provides:
   Galileo:
     file: lib/Galileo.pm
-    version: 0.033
+    version: '0.034'
   Galileo::Admin:
     file: lib/Galileo/Admin.pm
   Galileo::Command::dump:
@@ -29,7 +29,7 @@ provides:
     file: lib/Galileo/DB/Deploy.pm
   Galileo::DB::Schema:
     file: lib/Galileo/DB/Schema.pm
-    version: 2
+    version: '2'
   Galileo::DB::Schema::Result::Menu:
     file: lib/Galileo/DB/Schema/Result/Menu.pm
   Galileo::DB::Schema::Result::Page:
@@ -47,23 +47,23 @@ provides:
   Galileo::User:
     file: lib/Galileo/User.pm
 requires:
-  Crypt::Eksblowfish::Bcrypt: 0
-  DBD::SQLite: 0
-  DBIx::Class: 0
-  DBIx::Class::Candy: 0
-  DBIx::Class::DeploymentHandler: 0
-  DBIx::Class::EncodedColumn: 0
-  File::Copy::Recursive: 0
-  File::Next: 0
-  File::ShareDir: 1.00
-  Mojolicious: 4.63
-  Mojolicious::Plugin::Humane: 0.04
-  Mojolicious::Plugin::Memorize: 0
-  SQL::Translator: 0
-  Term::Prompt: 0
+  Crypt::Eksblowfish::Bcrypt: '0'
+  DBD::SQLite: '0'
+  DBIx::Class: '0'
+  DBIx::Class::Candy: '0'
+  DBIx::Class::DeploymentHandler: '0'
+  DBIx::Class::EncodedColumn: '0'
+  File::Copy::Recursive: '0'
+  File::Next: '0'
+  File::ShareDir: '1.00'
+  Mojolicious: '4.63'
+  Mojolicious::Plugin::Humane: '0.04'
+  Mojolicious::Plugin::Memorize: '0'
+  SQL::Translator: '0'
+  Term::Prompt: '0'
   perl: v5.10.1
 resources:
   bugtracker: http://github.com/jberger/Galileo/issues
   license: http://dev.perl.org/licenses/
   repository: http://github.com/jberger/Galileo
-version: 0.033
+version: '0.034'
