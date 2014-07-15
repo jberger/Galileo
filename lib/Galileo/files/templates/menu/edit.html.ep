@@ -19,7 +19,7 @@ $(function() {
     items: "li:not(.nav-header)"
   }).disableSelection();
 });
-%= end
+% end
 
 <div class="row">
   <div class="span5">

@@ -19,7 +19,7 @@
     %= tag th => "Title"
     %= tag th => "Author"
     %= tag th => "Actions"
-  %= end
+  % end
   % while (my $page = $pages->next) {
     % my $name = $page->name;
     % my $id = $page->page_id;
@@ -30,7 +30,7 @@
       % my $author = $page->author->name;
       %= tag td => begin
         %= tag a => href => "/admin/user/$author" => "$author"
-      %= end
+      % end
       %= tag td => begin
         <div class="btn-group">
           <a class="btn" href="<%= qq{/page/$name} %>"><i class="icon-eye-open"></i></a>
@@ -39,10 +39,10 @@
             <i class="icon-trash"></i>
           </a>
         </div>
-      %= end
-    %= end
+      % end
+    % end
   % }
-%= end
+% end
 
 %= javascript begin
 function confirm_delete(id) {
@@ -59,4 +59,4 @@ function delete_page(id) {
     function(){ $( '#row-' + id ).remove(); }
   );
 }
-%= end
+% end

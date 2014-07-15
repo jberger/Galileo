@@ -12,9 +12,9 @@
         <li>
           %= tag a => href => "/page/" . $page->name => begin
             %= $page->title
-          %= end
+          % end
         </li>
       % }
     </ul>
   </div>
-%= end
+% end

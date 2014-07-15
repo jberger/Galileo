@@ -23,7 +23,7 @@
     };
     sendViaWS("<%= url_for('storeuser')->to_abs %>", data);
   }
-%= end
+% end
 
 <form class="form-horizontal">
   <legend>Names</legend>

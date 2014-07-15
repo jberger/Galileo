@@ -10,7 +10,7 @@
     %= tag th => "Author"
     %= tag th => "Admin"
     %= tag th => "Edit"
-  %= end
+  % end
   % while (my $user = $users->next) {
     % my $name = $user->name;
     %= tag tr => begin
@@ -21,7 +21,7 @@
       %= tag td => $user->is_admin
       %= tag td => begin
         %= tag a => href => "/admin/user/$name" => "Edit"
-      %= end
-    %= end
+      % end
+    % end
   % }
-%= end
+% end

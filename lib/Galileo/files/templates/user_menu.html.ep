@@ -68,7 +68,7 @@
       });
     }
 
-  %= end
+  % end
 
 % } else {
 <form class="well" method="post" action="/login" id="login">

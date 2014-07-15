@@ -21,7 +21,7 @@ $(function () {
   editor = new Editor("<%= $name =%>", "<%= url_for('storepage')->to_abs =%>", <%= $sanitize =%>);
 });
 
-%= end
+% end
 
 <div class="wmd-panel">
   <div class="well form-inline">
