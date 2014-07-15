@@ -5,6 +5,54 @@ use Galileo::DB::Deploy;
 use Test::More;
 use Test::Mojo;
 
+use Mojo::Util 'spurt';
+use File::Path 'mkpath';
+use File::Spec;
+use File::Temp ();
+
+my $dir = File::Temp->newdir( $ENV{KEEP_TEMP_DIR} ? (CLEANUP => 0) : () );
+$ENV{GALILEO_HOME} = $dir;
+for ( "$dir/static", "$dir/templates", "$dir/templates/page", "$dir/templates/layouts" ) {
+  mkpath $_ or die qq{Can't make directory "$_": $!};
+}
+spurt "<h1>hello world!</h1>", "$dir/static/helloworld.html";
+spurt <<'END_PAGE', "$dir/templates/page/show.html.ep";
+% layout 'brandnew';
+% my $page_title  = $page->title;
+% title $page_title;
+% content_for banner => $page_title;
+
+<div id="extra-renderer-paths-page"></div>
+<div class="page-contents">
+  <%== $page->html %>
+</div>
+END_PAGE
+spurt <<'END_LAYOUTS', "$dir/templates/layouts/brandnew.html.ep";
+<!DOCTYPE html>
+<html>
+<head>
+  <%= include 'header_common' %>
+</head>
+<body>
+<div id="extra-renderer-paths-layout"></div>
+<div class="container">
+  <div class="page-header">
+    <h1><%= content_for 'banner' %></h1>
+  </div>
+  <div class="row">
+    <div class="span2" id="menus">
+      <%= include 'nav_menu' %>
+      <%= include 'user_menu' %>
+    </div>
+    <div class="span10" id="content">
+      <%= content %>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+END_LAYOUTS
+
 my $t = Galileo::DB::Deploy->create_test_object({test => 1});
 $t->ua->max_redirects(2);
 
@@ -338,6 +386,25 @@ subtest 'Extra CSS/JS' => sub {
     ->status_is(200)
     ->element_exists( 'link[href=mytest.css]' )
     ->element_exists( 'script[src=mytest.js]' );
+};
+
+subtest 'Extra Static Paths' => sub {
+  my $app = $t->app;
+  my $dir = File::Spec->catdir( $app->home_path, "static" );
+  ok -d $dir, "galileo extra static paths";
+  $t->get_ok('/helloworld.html')
+    ->status_is(200)
+    ->text_is( h1 => 'hello world!' );
+};
+
+subtest 'Extra Renderer Paths' => sub {
+  my $app = $t->app;
+  my $dir = File::Spec->catdir( $app->home_path, "templates" );
+  ok -d $dir, "galileo extra renderer paths";
+  $t->get_ok('/')
+    ->status_is(200)
+    ->element_exists( 'div#extra-renderer-paths-page' )
+    ->element_exists( 'div#extra-renderer-paths-layout' );
 };
 
 subtest 'Logging Out' => sub {

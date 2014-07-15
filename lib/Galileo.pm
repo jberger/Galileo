@@ -47,6 +47,7 @@ sub load_config {
       extra_css => [ '/themes/standard.css' ],
       extra_js => [],
       extra_static_paths => ['static'],
+      extra_renderer_paths => ['templates'],
       sanitize => 1,
       secrets => [],
       upload_path => 'uploads',
@@ -75,6 +76,12 @@ sub load_config {
     # convert relative paths to relative one (to home dir)
     $dir = $app->_to_abs($dir);
     push @{ $app->static->paths }, $dir if -d $dir;
+  }
+
+  foreach my $dir ( reverse @{$app->config->{extra_renderer_paths}} ) {
+    # convert relative paths to relative one (to home dir)
+    $dir = $app->_to_abs($dir);
+    unshift @{ $app->renderer->paths }, $dir if -d $dir;
   }
 
   # normalize and make helper for upload directory
@@ -132,7 +139,7 @@ sub startup {
     $app->static->paths->[0] = -d $public ? $public : catdir(dist_dir('Galileo'), 'public');
 
     my $templates = catdir($lib_base, 'templates');
-    $app->renderer->paths->[0] = -d $templates ? $templates : catdir(dist_dir('Galileo'), 'templates');
+    $app->renderer->paths->[-1] = -d $templates ? $templates : catdir(dist_dir('Galileo'), 'templates');
   }
 
   # use commands from Galileo::Command namespace
@@ -317,6 +324,10 @@ Logging in L<Galileo> is the same as in L<Mojolicious|Mojolicious::Lite/Logging>
 =head2 Extra Static Paths
 
 By default, if Galileo detects a folder named F<static> inside the C<GALILEO_HOME> path, that path is added to the list of folders for serving static files. The name of this folder may be changed in the configuration file via the key C<extra_static_paths>, which expects an array reference of strings representing paths. If any path is relative it will be relative to C<GALILEO_HOME>.
+
+=head2 Extra Renderer Paths
+
+By default, if Galileo detects a folder named F<templates> inside the C<GALILEO_HOME> path, that path is added to the list of folders for serving templates. The name of this folder may be changed in the configuration file via the key C<extra_renderer_paths>, which expects an array reference of strings representing paths. If any path is relative it will be relative to C<GALILEO_HOME>.
 
 =head2 Upload Path
 
