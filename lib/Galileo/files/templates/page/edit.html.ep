@@ -19,8 +19,10 @@ function saveButton() {
   editor.save( title );
 }
 
+var extraOptions = <%== $pagedown_extra_options %>;
+
 $(function () {
-  editor = new Editor("<%= $name =%>", "<%= url_for('storepage')->to_abs =%>", <%= $sanitize =%>, <%== $pagedown_extra_options %>);
+  editor = new Editor("<%= $name =%>", "<%= url_for('storepage')->to_abs =%>", <%= $sanitize =%>, extraOptions);
 });
 
 % end
