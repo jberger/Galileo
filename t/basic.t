@@ -146,7 +146,7 @@ subtest 'Edit Main Navigation Menu' => sub {
   # check about page is in nav 
   $t->get_ok('/admin/menu')
     ->status_is(200)
-    ->text_is( 'ul#main > li:nth-of-type(3) > a' => $title )
+    ->text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
     ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
   # remove about page from list
@@ -169,7 +169,7 @@ subtest 'Edit Main Navigation Menu' => sub {
   # put about page back
   $data = {
     name => 'main',
-    list => ['pages-2'],
+    list => ['pages-3', 'pages-2'],
   };
   $t->websocket_ok('/store/menu')
     ->send_ok({ json => $data })
@@ -180,7 +180,7 @@ subtest 'Edit Main Navigation Menu' => sub {
   # check about page is back in nav (same as first test block)
   $t->get_ok('/admin/menu')
     ->status_is(200)
-    ->text_is( 'ul#main > li:nth-of-type(3) > a' => $title )
+    ->text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
     ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
 };

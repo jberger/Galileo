@@ -179,11 +179,373 @@ MARKDOWN
     author_id => $admin->user_id,
   });
 
-  $schema->resultset('Menu')->create({
-    name => 'main',
-    list => j( [ $about->page_id ] ), 
+  my $syntax = $schema->resultset('Page')->create({
+    name      => 'syntax',
+    title     => 'Syntax',
+    html      => <<'HTML',
+<h2>Highlighting</h2>
+
+<p>Default highlighter is <a href="http://highlightjs.org/">highlight.js</a>. But Galileo just generates HTML so if you want to see colorized output then you have to load javascript and css.</p>
+
+<pre class="hljs"><code class="language-xml">&lt;!-- example --&gt;
+&lt;link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css"&gt;
+&lt;script src="http://yandex.st/highlightjs/8.0/highlight.min.js"&gt;&lt;/script&gt;
+&lt;script&gt; (fuction () { hljs.initHighlightingOnLoad(); })(); &lt;/script&gt;</code></pre>
+
+<h2>Tables</h2>
+
+<p><em>source</em>:</p>
+
+<pre class="hljs"><code class="language-markdown">| Item      | Value | Qty |
+| --------- | -----:|:--: |
+| Computer  | $1600 | 5   |
+| Phone     |   $12 | 12  |
+| Pipe      |    $1 |234  |</code></pre>
+
+<p><em>result</em>:</p>
+
+<table class="table table-striped">
+<thead>
+<tr>
+  <th>Item</th>
+  <th style="text-align:right;">Value</th>
+  <th style="text-align:center;">Qty</th>
+</tr>
+</thead>
+<tr>
+  <td>Computer</td>
+  <td style="text-align:right;">$1600</td>
+  <td style="text-align:center;">5</td>
+</tr>
+<tr>
+  <td>Phone</td>
+  <td style="text-align:right;">$12</td>
+  <td style="text-align:center;">12</td>
+</tr>
+<tr>
+  <td>Pipe</td>
+  <td style="text-align:right;">$1</td>
+  <td style="text-align:center;">234</td>
+</tr>
+</table>
+
+
+<h2>Fenced Code Blocks</h2>
+
+<p><em>source</em>:</p>
+
+<pre class="hljs"><code>```perl
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Galileo;
+```
+</code></pre>
+
+<p><em>result</em>:</p>
+
+<pre class="hljs"><code class="language-perl">#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Galileo;</code></pre>
+
+<h2>Definition Lists</h2>
+
+<p><em>source</em>:</p>
+
+<pre class="hljs"><code>Term 1
+:   Definition 1
+
+Term 2
+:   This definition has a code block.
+
+        code block</code></pre>
+
+<p><em>result</em>:</p>
+
+<dl>
+<dt>Term 1</dt>
+<dd>Definition 1</dd>
+
+<dt>Term 2</dt>
+<dd>
+<p>This definition has a code block.</p>
+
+<pre class="hljs"><code>code block
+</code></pre>
+</dd>
+</dl>
+
+<h2>Special Attributes</h2>
+
+<p>You can add class and id attributes to headers and gfm fenced code blocks.</p>
+
+<p><em>source</em>:</p>
+
+<pre class="hljs"><code>``` {#gfm-id .gfm-class}
+var foo = bar;
+```
+
+## A Header {#header-id}
+
+### Another One ### {#header-id .hclass}
+
+Underlined  {#what}
+==========
+</code></pre>
+
+<p><em>result</em>:</p>
+
+<pre class="hljs"><code class="language-html">&lt;pre id="gfm-id" class="gfm-class prettyprint"&gt;&lt;code&gt;var foo = bar;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="header-id"&gt;A Header&lt;/h2&gt;
+
+&lt;h3 id="header-id" class="hclass"&gt;Another One&lt;/h3&gt;
+
+&lt;h1 id="what"&gt;Underlined &lt;/h1&gt;</code></pre>
+
+<h2>Footnotes</h2>
+
+<p><em>source</em>:</p>
+
+<pre class="hljs"><code>Here is a footnote which will be located at the end of the page[^footnote].
+
+[^footnote]: Here is the *text* of the **footnote**.</code></pre>
+
+<p><em>result</em>:</p>
+
+<p>Here is a footnote which will be located at the end of the page<a href="#fn:footnote" id="fnref:footnote" title="See footnote" class="footnote">1</a>.</p>
+
+<h2>SmartyPants</h2>
+
+<p>SmartyPants extension converts ASCII punctuation characters into &#8220;smart&#8221; typographic punctuation HTML entities.</p>
+
+<table class="table table-striped">
+<thead>
+<tr>
+  <th></th>
+  <th>ASCII</th>
+  <th>HTML</th>
+</tr>
+</thead>
+<tr>
+  <td>Single backticks</td>
+  <td><code>'Isn't this fun?'</code></td>
+  <td>&#8216;Isn&#8217;t this fun?&#8217;</td>
+</tr>
+<tr>
+  <td>Quotes</td>
+  <td><code>"Isn't this fun?"</code></td>
+  <td>&#8220;Isn&#8217;t this fun?&#8221;</td>
+</tr>
+<tr>
+  <td>Dashes</td>
+  <td><code>This -- is an en-dash and this --- is an em-dash</code></td>
+  <td>This &#8211; is an en-dash and this &#8212; is an em-dash</td>
+</tr>
+</table>
+
+
+<h2>Newlines</h2>
+
+<p><em>source</em>:</p>
+
+<pre class="hljs"><code>Roses are red
+Violets are blue</code></pre>
+
+<p><em>result</em>:</p>
+
+<p>Roses are red <br>
+Violets are blue</p>
+
+<h2>Strikethrough</h2>
+
+<p><em>source</em>:</p>
+
+<pre class="hljs"><code>~~Mistaken text.~~</code></pre>
+
+<p><em>result</em>:</p>
+
+<p><del>Mistaken text.</del></p>
+
+<div class="footnotes">
+<hr>
+<ol>
+
+<li id="fn:footnote">Here is the <em>text</em> of the <strong>footnote</strong>. <a href="#fnref:footnote" title="Return to article" class="reversefootnote">&#8617;</a></li>
+
+</ol>
+</div>
+HTML
+    md        => <<'MARKDOWN',
+## Highlighting
+
+Default highlighter is [highlight.js](http://highlightjs.org/). But Galileo just generates HTML so if you want to see colorized output then you have to load javascript and css.
+
+```xml
+<!-- example -->
+<link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
+<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<script> (fuction () { hljs.initHighlightingOnLoad(); })(); </script>
+```
+
+## Tables
+
+*source*:
+
+```markdown
+| Item      | Value | Qty |
+| --------- | -----:|:--: |
+| Computer  | $1600 | 5   |
+| Phone     |   $12 | 12  |
+| Pipe      |    $1 |234  |
+```
+
+*result*:
+
+| Item      | Value | Qty |
+| --------- | -----:|:--: |
+| Computer  | $1600 | 5   |
+| Phone     |   $12 | 12  |
+| Pipe      |    $1 |234  |
+
+
+##  Fenced Code Blocks
+
+*source*:
+
+    ```perl
+    #!/usr/bin/env perl
+
+    use strict;
+    use warnings;
+    use Galileo;
+    ```
+
+*result*:
+
+```perl
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Galileo;
+```
+
+##  Definition Lists
+
+*source*:
+
+```
+Term 1
+:   Definition 1
+
+Term 2
+:   This definition has a code block.
+
+        code block
+```
+
+*result*:
+
+Term 1
+:   Definition 1
+
+Term 2
+:   This definition has a code block.
+
+        code block
+
+## Special Attributes
+
+You can add class and id attributes to headers and gfm fenced code blocks.
+
+*source*:
+
+    ``` {#gfm-id .gfm-class}
+    var foo = bar;
+    ```
+
+    ## A Header {#header-id}
+
+    ### Another One ### {#header-id .hclass}
+
+    Underlined  {#what}
+    ==========
+
+*result*:
+
+```html
+<pre id="gfm-id" class="gfm-class prettyprint"><code>var foo = bar;</code></pre>
+
+<h2 id="header-id">A Header</h2>
+
+<h3 id="header-id" class="hclass">Another One</h3>
+
+<h1 id="what">Underlined </h1>
+```
+
+## Footnotes
+
+*source*:
+
+```
+Here is a footnote which will be located at the end of the page[^footnote].
+
+[^footnote]: Here is the *text* of the **footnote**.
+```
+
+*result*:
+
+Here is a footnote which will be located at the end of the page[^footnote].
+
+[^footnote]: Here is the *text* of the **footnote**.
+
+## SmartyPants
+
+SmartyPants extension converts ASCII punctuation characters into "smart" typographic punctuation HTML entities.
+
+|                  | ASCII                                              | HTML                                |
+ ------------------|----------------------------------------------------|-------------------------------------
+| Single backticks | `'Isn't this fun?'`                                | &#8216;Isn&#8217;t this fun?&#8217; |
+| Quotes           | `"Isn't this fun?"`                                | &#8220;Isn&#8217;t this fun?&#8221; |
+| Dashes           | `This -- is an en-dash and this --- is an em-dash` | This &#8211; is an en-dash and this &#8212; is an em-dash |
+
+## Newlines
+
+*source*:
+
+```
+Roses are red
+Violets are blue
+```
+
+*result*:
+
+Roses are red
+Violets are blue
+
+## Strikethrough
+
+*source*:
+
+```
+~~Mistaken text.~~
+```
+
+*result*:
+
+~~Mistaken text.~~
+MARKDOWN
+    author_id => $admin->user_id,
   });
 
+  $schema->resultset('Menu')->create({
+    name => 'main',
+    list => j( [ $syntax->page_id, $about->page_id ] ),
+  });
 }
 
 sub create_test_object {
