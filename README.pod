@@ -65,8 +65,13 @@ Note that the database deployment tools may emit debugging information unexpecte
 
  $ galileo dump
  $ galileo dump --directory pages -t 
+ $ galileo dump --directory pages -t --encoding utf-8
 
-This tool dumps all the pages in your galileo site as markdown files. The directory for exporting to may be specifed with the C<--directory> or C<-d> flag, by default it exports to the current working directory. The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article).
+This tool dumps all the pages in your galileo site as markdown files. The directory for exporting to may be specifed with the C<--directory> or C<-d> flag, by default it exports to the current working directory.
+
+The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article). 
+
+The document will be encoded as UTF-8 by default, if other encoding of the content is desired, use C<--encoding> or C<-e> flag. Available value of the C<--encoding> is same as L<Encode> module of Perl.
 
 =head1 RUNNING THE APPLICATION
 
@@ -115,6 +120,10 @@ L<DBIx::Class|http://www.dbix-class.org/> - an extensible and flexible Object/Re
 =item * 
 
 L<PageDown|http://code.google.com/p/pagedown/> (Markdown engine) - the version of Attacklab's Showdown and WMD as used on Stack Overflow and the other Stack Exchange sites
+
+=item * 
+
+L<PageDown Extra|https://github.com/jmcmanus/pagedown-extra> - Markdown Extra Plugins for Pagedown
 
 =item * 
 
