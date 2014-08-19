@@ -21,7 +21,6 @@ my $builder = Module::Build->new(
     'DBIx::Class::DeploymentHandler' => 0,
     'Crypt::Eksblowfish::Bcrypt' => 0,
     'SQL::Translator' => 0,
-    'Term::Prompt' => 0,
     'File::ShareDir' => 0,
     'File::Copy::Recursive' => 0,
     'File::Next' => 0,
