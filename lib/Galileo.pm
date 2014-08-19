@@ -202,9 +202,7 @@ sub startup {
 
   my $if_author = $r->under( sub {
     my $self = shift;
-
     return $self->auth_fail unless $self->is_author;
-
     return 1;
   });
 
@@ -216,9 +214,7 @@ sub startup {
 
   my $if_admin = $r->under( sub {
     my $self = shift;
-
     return $self->auth_fail unless $self->is_admin;
-
     return 1;
   });
 
