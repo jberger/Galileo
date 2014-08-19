@@ -202,8 +202,7 @@ sub startup {
 
   my $if_author = $r->under( sub {
     my $self = shift;
-    return $self->auth_fail unless $self->is_author;
-    return 1;
+    return $self->is_author || $self->auth_fail;
   });
 
   $if_author->any( '/admin/menu' )->to('menu#edit');
@@ -214,8 +213,7 @@ sub startup {
 
   my $if_admin = $r->under( sub {
     my $self = shift;
-    return $self->auth_fail unless $self->is_admin;
-    return 1;
+    return $self->is_admin || $self->auth_fail;
   });
 
   $if_admin->any( '/admin/users' )->to('admin#users');
