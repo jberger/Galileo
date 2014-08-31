@@ -33,15 +33,15 @@ sub run {
     my %args = @_;
  
     $self->include( #TODO use render_to_string when Mojo 5.00 is required
-      template => 'control_group',
+      template => 'setup/control_group',
       'control_group.contents' => ref $contents ? $contents->() : $contents,
       'control_group.label' => $args{label} || '',
       'control_group.for'   => $args{for}   || '',
     );
   });
 
-  $r->any( '/' => 'galileo_setup' );
-  $r->any( '/configure' => 'galileo_config' );
+  $r->any( '/' => 'setup/welcome' );
+  $r->any( '/configure' => 'setup/configure' );
   $r->any( '/store_config' => sub {
     my $self = shift;
     my @params = sort $self->param;
@@ -69,7 +69,7 @@ sub run {
 
     # Nothing installed
     unless ( $dh->has_admin_user ) {
-      return $self->render( 'galileo_database_install' );
+      return $self->render( 'setup/database' );
     }
 
     # Something is installed, check for a version
@@ -130,7 +130,7 @@ sub run {
     }
 
     $self->humane_stash( 'Goodbye' );
-    $self->render('galileo_finish');
+    $self->render('setup/finish');
     $self->tx->on( finish => sub { exit } );
   });
 
@@ -139,151 +139,3 @@ sub run {
 
 1;
 
-
-__DATA__
-
-@@ galileo_setup.html.ep
-
-% title 'Galileo Setup - Home';
-% layout 'basic';
-
-<p>Welcome to Galileo! This utility helps you setup your Galileo CMS.</p>
-
-<ul>
-  %= tag li => begin 
-    %= link_to 'Configure your Galileo CMS' => 'configure'
-    <p>Configuration is not necessary, defaults can be used. 
-    Configuring Galileo CMS should be done before installing the database.</p>
-  % end
-
-  %= tag li => begin
-    %= link_to 'Install or upgrade your database' => 'database'
-    <p>If this is a new installation you <b>must</b> run the database setup utility.
-    If you have not configured Galileo (see above), you will use the defaults, including using an SQLite database for the backend.</p>
-  % end
-
-  %= tag li => begin
-    %= link_to 'Stop and exit' => 'finish'
-    <p>If your database is already installed, you may stop this utility and run <pre>$ galileo daemon</pre></p>
-  % end
-
-</ul>
-
-@@ galileo_config.html.ep
-
-% use Mojo::JSON 'j';
-% title 'Galileo Setup - Configure';
-% layout 'basic';
-
-%= form_for 'store_config' => method => 'POST', class => 'form-horizontal' => begin
-  % my $config = app->config;
-
-  <legend>Database Connection</legend>
-  %= control_group for => 'db_dsn', label => 'Connection String (DSN)' => begin
-    %= text_field 'db_dsn', value => $config->{db_dsn}, class => 'input-block-level'
-  % end
-  %= control_group for => 'db_username', label => 'Username' => begin
-    %= text_field 'db_username', value => $config->{db_username}, class => 'input-block-level'
-  % end
-  %= control_group for => 'db_password', label => 'Password' => begin
-    %= input_tag 'db_password', value => $config->{db_password}, type => 'password', class => 'input-block-level'
-  % end
-  %= control_group for => 'db_options', label => 'Options (JSON hash)' => begin
-    %= text_field 'db_options', value => j($config->{db_options}), class => 'input-block-level'
-  % end
-  %= control_group for => 'db_schema', label => 'Schema Class' => begin
-    %= text_field 'db_schema', value => $config->{db_schema}, class => 'input-block-level'
-  % end
-
-  <legend>Additional Files</legend>
-
-  %= control_group for => 'files', label => 'Extra Static Paths (JSON array)' => begin
-    %= text_field 'extra_static_paths', value => j($config->{extra_static_paths}), class => 'input-block-level'
-  % end
-  %= control_group for => 'extra_js', label => 'Extra Javascript Files (JSON array)' => begin
-    %= text_field 'extra_js', value => j($config->{extra_js}), class => 'input-block-level'
-  % end
-  %= control_group for => 'extra_css', label => 'Extra Stylesheet files (JSON array)' => begin
-    %= text_field 'extra_css', value => j($config->{extra_css}), class => 'input-block-level'
-  % end
-  %= control_group for => 'upload_path', label => 'Upload Path' => begin
-    %= text_field 'upload_path', value => $config->{upload_path}, class => 'input-block-level'
-  % end
-
-  <legend>Other Options</legend>
-
-  %= control_group for => 'sanitize', label => 'Use Sanitizing Editor' => begin 
-    % if($config->{sanitize}){
-      %= check_box 'sanitize', value => 1, checked => 'checked'
-    % } else {
-      %= check_box 'sanitize', value => 1
-    % }
-    %= hidden_field 'sanitize' => 0
-  % end
-  %= control_group for => 'files', label => 'Pagedown Extra Options (JSON hash)' => begin
-    %= text_field 'pagedown_extra_options', value => j($config->{pagedown_extra_options}), class => 'input-block-level'
-  % end
-  %= control_group for => 'secrets', label => 'Application Secrets (JSON array)' => begin
-    %= text_field 'secrets', value => j($config->{secrets}), class => 'input-block-level'
-  % end
-  %= control_group for => 'submit-button', begin
-    <button class="btn" id="submit-button" type="submit">Save</button>
-    %= link_to 'Cancel' => '/' => class => 'btn'
-  % end
-% end
-
-@@ galileo_database_install.html.ep
-
-% title 'Galileo Setup - Database';
-% layout 'basic';
-
-%= form_for 'database_install' => method => 'POST', class => 'form-horizontal' => begin
-  %= control_group for => 'full', label => 'Admin Full Name' => begin
-    %= text_field 'full', class => 'input-block-level'
-  % end
-  %= control_group for => 'user', label => 'Admin Username' => begin
-    %= text_field 'user', class => 'input-block-level'
-  % end
-  %= control_group for => 'pw1', label => 'Password' => begin
-    %= input_tag 'pw1', type => 'password', class => 'input-block-level'
-  % end
-  %= control_group for => 'pw2', label => 'Repeat Password' => begin
-    %= input_tag 'pw2', type => 'password', class => 'input-block-level'
-  % end
-
-  %= control_group for => 'submit-button', begin
-    <button class="btn" id="submit-button" type="submit">Save</button>
-    %= link_to 'Cancel' => 'finish' => class => 'btn'
-  % end
-% end
-
-@@ galileo_finish.html.ep
-
-% title 'Galileo Setup - Finished';
-% layout 'basic';
-
-% if ( my $message = stash 'galileo.message' ) {
-  <p><%= $message %></p>
-% }
-
-% if ( stash 'galileo.success' ) {
-  <p>Setup complete, run <pre>$ galileo daemon</pre></p>
-% }
-
-@@ control_group.html.ep
-
-<div class="control-group">
-  % if (my $label = stash 'control_group.label') {
-    % my @for;
-    % if ( my $for = stash 'control_group.for' ) {
-      % push @for, for => $for;
-    % }
-    %= tag label => class => 'control-label', @for, begin
-      %= $label 
-    % end
-  % }
- 
-  <div class="controls">
-    %= stash 'control_group.contents'
-  </div>
-</div>

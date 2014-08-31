@@ -1,6 +1,7 @@
 Revision history for Perl module Galileo
 
-0.036 
+0.036 2014-08-31
+    - Fixed setup bug introduced by Mojolicious v5.30 (fix for __DATA__ handle)
     - Remove unused dependency on Term::Prompt
 
 0.035 2014-08-16

@@ -1,0 +1,15 @@
+<div class="control-group">
+  % if (my $label = stash 'control_group.label') {
+    % my @for;
+    % if ( my $for = stash 'control_group.for' ) {
+      % push @for, for => $for;
+    % }
+    %= tag label => class => 'control-label', @for, begin
+      %= $label 
+    % end
+  % }
+ 
+  <div class="controls">
+    %= stash 'control_group.contents'
+  </div>
+</div>

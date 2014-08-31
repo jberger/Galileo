@@ -1,0 +1,24 @@
+% title 'Galileo Setup - Home';
+% layout 'basic';
+
+<p>Welcome to Galileo! This utility helps you setup your Galileo CMS.</p>
+
+<ul>
+  %= tag li => begin 
+    %= link_to 'Configure your Galileo CMS' => 'configure'
+    <p>Configuration is not necessary, defaults can be used. 
+    Configuring Galileo CMS should be done before installing the database.</p>
+  % end
+
+  %= tag li => begin
+    %= link_to 'Install or upgrade your database' => 'database'
+    <p>If this is a new installation you <b>must</b> run the database setup utility.
+    If you have not configured Galileo (see above), you will use the defaults, including using an SQLite database for the backend.</p>
+  % end
+
+  %= tag li => begin
+    %= link_to 'Stop and exit' => 'finish'
+    <p>If your database is already installed, you may stop this utility and run <pre>$ galileo daemon</pre></p>
+  % end
+
+</ul>

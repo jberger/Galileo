@@ -1,0 +1,11 @@
+% title 'Galileo Setup - Finished';
+% layout 'basic';
+
+% if ( my $message = stash 'galileo.message' ) {
+  <p><%= $message %></p>
+% }
+
+% if ( stash 'galileo.success' ) {
+  <p>Setup complete, run <pre>$ galileo daemon</pre></p>
+% }
+

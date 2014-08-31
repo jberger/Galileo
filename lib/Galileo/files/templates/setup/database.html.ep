@@ -1,0 +1,22 @@
+% title 'Galileo Setup - Database';
+% layout 'basic';
+
+%= form_for 'database_install' => method => 'POST', class => 'form-horizontal' => begin
+  %= control_group for => 'full', label => 'Admin Full Name' => begin
+    %= text_field 'full', class => 'input-block-level'
+  % end
+  %= control_group for => 'user', label => 'Admin Username' => begin
+    %= text_field 'user', class => 'input-block-level'
+  % end
+  %= control_group for => 'pw1', label => 'Password' => begin
+    %= input_tag 'pw1', type => 'password', class => 'input-block-level'
+  % end
+  %= control_group for => 'pw2', label => 'Repeat Password' => begin
+    %= input_tag 'pw2', type => 'password', class => 'input-block-level'
+  % end
+
+  %= control_group for => 'submit-button', begin
+    <button class="btn" id="submit-button" type="submit">Save</button>
+    %= link_to 'Cancel' => 'finish' => class => 'btn'
+  % end
+% end
