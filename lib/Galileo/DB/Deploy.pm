@@ -67,24 +67,11 @@ sub installed_version {
   return eval{ $self->database_version }
 }
 
-sub setup_unversioned {
-  my $self = shift;
-
-  unless ( $self->version_storage_is_installed ) {
-    $self->prepare_version_storage_install;
-    $self->install_version_storage;
-  }
-
-  $self->add_database_version({ version => 1 });
-
-  return 1;
-}
-
 sub do_install {
   my $self = shift;
 
   $self->prepare_install;
-  $self->install;
+  $self->install( @_ ? {version => shift} : () );
 }
 
 sub do_upgrade {

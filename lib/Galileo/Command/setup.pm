@@ -7,25 +7,16 @@ use Mojolicious::Routes;
 use Mojo::JSON 'j';
 use Mojo::Util 'spurt';
 
-use Galileo::DB::Deploy;
-
 has description => "Configure your Galileo CMS via a web interface\n";
 
 sub run {
   my ($self, @args) = @_;
 
   my $app = $self->app;
+  $app->plugin('Galileo::Plugin::Deploy'); # provides dh helper
 
   my $r = Mojolicious::Routes->new;
   $app->routes($r); # remove all routes
-
-  push @{ $app->renderer->classes }, __PACKAGE__;
-
-  $app->helper( dh => sub {
-    my $self = shift;
-    state $dh = Galileo::DB::Deploy->new( schema => $self->app->schema );
-    $dh;
-  });
 
   $app->helper( 'control_group' => sub {
     my $self = shift;
@@ -63,24 +54,22 @@ sub run {
     my $self = shift;
 
     my $dh = $self->dh;
-    my $schema = $dh->schema;
-
-    my $available = $schema->schema_version;
 
     # Nothing installed
-    unless ( $dh->has_admin_user ) {
+    my $installed = $dh->installed_version;
+    unless ( $installed ) {
       return $self->render( 'setup/database' );
     }
 
-    # Something is installed, check for a version
-    my $installed = $dh->installed_version || $dh->setup_unversioned;
+    # Something is installed, check for upgrades
+    my $available = $dh->schema->schema_version;
 
     # Do nothing if version is current
     if ( $installed == $available ) {
-      $self->flash( 'galileo.message' => 'Database schema is current' );
+      $self->flash( 'galileo.message' => 'Database schema is current.' );
     } else {
-      $self->flash( 'galileo.message' => "Upgrade database $installed -> $available" );
       $dh->do_upgrade;
+      $self->flash( 'galileo.message' => "Upgrade database $installed -> $available." );
     }
 
     $self->redirect_to('finish');
@@ -95,13 +84,16 @@ sub run {
       return $self->redirect_to('database');
     }
 
-    my $dh = $self->dh;
     my $user = $self->param('user');
     my $full = $self->param('full');
 
-    eval { $dh->schema->deploy };
-    eval { $dh->do_install };
-    eval { $dh->inject_sample_data($user, $pw1, $full) };
+    my $dh = $self->dh;
+
+    eval {
+      $dh->do_install;
+      $dh->inject_sample_data($user, $pw1, $full);
+    };
+
     if ($@) {
       my $error = "$@";
       chomp $error;
@@ -109,7 +101,7 @@ sub run {
       return $self->redirect_to('database');
     }
 
-    $self->flash( 'galileo.message' => 'Database has been setup' );
+    $self->flash( 'galileo.message' => 'Database has been setup.' );
     $self->redirect_to('finish');
   });
 
@@ -117,8 +109,18 @@ sub run {
     my $self = shift;
     my $message = $self->flash( 'galileo.message' );
 
-    # check that an admin user exists
-    if ( $self->app->dh->has_admin_user ) {
+    my $dh = $self->dh;
+    my $installed = $dh->installed_version;
+    my $available = $dh->schema->schema_version;
+    my $has_admin = $dh->has_admin_user;
+
+    if ($installed) {
+      unless ($has_admin) {
+        $message .= ' No administration user was created.';
+      }
+      unless ($installed == $available) {
+        $message .= " Installed database version ($installed) is older than the newest available ($available).";
+      }
       $self->stash( 'galileo.success' => 1 );
       $self->stash( 'galileo.message' => $message );
     } else {
