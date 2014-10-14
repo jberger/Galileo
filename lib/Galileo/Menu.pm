@@ -2,34 +2,41 @@ package Galileo::Menu;
 use Mojo::Base 'Mojolicious::Controller';
 
 use Mojo::JSON 'j';
+use Mojo::ByteStream 'b';
 
 sub edit {
   my $self = shift;
   my $name = 'main';
   my $schema = $self->schema;
 
+  my @active = @{ j(
+    $schema->resultset('Menu')->single({name => $name})->list
+  ) };
   my %active = 
-    map { $_ => 1 } 
-    @{ j(
-      $schema->resultset('Menu')->single({name => $name})->list
-    ) };
-  
-  my ($active, $inactive) = ( '', '' );
+    map { $_ => '' } 
+    @active;
+
+  my @inactive;
+
   my @pages = $schema->resultset('Page')->all;
   for my $page ( @pages ) {
     next unless $page;
     my $name = $page->name;
     my $id   = $page->page_id;
     next if $name eq 'home';
-    exists $active{$id} ? $active : $inactive 
-      .= sprintf qq{<li id="pages-%s"><span class="label label-info">%s</span></li>\n}, $id, $page->title;
+    my $li = sprintf qq{<li id="pages-%s"><span class="label label-info">%s</span></li>\n}, $id, $page->title;
+    if (exists $active{$id}) {
+      $active{$id} = $li;
+    } else {
+      push @inactive, $li;
+    }
   }
 
   $self->title( 'Setup Main Navigation Menu' );
   $self->content_for( banner => 'Setup Main Navigation Menu' );
   $self->render(
-    active   => Mojo::ByteStream->new( $active ), 
-    inactive => Mojo::ByteStream->new( $inactive ),
+    active   => Mojo::ByteStream->new( join '', @active{@active} ), 
+    inactive => Mojo::ByteStream->new( join '', @inactive ),
   );
 }
 
@@ -55,9 +62,11 @@ sub store {
     );
 
     $self->memorize->expire($name);
+    my $content = $self->include('nav_menu') || '';
     $self->send({ json => {
       message => 'Changes saved',
       success => \1,
+      content => b($content)->squish,
     } });
   });
 }

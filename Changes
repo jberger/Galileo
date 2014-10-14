@@ -3,6 +3,8 @@ Revision history for Perl module Galileo
 0.0037
     - Fix installation bug causing installation of version 1 rather than the most current
     - Removed ability to upgrade from unversioned schemas (pre version 0.012)
+    - Navigation menu changes are visible immediately upon saving
+    - Navigation menu editor displays active items in current menu order
 
 0.036 2014-08-31
     - Fixed setup bug introduced by Mojolicious v5.30 (fix for __DATA__ handle)

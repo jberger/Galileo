@@ -5,12 +5,18 @@
 % end
 
 %= javascript begin
+function onSuccess(reply) {
+  content = $(reply.content);
+  id = content.attr('id');
+  $('#'+id).replaceWith(content);
+}
+
 function saveButton() {
   var data = {
     name : "main",
     list : $("#list-active-pages").sortable('toArray')
   };
-  sendViaWS("<%= url_for('storemenu')->to_abs %>", data);
+  sendViaWS("<%= url_for('storemenu')->to_abs %>", data, onSuccess);
 }
 
 $(function() {

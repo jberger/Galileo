@@ -4,6 +4,8 @@ use Galileo::DB::Deploy;
 
 use Test::More;
 use Test::Mojo;
+use Mojo::JSON 'j';
+use Mojo::DOM;
 
 my $t = Galileo::DB::Deploy->create_test_object({test => 1});
 $t->ua->max_redirects(2);
@@ -157,8 +159,13 @@ subtest 'Edit Main Navigation Menu' => sub {
   $t->websocket_ok('/store/menu')
     ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( { success => 1, message => 'Changes saved' } )
+    ->json_message_is( '/success' => 1 )
+    ->json_message_is( '/message' => 'Changes saved' )
+    ->json_message_has( '/content' )
     ->finish_ok;
+
+  my @items = Mojo::DOM->new(j($t->message->[1])->{content})->find('#nav_menu li')->all_text->each;
+  is_deeply \@items, ['Navigation', 'Home'];
 
   # check that item is removed
   $t->get_ok('/admin/menu')
@@ -174,8 +181,14 @@ subtest 'Edit Main Navigation Menu' => sub {
   $t->websocket_ok('/store/menu')
     ->send_ok({ json => $data })
     ->message_ok
-    ->json_message_is( { success => 1, message => 'Changes saved' } )
+    ->json_message_is( '/success' => 1 )
+    ->json_message_is( '/message' => 'Changes saved' )
+    ->json_message_has( '/content' )
     ->finish_ok;
+
+  @items = ();
+  @items = Mojo::DOM->new(j($t->message->[1])->{content})->find('#nav_menu li')->all_text->each;
+  is_deeply \@items, ['Navigation', 'Home', 'Syntax', $title];
 
   # check about page is back in nav (same as first test block)
   $t->get_ok('/admin/menu')
@@ -183,6 +196,8 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
     ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
+  my @ids = $t->tx->res->dom->find('#list-active-pages li')->attr('id')->each;
+  is_deeply \@ids, ['header-active', 'pages-3', 'pages-2'], 'active pages in correct order';
 };
 
 subtest 'Administrative Overview: All Users' => sub {
