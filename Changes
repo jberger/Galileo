@@ -1,6 +1,6 @@
 Revision history for Perl module Galileo
 
-0.0037
+0.0037 2014-10-13
     - Fix installation bug causing installation of version 1 rather than the most current
     - Removed ability to upgrade from unversioned schemas (pre version 0.012)
     - Navigation menu changes are visible immediately upon saving
