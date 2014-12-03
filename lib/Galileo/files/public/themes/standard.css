@@ -18,4 +18,6 @@ body {
   display: block;
 }
 
-
+.label-info {
+  cursor: move;
+}
