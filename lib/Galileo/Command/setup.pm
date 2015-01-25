@@ -23,7 +23,7 @@ sub run {
     my $contents = pop;
     my %args = @_;
  
-    $self->include( #TODO use render_to_string when Mojo 5.00 is required
+    $self->render_to_string(
       template => 'setup/control_group',
       'control_group.contents' => ref $contents ? $contents->() : $contents,
       'control_group.label' => $args{label} || '',

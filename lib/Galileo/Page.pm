@@ -14,7 +14,7 @@ sub show {
     if ($self->session->{username}) {
       $self->redirect_to("/edit/$name");
     } else {
-      $self->render_not_found;
+      $self->reply->not_found;
     }
   }
 }
