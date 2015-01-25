@@ -145,7 +145,7 @@ subtest 'New Page' => sub {
 subtest 'Edit Main Navigation Menu' => sub {
   my $title = 'About Galileo';
 
-  # check about page is in nav 
+  # check about page is in nav
   $t->get_ok('/admin/menu')
     ->status_is(200)
     ->text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
@@ -164,7 +164,11 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->json_message_has( '/content' )
     ->finish_ok;
 
-  my @items = Mojo::DOM->new(j($t->message->[1])->{content})->find('#nav_menu li')->all_text->each;
+  my @items = Mojo::DOM
+    ->new(j($t->message->[1])->{content})
+    ->find('#nav_menu li')
+    ->map('all_text')
+    ->each;
   is_deeply \@items, ['Navigation', 'Home'];
 
   # check that item is removed
@@ -187,7 +191,11 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->finish_ok;
 
   @items = ();
-  @items = Mojo::DOM->new(j($t->message->[1])->{content})->find('#nav_menu li')->all_text->each;
+  @items = Mojo::DOM
+    ->new(j($t->message->[1])->{content})
+    ->find('#nav_menu li')
+    ->map('all_text')
+    ->each;
   is_deeply \@items, ['Navigation', 'Home', 'Syntax', $title];
 
   # check about page is back in nav (same as first test block)
@@ -196,7 +204,7 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
     ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
-  my @ids = $t->tx->res->dom->find('#list-active-pages li')->attr('id')->each;
+  my @ids = $t->tx->res->dom->find('#list-active-pages li')->map(attr =>'id')->each;
   is_deeply \@ids, ['header-active', 'pages-3', 'pages-2'], 'active pages in correct order';
 };
 
