@@ -1,6 +1,6 @@
 %= memorize main => begin 
   % my $menu = schema->resultset('Menu')->single({name => 'main'});
-  % my @pages = @{ Mojo::JSON->new->decode($menu->list) };
+  % my @pages = @{ Mojo::JSON::decode_json($menu->list) };
   % my $rs = schema->resultset('Page');
   <div class="well" id="nav_menu" style="padding: 8px 0;">
     <ul id="main" class="nav nav-list">

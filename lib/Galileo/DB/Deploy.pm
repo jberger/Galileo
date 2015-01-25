@@ -4,7 +4,7 @@ BEGIN{ extends 'DBIx::Class::DeploymentHandler' }
 
 # A wrapper class for DBICDH for use with Galileo
 
-use Mojo::JSON 'j';;
+use Mojo::JSON 'j';
 
 use File::ShareDir qw/dist_dir/;
 use File::Spec;
