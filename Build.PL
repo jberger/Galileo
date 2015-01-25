@@ -8,10 +8,10 @@ my $builder = Module::Build->new(
   module_name => 'Galileo',
   dist_author => 'Joel Berger',
   license => 'perl',
-  
+
   requires => {
     'perl' => '5.10.1',
-    'Mojolicious' => '5.41',  # reply->not_found 
+    'Mojolicious' => '5.41',  # reply->not_found
     'Mojolicious::Plugin::Memorize' => 0,
     'Mojolicious::Plugin::Humane' => '0.07',
     'DBD::SQLite' => 0,

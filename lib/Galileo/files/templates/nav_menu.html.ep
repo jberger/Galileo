@@ -1,4 +1,4 @@
-%= memorize main => begin 
+%= memorize main => begin
   % my $menu = schema->resultset('Menu')->single({name => 'main'});
   % my @pages = @{ Mojo::JSON::decode_json($menu->list) };
   % my $rs = schema->resultset('Page');

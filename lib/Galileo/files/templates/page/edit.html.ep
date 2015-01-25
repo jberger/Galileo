@@ -30,10 +30,10 @@ $(function () {
 <div class="wmd-panel">
   <div class="well form-inline">
     <label class="nav-header">Page Title</label>
-    <input 
-      type="text" 
-      id="page-title" 
-      placeholder="Page Title" 
+    <input
+      type="text"
+      id="page-title"
+      placeholder="Page Title"
       value="<%= $title_value %>"
     >
     <button class="btn" id="save-md" onclick="saveButton()">

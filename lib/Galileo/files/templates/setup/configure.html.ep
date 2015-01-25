@@ -39,7 +39,7 @@
 
   <legend>Other Options</legend>
 
-  %= control_group for => 'sanitize', label => 'Use Sanitizing Editor' => begin 
+  %= control_group for => 'sanitize', label => 'Use Sanitizing Editor' => begin
     % if($config->{sanitize}){
       %= check_box 'sanitize', value => 1, checked => 'checked'
     % } else {

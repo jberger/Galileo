@@ -7,16 +7,16 @@ use Getopt::Long qw/GetOptionsFromArray/;
 has description => "Dump all stored pages as markdown\n";
 has usage => <<END;
 usage: $0 dump [options]
-options: 
+options:
 
 --directory,-d
-  An optional directory to dump to may be specified; the directory 
+  An optional directory to dump to may be specified; the directory
   must exist. By default it dumps to the current working directory.
 
 --title,-t
   By default the title of the page is included as an HTML comment.
   This option accepts an sprintf format for including the title.
-  As a special case, if this flag is given without argument, an h1 
+  As a special case, if this flag is given without argument, an h1
   title is created.
 
 --encoding,-e

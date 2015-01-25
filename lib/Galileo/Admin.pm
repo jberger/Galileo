@@ -14,8 +14,8 @@ sub store_user {
     my $pass2 = delete $data->{pass2};
     if ( $pass1 or $pass2 ) {
       unless ( $pass1 eq $pass2 ) {
-        $self->send({ json => { 
-          message => 'Not saved! Passwords do not match', 
+        $self->send({ json => {
+          message => 'Not saved! Passwords do not match',
           success => \0,
         } });
         return 0;
@@ -25,9 +25,9 @@ sub store_user {
 
     my $rs = $self->schema->resultset('User');
     unless ( $rs->single({ name => $data->{name} }) or $data->{password}) {
-      $self->send({ json => { 
+      $self->send({ json => {
         message => 'Cannot create user without a password',
-        success => \0, 
+        success => \0,
       } });
       return 0;
     }

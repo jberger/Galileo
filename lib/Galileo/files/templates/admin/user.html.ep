@@ -31,7 +31,7 @@
     <div class="control-group">
       <label class="control-label" for="name">User Name</label>
       <div class="controls">
-        <input class="input-xlarge disabled" id="name" 
+        <input class="input-xlarge disabled" id="name"
                type="text" placeholder="<%= $name %>" disabled>
       </div>
     </div>

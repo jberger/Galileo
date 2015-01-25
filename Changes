@@ -53,7 +53,7 @@ Revision history for Perl module Galileo
 
 0.027 2013-04-03
     - Use RFC 6901 compliant JSON pointers in tests
-    - Bump Mojolicious to 3.92 
+    - Bump Mojolicious to 3.92
 
 0.026 2013-03-15
     - Added File::Next to requires, was causing failing installation

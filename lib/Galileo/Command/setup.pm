@@ -22,7 +22,7 @@ sub run {
     my $self = shift;
     my $contents = pop;
     my %args = @_;
- 
+
     $self->render_to_string(
       template => 'setup/control_group',
       'control_group.contents' => ref $contents ? $contents->() : $contents,
@@ -44,7 +44,7 @@ sub run {
     }
 
     spurt $self->dumper(\%params), $self->app->config_file;
-  
+
     $self->app->load_config;
     $self->humane_flash( 'Configuration saved' );
     $self->redirect_to('/');
@@ -125,7 +125,7 @@ sub run {
       $self->stash( 'galileo.message' => $message );
     } else {
       $self->stash( 'galileo.success' => 0 );
-      $self->stash( 
+      $self->stash(
         'galileo.message' =>
         'It does not appear that your database is setup, please rerun the setup utility'
       );

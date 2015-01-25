@@ -12,8 +12,8 @@ sub edit {
   my @active = @{ j(
     $schema->resultset('Menu')->single({name => $name})->list
   ) };
-  my %active = 
-    map { $_ => '' } 
+  my %active =
+    map { $_ => '' }
     @active;
 
   my @inactive;
@@ -35,7 +35,7 @@ sub edit {
   $self->title( 'Setup Main Navigation Menu' );
   $self->content_for( banner => 'Setup Main Navigation Menu' );
   $self->render(
-    active   => Mojo::ByteStream->new( join '', @active{@active} ), 
+    active   => Mojo::ByteStream->new( join '', @active{@active} ),
     inactive => Mojo::ByteStream->new( join '', @inactive ),
   );
 }
@@ -48,8 +48,8 @@ sub store {
     my $list = $data->{list};
 
     my $schema = $self->schema;
-  
-    my @pages = 
+
+    my @pages =
       map { my $page = $_; $page =~ s/^pages-//; $page}
       grep { ! /^header-/ }
       @$list;

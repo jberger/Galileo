@@ -14,7 +14,7 @@ has db => sub {
   my $schema_class = $self->config->{db_schema} or die "Unknown DB Schema Class";
   eval "require $schema_class" or die "Could not load Schema Class ($schema_class). $@\n";
 
-  my $schema = $schema_class->connect( 
+  my $schema = $schema_class->connect(
     @{ $self->config }{ qw/db_dsn db_username db_password db_options/ }
   ) or die "Could not connect to $schema_class using DSN " . $self->config->{db_dsn};
 
@@ -28,7 +28,7 @@ has home_path => sub {
 
 has config_file => sub {
   my $self = shift;
-  return $ENV{GALILEO_CONFIG} if $ENV{GALILEO_CONFIG}; 
+  return $ENV{GALILEO_CONFIG} if $ENV{GALILEO_CONFIG};
 
   return rel2abs( 'galileo.conf', $self->home_path );
 };
@@ -36,7 +36,7 @@ has config_file => sub {
 sub load_config {
   my $app = shift;
 
-  $app->plugin( Config => { 
+  $app->plugin( Config => {
     file => $app->config_file,
     default => {
       db_schema  => 'Galileo::DB::Schema',
@@ -79,7 +79,7 @@ sub load_config {
 
   # handle deprecated files key
   if (my $files = $app->config->{files}) {
-    warn "### 'files' config key is deprecated, use extra_static_paths ###\n"; 
+    warn "### 'files' config key is deprecated, use extra_static_paths ###\n";
     push @{ $app->config->{extra_static_paths} }, (ref $files ? @$files : $files);
   }
 
@@ -260,7 +260,7 @@ when using L<App::cpanminus>. Of course you can use your favorite CPAN client or
 
 Although most of L<Galileo> is controlled by a configuration file, a few properties must be set before that file can be read. These properties are controlled by the following environment variables.
 
-=over 
+=over
 
 =item C<GALILEO_HOME>
 
@@ -294,11 +294,11 @@ Although L<Galileo> does not need to be configured, it is recommended to do so t
 
 Notes:
 
-=over 
+=over
 
 =item *
 
-The database deployment tools may emit debugging information unexpectedly to your terminal, especially messages about "overwriting" and some internal "peek" information. These message are harmless, but as yet cannot be suppressed. 
+The database deployment tools may emit debugging information unexpectedly to your terminal, especially messages about "overwriting" and some internal "peek" information. These message are harmless, but as yet cannot be suppressed.
 
 =item *
 
@@ -309,12 +309,12 @@ Upgrading database schemas from before Galileo version 0.012 (when schema versio
 =head3 dump
 
  $ galileo dump
- $ galileo dump --directory pages -t 
+ $ galileo dump --directory pages -t
  $ galileo dump --directory pages -t --encoding utf-8
 
 This tool dumps all the pages in your galileo site as markdown files. The directory for exporting to may be specifed with the C<--directory> or C<-d> flag, by default it exports to the current working directory.
 
-The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article). 
+The title of the page is by default includes as an HTML comment. To include the title as an C<< <h1> >> level directive pass C<--title> or C<-t> without an option. Any other option given to C<--title> will be used as an C<sprintf> format for rendering the title (at the top of the article).
 
 The document will be encoded as UTF-8 by default, if other encoding of the content is desired, use C<--encoding> or C<-e> flag. Available value of the C<--encoding> is same as L<Encode> module of Perl.
 
@@ -322,7 +322,7 @@ The document will be encoded as UTF-8 by default, if other encoding of the conte
 
  $ galileo daemon
 
-After the database has been setup, you can run C<galileo daemon> to start the server. 
+After the database has been setup, you can run C<galileo daemon> to start the server.
 
 You may also use L<morbo> (Mojolicious' development server) or L<hypnotoad> (Mojolicious' production server). You may even use any other server that Mojolicious supports, however for full functionality it must support websockets. When doing so you will need to know the full path to the C<galileo> application. A useful recipe might be
 
@@ -348,37 +348,37 @@ NOTE: as for this writing, this option doesn't do anything but append to the sta
 
 The L</config> keys C<extra_css> and C<extra_js> take array references pointing to CSS or Javascript files (respectively) within a L<static directory|/"Static files folder">. As an example, the default C<extra_css> key contains the path to a simple theme css file which adds a gray background and border to the main container.
 
-As yet there are no widgets/plugins as such, however a clever bit of javascript might be able to load something. 
+As yet there are no widgets/plugins as such, however a clever bit of javascript might be able to load something.
 
 =head1 TECHNOLOGIES USED
 
 =over
 
-=item * 
+=item *
 
 L<Mojolicious|http://mojolicio.us> - a next generation web framework for the Perl programming language
 
-=item * 
+=item *
 
 L<DBIx::Class|http://www.dbix-class.org/> - an extensible and flexible Object/Relational Mapper written in Perl
 
-=item * 
+=item *
 
 L<PageDown|http://code.google.com/p/pagedown/> (Markdown engine) - the version of Attacklab's Showdown and WMD as used on Stack Overflow and the other Stack Exchange sites
 
-=item * 
+=item *
 
 L<PageDown Extra|https://github.com/jmcmanus/pagedown-extra> - Markdown Extra Plugins for Pagedown
 
-=item * 
+=item *
 
 L<Bootstrap|http://twitter.github.com/bootstrap> - the beautiful CSS/JS library from Twitter
 
-=item * 
+=item *
 
 L<jQuery|http://jquery.com/> - because everything uses jQuery
 
-=item * 
+=item *
 
 L<HumaneJS|http://wavded.github.com/humane-js/> - A simple, modern, browser notification system
 
@@ -396,7 +396,7 @@ L<Contenticious> - File-based Markdown website application
 
 =head1 SOURCE REPOSITORY
 
-L<http://github.com/jberger/Galileo> 
+L<http://github.com/jberger/Galileo>
 
 =begin html
 

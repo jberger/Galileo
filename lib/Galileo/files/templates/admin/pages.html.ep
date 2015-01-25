@@ -53,9 +53,9 @@ function confirm_delete(id) {
 }
 
 function delete_page(id) {
-  sendViaWS( 
-    '<%= url_for("removepage")->to_abs %>', 
-    { "id" : id }, 
+  sendViaWS(
+    '<%= url_for("removepage")->to_abs %>',
+    { "id" : id },
     function(){ $( '#row-' + id ).remove(); }
   );
 }

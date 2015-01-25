@@ -31,7 +31,7 @@
     Create a new user with username
     <div class="input-prepend">
       <span class="add-on">username:</span>
-      <input type="text" id="new-username" placeholder="new username"> 
+      <input type="text" id="new-username" placeholder="new username">
     </div>
   % end
 
@@ -47,7 +47,7 @@
     }
 
     function add_page () {
-      show_modal( '#page-modal', function () { 
+      show_modal( '#page-modal', function () {
         var link = $('#new-page-link').val();
         if (link.length > 0) {
           window.location.href = '/edit/' + link;
@@ -58,7 +58,7 @@
     }
 
     function add_user () {
-      show_modal( '#user-modal', function () { 
+      show_modal( '#user-modal', function () {
         var username = $('#new-username').val();
         if (username.length > 0) {
           window.location.href = '/admin/user/' + username;
