@@ -5,9 +5,12 @@ our $VERSION = '0.038';
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
+use File::Spec;
 use File::Spec::Functions qw'rel2abs catdir';
 use File::ShareDir 'dist_dir';
 use Cwd;
+
+use Mojo::Home;
 
 has db => sub {
   my $self = shift;
@@ -21,16 +24,15 @@ has db => sub {
   return $schema;
 };
 
-has home_path => sub {
+has home => sub {
   my $path = $ENV{GALILEO_HOME} || getcwd;
-  return File::Spec->rel2abs($path);
+  return Mojo::Home->new(File::Spec->rel2abs($path));
 };
 
 has config_file => sub {
   my $self = shift;
   return $ENV{GALILEO_CONFIG} if $ENV{GALILEO_CONFIG};
-
-  return rel2abs( 'galileo.conf', $self->home_path );
+  return $self->home->rel_file('galileo.conf');
 };
 
 sub load_config {
@@ -40,7 +42,7 @@ sub load_config {
     file => $app->config_file,
     default => {
       db_schema  => 'Galileo::DB::Schema',
-      db_dsn => 'dbi:SQLite:dbname=' . $app->home->rel_file( 'galileo.db' ),
+      db_dsn => 'dbi:SQLite:dbname=' . $app->home->rel_file('galileo.db'),
       db_username => undef,
       db_password => undef,
       db_options => { sqlite_unicode => 1 },
@@ -123,18 +125,6 @@ sub _to_abs {
 
 sub startup {
   my $app = shift;
-
-  # set home folder
-  $app->home->parse( $app->home_path );
-
-  {
-    # setup logging path
-    # code stolen from Mojolicious.pm
-    my $mode = $app->mode;
-
-    $app->log->path($app->home->rel_file("log/$mode.log"))
-      if -w $app->home->rel_file('log');
-  }
 
   $app->load_config;
 

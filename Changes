@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo
 
+0.XXX
+    - Simplify home path logic
+
 0.0038 2015-01-25
     - Fixed compatibility with recent Mojolicious
         - Bumped dependency to 5.41
