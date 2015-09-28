@@ -5,6 +5,7 @@ use Galileo::DB::Deploy;
 
 use Test::More;
 use Test::Mojo;
+use Mojo::JSON qw/true false/;
 
 my $home = $ENV{GALILEO_HOME} = File::Spec->rel2abs(File::Spec->catdir( qw/ t locations / ));
 
@@ -28,7 +29,7 @@ my $image2 = File::Spec->catfile( qw/ img image2.jpg / );
 $t->websocket_ok('/files/list')
   ->send_ok({ json => {limit => 0} })
   ->message_ok
-  ->json_message_is( { files => [sort 'image1.jpg', $image2], finished => 1 } )
+  ->json_message_is( { files => [sort 'image1.jpg', $image2], finished => true } )
   ->finish_ok;
 
 # test limited number of files found. note order is not guaranteed
@@ -37,15 +38,15 @@ $t->websocket_ok('/files/list')
   ->message_ok
   ->json_message_has(   '/files/0' )
   ->json_message_hasnt( '/files/1' )
-  ->json_message_is( '/finished' => 0 )
+  ->json_message_is( '/finished' => false )
   ->send_ok({ json => {limit => 1} })
   ->message_ok
   ->json_message_has(   '/files/0' )
   ->json_message_hasnt( '/files/1' )
-  ->json_message_is( '/finished' => 0 )
+  ->json_message_is( '/finished' => false )
   ->send_ok({ json => {limit => 1} })
   ->message_ok
-  ->json_message_is( { files => [], finished => 1 } )
+  ->json_message_is( { files => [], finished => true } )
   ->finish_ok;
 
 done_testing();

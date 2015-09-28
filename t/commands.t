@@ -10,6 +10,7 @@ use Mojolicious::Commands;
 use Mojo::Util qw/ decode encode slurp /;
 use File::Spec;
 use File::Temp ();
+use Mojo::JSON qw/true false/;
 
 # dump
 subtest 'Dump' => sub {
@@ -81,7 +82,7 @@ subtest 'Dump' => sub {
     $t->websocket_ok( '/store/page' )
       ->send_ok({ json => $data })
       ->message_ok
-      ->json_message_is( { success => 1, message => 'Changes saved' } )
+      ->json_message_is( { success => true, message => 'Changes saved' } )
       ->finish_ok;
 
     # see that the changes are reflected

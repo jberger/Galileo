@@ -1,8 +1,9 @@
 Revision history for Perl module Galileo
 
-0.XXX
+0.039 2015-09-28
     - Simplify home path logic
     - Remove ConsoleLogger again
+    - Fix compatibility with Mojolicious 6.22
 
 0.0038 2015-01-25
     - Fixed compatibility with recent Mojolicious
