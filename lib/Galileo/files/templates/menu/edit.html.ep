@@ -1,6 +1,6 @@
 % layout 'standard';
 % content_for header => begin
-  %= javascript '/assets/jquery-ui-1.10.0.custom.min.js'
+  %= javascript '/assets/html.sortable.0.3.0.min.js'
   %= javascript '/galileo-edit.js'
 % end
 
@@ -14,7 +14,7 @@ function onSuccess(reply) {
 function saveButton() {
   var data = {
     name : "main",
-    list : $("#list-active-pages").sortable('toArray')
+    list : $('#list-active-pages li:not(.nav-header)').map(function(){return $(this).attr('id') }).get(),
   };
   sendViaWS("<%= url_for('storemenu')->to_abs %>", data, onSuccess);
 }
@@ -23,7 +23,7 @@ $(function() {
   $( "#list-active-pages, #list-inactive-pages" ).sortable({
     connectWith: ".connectedSortable",
     items: "li:not(.nav-header)"
-  }).disableSelection();
+  });
 });
 % end
 

@@ -1,5 +1,8 @@
 Revision history for Perl module Galileo
 
+0.040
+    - Remove jQueryUI in favor of html5sortable
+
 0.039 2015-09-28
     - Simplify home path logic
     - Remove ConsoleLogger again

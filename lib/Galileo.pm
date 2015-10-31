@@ -1,7 +1,7 @@
 package Galileo;
 use Mojo::Base 'Mojolicious';
 
-our $VERSION = '0.039';
+our $VERSION = '0.040';
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
@@ -361,6 +361,10 @@ L<Bootstrap|http://twitter.github.com/bootstrap> - the beautiful CSS/JS library 
 =item *
 
 L<jQuery|http://jquery.com/> - because everything uses jQuery
+
+=item *
+
+L<html5sortable|https://github.com/voidberg/html5sortable> - Lightweight jQuery plugin to create sortable lists and grids using native HTML5 drag and drop API
 
 =item *
 
