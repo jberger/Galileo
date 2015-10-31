@@ -11,8 +11,8 @@ sub show {
   if ($page) {
     $self->render( page => $page );
   } else {
-    if ($self->session->{username}) {
-      $self->redirect_to("/edit/$name");
+    if ( $self->is_author ) {
+      $self->redirect_to(edit_page => name => $name);
     } else {
       $self->reply->not_found;
     }

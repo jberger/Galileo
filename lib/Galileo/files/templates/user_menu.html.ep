@@ -1,12 +1,10 @@
-% my $user = session 'username';
-% my $url = $self->tx->req->url;
-% if ($user) {
+% if (my $user = session 'username') {
 <div class="well" style="padding: 8px 0;">
   <ul class="nav nav-list" id="user-menu">
     <li class="nav-header">Hello <%== $user %></li>
-    % if ( is_author($user) and $url =~ s{/page/}{/edit/} ) {
+    % if ( is_author($user) && current_route 'show_page' ) {
       <li><a href="#" onclick="add_page()">Add New Page</a></li>
-      <li><a href="<%= $url %>">Edit This Page</a></li>
+      <li><a href="<%= url_for 'edit_page', name => stash('name') %>">Edit This Page</a></li>
     % }
     <li><a href="/admin/menu">Edit Nav Menu</a></li>
     <li><a href="/logout">Log Out</a></li>
@@ -72,7 +70,7 @@
 
 % } else {
 <form class="well" method="post" action="/login" id="login">
-  <input type="hidden" name="from" value="<%= $url %>">
+  <input type="hidden" name="from" value="<%= $c->tx->req->url %>">
   <input type="text" class="input-small" placeholder="Username" name="username">
   <input type="password" class="input-small" placeholder="Password" name="password">
   <input type="submit" class="btn" value="Sign In">

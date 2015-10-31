@@ -187,7 +187,7 @@ sub startup {
   my $r = $app->routes;
 
   $r->any( '/' => sub { my $self = shift; $self->redirect_to( $self->home_page ) });
-  $r->any( '/page/:name' )->to('page#show');
+  $r->any( '/page/:name' )->to('page#show')->name('show_page');
   $r->post( '/login' )->to('user#login');
   $r->any( '/logout' )->to('user#logout');
 
@@ -197,7 +197,7 @@ sub startup {
   });
 
   $if_author->any( '/admin/menu' )->to('menu#edit');
-  $if_author->any( '/edit/:name' )->to('page#edit');
+  $if_author->any( '/edit/:name' )->to('page#edit')->name('edit_page');
   $if_author->websocket( '/store/page' )->to('page#store');
   $if_author->websocket( '/store/menu' )->to('menu#store');
   $if_author->websocket( '/files/list' )->to('file#list');
