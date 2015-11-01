@@ -197,7 +197,7 @@ sub startup {
   });
 
   $if_author->any( '/admin/menu' )->to('menu#edit');
-  $if_author->any( '/edit/:name' )->to('page#edit')->name('edit_page');
+  $if_author->any( '/page/:name/_edit' )->to('page#edit')->name('edit_page');
   $if_author->websocket( '/store/page' )->to('page#store');
   $if_author->websocket( '/store/menu' )->to('menu#store');
   $if_author->websocket( '/files/list' )->to('file#list');

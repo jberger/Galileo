@@ -27,7 +27,7 @@ subtest 'Anonymous User' => sub {
     ->status_is(404);
 
   # attempt to edit page
-  $t->get_ok('/edit/home')
+  $t->get_ok('/page/home/_edit')
     ->status_is(200)
     ->content_like( qr/Not Authorized/ );
 
@@ -73,7 +73,7 @@ subtest 'Do Login' => sub {
 subtest 'Edit Page' => sub {
 
   # page editor
-  $t->get_ok('/edit/home')
+  $t->get_ok('/page/home/_edit')
     ->status_is(200)
     ->text_like( '#wmd-input' => qr/Welcome to your Galileo CMS site!/ )
     ->element_exists( '#wmd-preview' );

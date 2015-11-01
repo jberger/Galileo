@@ -48,7 +48,7 @@
       show_modal( '#page-modal', function () {
         var link = $('#new-page-link').val();
         if (link.length > 0) {
-          window.location.href = '/edit/' + link;
+          window.location.href = '/page/' + link + '/_edit';
         } else {
           humane.log('New link name cannot be empty');
         }
