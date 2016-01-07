@@ -84,12 +84,11 @@ sub run {
       return $self->redirect_to('database');
     }
 
-    my $user = $self->param('user');
-    my $full = $self->param('full');
-
     my $dh = $self->dh;
 
     eval {
+      my $user = $self->param('user') || die "Admin Username is required\n";
+      my $full = $self->param('full');
       $dh->do_install;
       $dh->inject_sample_data($user, $pw1, $full);
     };
