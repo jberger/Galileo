@@ -35,10 +35,10 @@ sub run {
   $r->any( '/configure' => 'setup/configure' );
   $r->any( '/store_config' => sub {
     my $self = shift;
-    my @params = sort $self->param;
+    my $names = $self->req->params->names;
 
     # map JSON keys to Perl data
-    my %params = map { $_ => scalar $self->param($_) } @params;
+    my %params = map { $_ => scalar $self->param($_) } @$names;
     foreach my $key ( qw/extra_css extra_js extra_static_paths secrets db_options pagedown_extra_options/ ) {
       $params{$key} = j($params{$key});
     }
