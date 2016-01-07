@@ -2,7 +2,7 @@ Revision history for Perl module Galileo
 
 0.040 2016-01-07
     - Remove jQueryUI in favor of html5sortable
-    - Fix a couple setup app bugs
+    - Fix a couple setup app bugs (Ulrich Herbst, Dirk Koopman)++
 
 0.039 2015-09-28
     - Simplify home path logic
