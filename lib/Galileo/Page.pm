@@ -1,8 +1,6 @@
 package Galileo::Page;
 use Mojo::Base 'Mojolicious::Controller';
 
-use Mojo::JSON 'j';
-
 sub show {
   my $self = shift;
   my $name = $self->param('name');
@@ -39,7 +37,7 @@ sub edit {
 
   $self->stash(
     sanitize               => $self->config->{sanitize} // 1, #/# highlight fix
-    pagedown_extra_options => j( $self->config->{pagedown_extra_options} ),
+    pagedown_extra_options => $self->config->{pagedown_extra_options},
   );
 
   $self->render;
