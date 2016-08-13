@@ -21,7 +21,7 @@ $t->get_ok('/test.html')
   ->or( sub { diag "'static' should be in @{ $app->static->paths }" } );
 
 # login
-$t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', password => 'pass' } )
+$t->post_ok( '/login' => form => {from => '/home', username => 'admin', password => 'pass' } )
   ->status_is(200);
 
 # this hack fixes windows tests, but not the underlying problem that I don't want these found files reslashed!

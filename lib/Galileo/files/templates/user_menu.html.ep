@@ -20,7 +20,7 @@
   %= modal 'page-modal' => begin
     Create a page with link
     <div class="input-prepend">
-      <span class="add-on">/page/</span>
+      <span class="add-on">/</span>
       <input type="text" id="new-page-link" placeholder="new page link">
     </div>
   % end
@@ -48,7 +48,7 @@
       show_modal( '#page-modal', function () {
         var link = $('#new-page-link').val();
         if (link.length > 0) {
-          window.location.href = '/page/' + link + '/_edit';
+          window.location.href = '/' + link + '/_edit';
         } else {
           humane.log('New link name cannot be empty');
         }

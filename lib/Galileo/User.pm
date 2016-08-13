@@ -24,7 +24,7 @@ sub logout {
   my $self = shift;
   $self->session( expires => 1 );
   $self->humane_flash( 'Goodbye' );
-  $self->redirect_to( $self->home_page );
+  $self->redirect_to( show_page => name => '' );
 }
 
 1;

@@ -146,13 +146,11 @@ sub startup {
 
   $app->helper( schema => sub { shift->app->db } );
 
-  $app->helper( 'home_page' => sub{ '/page/home' } );
-
   $app->helper( 'auth_fail' => sub {
     my $self = shift;
     my $message = shift || "Not Authorized";
     $self->humane_flash( $message );
-    $self->redirect_to( $self->home_page );
+    $self->redirect_to( show_page => name => '' );
     return 0;
   });
 
@@ -186,8 +184,6 @@ sub startup {
 
   my $r = $app->routes;
 
-  $r->any( '/' => sub { my $self = shift; $self->redirect_to( $self->home_page ) });
-  $r->any( '/page/:name' )->to('page#show')->name('show_page');
   $r->post( '/login' )->to('user#login');
   $r->any( '/logout' )->to('user#logout');
 
@@ -197,7 +193,6 @@ sub startup {
   });
 
   $if_author->any( '/admin/menu' )->to('menu#edit');
-  $if_author->any( '/page/:name/_edit' )->to('page#edit')->name('edit_page');
   $if_author->websocket( '/store/page' )->to('page#store');
   $if_author->websocket( '/store/menu' )->to('menu#store');
   $if_author->websocket( '/files/list' )->to('file#list');
@@ -213,6 +208,8 @@ sub startup {
   $if_admin->websocket( '/store/user' )->to('admin#store_user');
   $if_admin->websocket( '/remove/page' )->to('admin#remove_page');
 
+  $if_author->any( '/*name/_edit' )->to('page#edit', name => 'home')->name('edit_page');
+  $r->any( '/*name' )->to('page#show', name => 'home')->name('show_page');
 }
 
 1;

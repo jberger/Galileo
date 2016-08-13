@@ -10,7 +10,7 @@
         % my $page = $rs->single({page_id => $id});
         % next unless $page;
         <li>
-          %= tag a => href => "/page/" . $page->name => begin
+          %= tag a => href => "/" . $page->name => begin
             %= $page->title
           % end
         </li>

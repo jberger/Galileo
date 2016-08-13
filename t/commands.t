@@ -53,11 +53,11 @@ subtest 'Dump' => sub {
   {
     $t->ua->max_redirects(2);
 
-    $t->get_ok('/page/doesntexist')
+    $t->get_ok('/doesntexist')
       ->status_is(404);
 
     # successfully login
-    $t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', password => 'pass' } )
+    $t->post_ok( '/login' => form => {from => '/home', username => 'admin', password => 'pass' } )
       ->status_is(200)
       ->content_like( qr/Welcome Back/ )
       ->element_exists_not( 'form#login' )
@@ -66,7 +66,7 @@ subtest 'Dump' => sub {
       ->element_exists( '#user-modal #new-username' );
 
     # author request non-existant page => create new page
-    $t->get_ok('/page/doesntexist')
+    $t->get_ok('/doesntexist')
       ->status_is(200)
       ->text_like( '#wmd-input' => qr/Hello World/ )
       ->element_exists( '#wmd-preview' );
@@ -86,7 +86,7 @@ subtest 'Dump' => sub {
       ->finish_ok;
 
     # see that the changes are reflected
-    $t->get_ok('/page/snow❄flake')
+    $t->get_ok('/snow❄flake')
       ->status_is(200)
       ->text_is( h1 => 'New Home for ☃' )
       ->text_like( '#content p' => qr/$text/ );

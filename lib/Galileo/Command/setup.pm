@@ -92,6 +92,7 @@ sub run {
     eval {
       $dh->do_install;
       $dh->inject_sample_data($user, $pw1, $full);
+      warn "got past inject";
     };
 
     if ($@) {

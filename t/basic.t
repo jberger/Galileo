@@ -23,11 +23,11 @@ subtest 'Anonymous User' => sub {
     ->element_exists_not( '#user-menu' );
 
   # attempt to get non-existant page
-  $t->get_ok('/page/doesntexist')
+  $t->get_ok('/doesntexist')
     ->status_is(404);
 
   # attempt to edit page
-  $t->get_ok('/page/home/_edit')
+  $t->get_ok('/home/_edit')
     ->status_is(200)
     ->content_like( qr/Not Authorized/ );
 
@@ -46,21 +46,21 @@ subtest 'Anonymous User' => sub {
 subtest 'Do Login' => sub {
 
   # fail username
-  $t->post_ok( '/login' => form => {from => '/page/home', username => 'wronguser', password => 'pass' } )
+  $t->post_ok( '/login' => form => {from => '/home', username => 'wronguser', password => 'pass' } )
     ->status_is(200)
     ->content_like( qr/Sorry try again/ )
     ->element_exists( 'form#login' )
     ->element_exists_not( '#user-menu' );
 
   # fail password
-  $t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', password => 'wrongpass' } )
+  $t->post_ok( '/login' => form => {from => '/home', username => 'admin', password => 'wrongpass' } )
     ->status_is(200)
     ->content_like( qr/Sorry try again/ )
     ->element_exists( 'form#login' )
     ->element_exists_not( '#user-menu' );
 
   # successfully login
-  $t->post_ok( '/login' => form => {from => '/page/home', username => 'admin', password => 'pass' } )
+  $t->post_ok( '/login' => form => {from => '/home', username => 'admin', password => 'pass' } )
     ->status_is(200)
     ->content_like( qr/Welcome Back/ )
     ->element_exists_not( 'form#login' )
@@ -73,7 +73,7 @@ subtest 'Do Login' => sub {
 subtest 'Edit Page' => sub {
 
   # page editor
-  $t->get_ok('/page/home/_edit')
+  $t->get_ok('/home/_edit')
     ->status_is(200)
     ->text_like( '#wmd-input' => qr/Welcome to your Galileo CMS site!/ )
     ->element_exists( '#wmd-preview' );
@@ -93,7 +93,7 @@ subtest 'Edit Page' => sub {
     ->finish_ok;
 
   # see that the changes are reflected
-  $t->get_ok('/page/home')
+  $t->get_ok('/home')
     ->status_is(200)
     ->text_is( h1 => 'New Home' )
     ->text_like( '#content p' => qr/$text/ );
@@ -116,7 +116,7 @@ subtest 'Edit Page' => sub {
 subtest 'New Page' => sub {
 
   # author request non-existant page => create new page
-  $t->get_ok('/page/doesntexist')
+  $t->get_ok('/doesntexist')
     ->status_is(200)
     ->text_like( '#wmd-input' => qr/Hello World/ )
     ->element_exists( '#wmd-preview' );
@@ -136,7 +136,7 @@ subtest 'New Page' => sub {
     ->finish_ok;
 
   # see that the changes are reflected
-  $t->get_ok('/page/snow❄flake')
+  $t->get_ok('/snow❄flake')
     ->status_is(200)
     ->text_is( h1 => 'New Home for ☃' )
     ->text_like( '#content p' => qr/$text/ );

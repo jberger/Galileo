@@ -114,7 +114,7 @@ sub inject_sample_data {
 
 <p>When he first turned the telescope to face Jupiter, he used modern technology to improve the world around him.</p>
 
-<p>Like the great scientist it is named for, Galileo CMS is not afraid to be very modern. Learn more about it on the <a href="/page/about">about</a> page.</p>
+<p>Like the great scientist it is named for, Galileo CMS is not afraid to be very modern. Learn more about it on the <a href="/about">about</a> page.</p>
 
 <p><img src="/portrait.jpg" alt="Portrait of Galileo Galilei" title="" /></p>
 HTML
@@ -125,7 +125,7 @@ HTML
 
 When he first turned the telescope to face Jupiter, he used modern technology to improve the world around him.
 
-Like the great scientist it is named for, Galileo CMS is not afraid to be very modern. Learn more about it on the [about](/page/about) page.
+Like the great scientist it is named for, Galileo CMS is not afraid to be very modern. Learn more about it on the [about](/about) page.
 
 ![Portrait of Galileo Galilei](/portrait.jpg)
 MARKDOWN
