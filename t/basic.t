@@ -215,7 +215,7 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->$trimmed_text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
     ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
-  my @ids = $t->tx->res->dom->find('#list-active-pages li')->map(attr =>'id')->each;
+  my @ids = $t->tx->res->dom->find('#list-active-pages li')->map(sub{ $_->{'id'} })->each;
   is_deeply \@ids, ['header-active', 'pages-3', 'pages-2'], 'active pages in correct order';
 };
 
