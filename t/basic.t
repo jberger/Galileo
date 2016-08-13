@@ -7,9 +7,18 @@ use Test::Mojo;
 use Mojo::JSON 'j';
 use Mojo::DOM;
 use Mojo::JSON qw/true false/;
+use Mojo::Util 'trim';
 
 my $t = Galileo::DB::Deploy->create_test_object({test => 1});
 $t->ua->max_redirects(2);
+
+my $trimmed_text_is = sub {
+  my ($t, $selector, $expect, $desc) = @_;
+  $desc //= qq[exact match for selector "$selector"];
+  local $Test::Builder::Level = $Test::Builder::Level + 1;
+  my $text = trim($t->tx->res->dom->at($selector)->text || '');
+  $t->success(is $text, $expect, $desc);
+};
 
 subtest 'Anonymous User' => sub {
 
@@ -149,7 +158,7 @@ subtest 'Edit Main Navigation Menu' => sub {
   # check about page is in nav
   $t->get_ok('/admin/menu')
     ->status_is(200)
-    ->text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
+    ->$trimmed_text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
     ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
   # remove about page from list
@@ -196,13 +205,14 @@ subtest 'Edit Main Navigation Menu' => sub {
     ->new(j($t->message->[1])->{content})
     ->find('#nav_menu li')
     ->map('all_text')
+    ->map(\&trim)
     ->each;
   is_deeply \@items, ['Navigation', 'Home', 'Syntax', $title];
 
   # check about page is back in nav (same as first test block)
   $t->get_ok('/admin/menu')
     ->status_is(200)
-    ->text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
+    ->$trimmed_text_is( 'ul#main > li:nth-of-type(4) > a' => $title )
     ->text_is( '#list-active-pages > #pages-2 > span' => $title );
 
   my @ids = $t->tx->res->dom->find('#list-active-pages li')->map(attr =>'id')->each;
@@ -256,8 +266,8 @@ subtest 'Administer Users' => sub {
     ->status_is(200)
     ->element_exists( 'input#name[placeholder=admin]' )
     ->element_exists( 'input#full[value="Joe Admin"]' )
-    ->element_exists( 'input#is_author[checked=1]' )
-    ->element_exists( 'input#is_admin[checked=1]' );
+    ->element_exists( 'input#is_author:checked' )
+    ->element_exists( 'input#is_admin:checked' );
 
   # change name
   my $data = {

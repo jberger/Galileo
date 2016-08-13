@@ -66,7 +66,7 @@ sub store {
     $self->send({ json => {
       message => 'Changes saved',
       success => \1,
-      content => b($content)->squish,
+      content => b($content)->trim,
     } });
   });
 }
