@@ -5,7 +5,6 @@ use Mojolicious::Command::daemon;
 
 use Mojolicious::Routes;
 use Mojo::JSON 'j';
-use Mojo::Util 'spurt';
 
 has description => "Configure your Galileo CMS via a web interface\n";
 
@@ -43,7 +42,7 @@ sub run {
       $params{$key} = j($params{$key});
     }
 
-    spurt $self->dumper(\%params), $self->app->config_file;
+    $self->app->config_file->spurt($self->dumper(\%params));
 
     $self->app->load_config;
     $self->humane_flash( 'Configuration saved' );

@@ -11,7 +11,7 @@ my $builder = Module::Build->new(
 
   requires => {
     'perl' => '5.10.1',
-    'Mojolicious' => '5.54',  # Mojo::JSON booleans
+    'Mojolicious' => '7.15',  # Mojo::File
     'Mojolicious::Plugin::Memorize' => 0,
     'Mojolicious::Plugin::Humane' => '0.07',
     'DBD::SQLite' => 0,

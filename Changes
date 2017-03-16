@@ -1,5 +1,9 @@
 Revision history for Perl module Galileo
 
+0.042 2017-03-15
+    - Fix use of deprecated Mojolicous functions
+      - Bump Mojolicious requirement to 7.15
+
 0.041 2016-08-13
     - Bump Mojolicious requirement to 5.54
     - Fix compatibility with Mojolicious 7.0

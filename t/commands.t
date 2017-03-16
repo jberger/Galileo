@@ -7,10 +7,9 @@ use Test::More;
 use Test::Mojo;
 
 use Mojolicious::Commands;
-use Mojo::Util qw/ decode encode slurp /;
-use File::Spec;
-use File::Temp ();
+use Mojo::Util qw/decode encode/;
 use Mojo::JSON qw/true false/;
+use Mojo::File qw/tempdir/;
 
 # dump
 subtest 'Dump' => sub {
@@ -21,7 +20,7 @@ subtest 'Dump' => sub {
   like $dump->usage, qr/dump/, 'has usage information';
 
   # ready to test
-  my $dir = File::Temp->newdir( $ENV{KEEP_TEMP_DIR} ? (CLEANUP => 0) : () );
+  my $dir = tempdir( $ENV{KEEP_TEMP_DIR} ? (CLEANUP => 0) : () );
   my $t   = Galileo::DB::Deploy->create_test_object({test => 1});
   isa_ok $t->app, 'Galileo';
 
@@ -41,9 +40,9 @@ subtest 'Dump' => sub {
       },
     );
     for my $name ( keys %pages ) {
-      my $file = File::Spec->catfile( $dir, "$name.md" );
+      my $file = $dir->child("$name.md");
       ok -e $file, "sample data: $name - exists";
-      my $content = decode 'UTF-8', slurp $file;
+      my $content = decode 'UTF-8', $file->slurp;
       like $content, qr/\A<!-- $pages{$name}{title} -->/, "sample data: $name - title";
       like $content, $pages{$name}{content}, "sample data: $name - content";
     }
@@ -112,9 +111,9 @@ subtest 'Dump' => sub {
     );
     for my $name ( keys %pages ) {
       my $encoded_name = encode 'UTF-8', $name;
-      my $file         = File::Spec->catfile( $dir, "$name.md" );
+      my $file         = $dir->child("$name.md");
       ok -e $file, "sample data: $encoded_name - exists";
-      my $content = decode 'UTF-8', slurp $file;
+      my $content = decode 'UTF-8', $file->slurp;
       like $content, qr/\A<!-- $pages{$name}{title} -->/, "sample data: $encoded_name - title";
       like $content, $pages{$name}{content}, "sample data: $encoded_name - content";
     }

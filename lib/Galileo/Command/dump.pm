@@ -1,7 +1,7 @@
 package Galileo::Command::dump;
 use Mojo::Base 'Mojolicious::Command';
-use File::Spec;
-use Mojo::Util qw/encode spurt/;
+use Mojo::File;
+use Mojo::Util qw/encode/;
 use Getopt::Long qw/GetOptionsFromArray/;
 
 has description => "Dump all stored pages as markdown\n";
@@ -40,13 +40,14 @@ sub run {
 
   my $pages = $self->app->schema->resultset('Page')->search;
   while ( my $page = $pages->next ) {
-    my $file = $page->name . '.md';
-    $file = File::Spec->catfile( $dir, $file ) if $dir;
+    my $file = Mojo::File->new($page->name . '.md');
+    $file = Mojo::File->new($dir)->child("$file") if $dir;
 
     my $content = sprintf "$title\n", $page->title;
     $content .= $page->md;
     $content = encode($encoding, $content) if $encoding;
-    spurt $content, $file;
+
+    $file->spurt($content);
   }
 
   say "Export Complete";

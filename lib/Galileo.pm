@@ -1,7 +1,7 @@
 package Galileo;
 use Mojo::Base 'Mojolicious';
 
-our $VERSION = '0.041';
+our $VERSION = '0.042';
 $VERSION = eval $VERSION;
 
 use File::Basename 'dirname';
@@ -118,7 +118,7 @@ sub load_config {
 sub _to_abs {
   my ($self, $dir) = @_;
   unless ( File::Spec->file_name_is_absolute( $dir ) ) {
-    $dir = $self->home->rel_dir( $dir );
+    $dir = $self->home->rel_file( $dir );
   }
   return $dir;
 }
