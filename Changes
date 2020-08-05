@@ -1,5 +1,10 @@
 Revision history for Perl module Galileo
 
+0.043 2020-09-06
+    - Fix XSS vulnerability (Irfan++) CVE-2019-7410
+    - Soft-deprecate Galileo
+    - Include contributors list
+
 0.042 2017-03-15
     - Fix use of deprecated Mojolicous functions
       - Bump Mojolicious requirement to 7.15
