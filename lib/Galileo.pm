@@ -219,6 +219,8 @@ sub startup {
 
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 Galileo - A simple modern CMS built on Mojolicious
@@ -230,9 +232,11 @@ Galileo - A simple modern CMS built on Mojolicious
 
 =head1 DESCRIPTION
 
-L<Galileo> is a Perl CMS with some modern features. It uses client-side markdown rendering and websockets for saving page data without reloading. L<Galileo> relies on many other great open-source projects, see more in the L</"TECHNOLOGIES USED"> section.
+L<Galileo> is a Perl CMS with some unusual features. It uses client-side markdown rendering and websockets for saving page data without reloading. L<Galileo> relies on many other great open-source projects, see more in the L</"TECHNOLOGIES USED"> section.
 
-This release is very young, don't expect anything not to break, for now. Bug reports very welcome.
+=head1 DISCOURAGED
+
+L<Galileo> was an experiment in several technologies, in ways that I had hoped would be interesting. I'm not certain it worked out. Websockets are overused, the ORM is abused in certain ways. I'm not going to officially deprecate it (yet) but I don't encourage new users. I do eventually hope to try my hand at a CMS again, but in the meantime perhaps consider L<Yancy>.
 
 =head1 INSTALLATION
 
@@ -398,9 +402,29 @@ L<http://github.com/jberger/Galileo>
 
 Joel Berger, E<lt>joel.a.berger@gmail.comE<gt>
 
+=head1 CONTRIBUTORS
+
+Boris Däppen
+
+Helmut Wollmersdorfer
+
+Holger Rupprecht
+
+Irfan Afifullah
+
+Keedi Kim
+
+Neil Bowers
+
+Nils Diewald
+
+OpossumPetya
+
+Sergey Rubanov
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012-2014 by Joel Berger
+Copyright (C) 2012-2014 by L</AUTHOR> and L</CONTRIBUTORS>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
