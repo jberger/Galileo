@@ -10,7 +10,7 @@ my $builder = Module::Build->new(
   license => 'perl',
 
   requires => {
-    'perl' => '5.10.1',
+    'perl' => '5.10.1', # N.B. modern Mojolicious now requires 5.16
     'Mojolicious' => '7.15',  # Mojo::File
     'Mojolicious::Plugin::Memorize' => 0,
     'Mojolicious::Plugin::Humane' => '0.07',
