@@ -91,7 +91,7 @@ subtest 'Edit Page' => sub {
   my $text = 'I changed this text ☃';
   my $data = {
     name  => 'home',
-    title => 'New Home',
+    title => 'New Home <script>alert()</script>',
     html  => "<p>$text</p>",
     md    => $text,
   };
@@ -104,8 +104,10 @@ subtest 'Edit Page' => sub {
   # see that the changes are reflected
   $t->get_ok('/page/home')
     ->status_is(200)
-    ->text_is( h1 => 'New Home' )
-    ->text_like( '#content p' => qr/$text/ );
+    ->text_like( h1 => qr'New Home' )
+    ->text_like( '#content p' => qr/$text/ )
+    ->element_exists_not('title script')
+    ->element_exists_not('.page-header script');
 
   # save page without title (error)
   my $data_notitle = {
@@ -378,7 +380,7 @@ subtest 'Logging Out' => sub {
   # This is essentially a repeat of the first test
   $t->get_ok('/logout')
     ->status_is(200)
-    ->text_is( h1 => 'New Home' )
+    ->text_like( h1 => qr'New Home' )
     ->element_exists( 'form' );
 };
 
