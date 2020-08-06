@@ -1,6 +1,6 @@
 Revision history for Perl module Galileo
 
-0.043 2020-09-06
+0.043 2020-08-06
     - Fix XSS vulnerability (Irfan++) CVE-2019-7410
     - Soft-deprecate Galileo
     - Include contributors list
