@@ -82,5 +82,8 @@
 # Avoid travis config
 \.travis\.yml
 
+# Avoid local vendor libraries
+\blocal/
+
 # Avoid README which is intended for github
 \bREADME\.pod$
